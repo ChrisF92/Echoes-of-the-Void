@@ -1,0 +1,39 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Combat/CombatHUD.uss?fileID=7433441132597879392&amp;guid=83d918e2542039f49ac0ba9c93dd5e19&amp;type=3#CombatHUD" />
+    <ui:VisualElement name="combat-hud" class="combat-hud">
+        <ui:VisualElement name="combat-grid" class="combat-grid">
+            <!-- Two 3x3 side grids -->
+            <ui:VisualElement name="player-grid" class="side-grid player-grid">
+                <ui:VisualElement name="cell-r0-c0" class="grid-cell" />
+                <ui:VisualElement name="cell-r0-c1" class="grid-cell" />
+                <ui:VisualElement name="cell-r0-c2" class="grid-cell" />
+                <ui:VisualElement name="cell-r1-c0" class="grid-cell" />
+                <ui:VisualElement name="cell-r1-c1" class="grid-cell" />
+                <ui:VisualElement name="cell-r1-c2" class="grid-cell" />
+                <ui:VisualElement name="cell-r2-c0" class="grid-cell" />
+                <ui:VisualElement name="cell-r2-c1" class="grid-cell" />
+                <ui:VisualElement name="cell-r2-c2" class="grid-cell" />
+            </ui:VisualElement>
+            <ui:VisualElement name="enemy-grid" class="side-grid enemy-grid">
+                <ui:VisualElement name="cell-r0-c3" class="grid-cell" />
+                <ui:VisualElement name="cell-r0-c4" class="grid-cell" />
+                <ui:VisualElement name="cell-r0-c5" class="grid-cell" />
+                <ui:VisualElement name="cell-r1-c3" class="grid-cell" />
+                <ui:VisualElement name="cell-r1-c4" class="grid-cell" />
+                <ui:VisualElement name="cell-r1-c5" class="grid-cell" />
+                <ui:VisualElement name="cell-r2-c3" class="grid-cell" />
+                <ui:VisualElement name="cell-r2-c4" class="grid-cell" />
+                <ui:VisualElement name="cell-r2-c5" class="grid-cell" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:ListView name="item-list" binding-path="AvailableItemActions" virtualization-method="FixedHeight" show-bound-collection-size="false" selection-type="Single" fixed-item-height="28" class="item-list" />
+        <ui:ListView name="skill-list" binding-path="AvailableSkillActions" virtualization-method="FixedHeight" show-bound-collection-size="false" selection-type="Single" fixed-item-height="28" class="skill-list" />
+        <ui:VisualElement name="combat-menu" class="combat-menu">
+            <ui:Button name="attack-button" text="Attack" binding-path="AttackCommand" class="combat-button" />
+            <ui:Button name="defend-button" text="Defend" binding-path="DefendCommand" class="combat-button" />
+            <ui:Button name="item-button" text="Item" binding-path="ItemCommand" class="combat-button" />
+            <ui:Button name="skill-button" text="Skill" binding-path="SkillCommand" class="combat-button" />
+            <ui:Button name="cancel-button" text="Cancel" binding-path="CancelCommand" class="combat-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

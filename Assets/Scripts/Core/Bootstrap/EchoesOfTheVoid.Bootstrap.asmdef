@@ -1,0 +1,21 @@
+{
+  "name": "EchoesOfTheVoid.Bootstrap",
+  "rootNamespace": "EchoesOfTheVoid",
+  "references": [
+    "EchoesOfTheVoid.Core",
+    "EchoesOfTheVoid.Combat",
+    "EchoesOfTheVoid.UI.UITK",
+    "EchoesOfTheVoid.Items",
+    "EchoesOfTheVoid.Skills"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
+
