@@ -1,7 +1,8 @@
 {
-    "name": "EchoesOfTheVoid.UI",
+    "name": "EchoesOfTheVoid.Tests",
     "rootNamespace": "",
     "references": [
+        "GUID:e9ce05cfefef82147bb8dff898692f6c",
         "GUID:f165bc6d603f7174d9ec9bfd424cb634"
     ],
     "includePlatforms": [],

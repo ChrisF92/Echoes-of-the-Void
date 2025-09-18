@@ -1,14 +1,3 @@
 {
-  "name": "EchoesOfTheVoid.Core",
-  "rootNamespace": "EchoesOfTheVoid",
-  "references": [],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+	"name": "EchoesOfTheVoid.Core"
 }

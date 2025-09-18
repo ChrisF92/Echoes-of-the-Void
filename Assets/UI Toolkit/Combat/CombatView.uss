@@ -1,0 +1,354 @@
+﻿:root {
+    --color-bg-primary: #1a1a2e;
+    --color-bg-secondary: #16213e;
+    --color-team-player-border: #16537e;
+    --color-team-player-fill: #0f3460;
+    --color-team-enemy-border: #7e1616;
+    --color-team-enemy-fill: #533a3a;
+    --color-accent-gold: #d4af37;
+    --color-accent-gold-strong: #ffd700;
+    --color-text-primary: #f5f5f5;
+    --color-text-muted: #9aa7c2;
+    --color-panel-border: #2d3b55;
+    --color-log-bg: #101526;
+    --color-modal-bg: #1f2942;
+}
+
+.combat-view {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 100%;
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-primary);
+    font-size: 12px;
+}
+
+.combat-info-panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    min-height: 50px;
+    background-color: var(--color-bg-secondary);
+    border-bottom-color: var(--color-panel-border);
+    border-bottom-width: 1px;
+
+}
+
+.info-group {
+    display: flex;
+    flex-direction: column;
+    margin-right: 12px;
+}
+
+.info-label {
+    color: var(--color-text-muted);
+    font-size: 11px;
+
+    letter-spacing: 1px;
+}
+
+.info-value {
+    color: var(--color-accent-gold);
+    font-size: 14px;
+    -unity-font-style: bold;
+}
+
+.action-text .info-value {
+    color: var(--color-text-primary);
+}
+
+.combat-body {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    padding: 16px 20px 96px;
+}
+
+.combat-log {
+    width: 260px;
+    min-width: 200px;
+    background-color: var(--color-log-bg);
+    border-color: var(--color-panel-border);
+    border-width: 1px;
+
+    border-radius: 12px;
+    padding: 12px;
+    margin-right: 16px;
+}
+
+.log-messages {
+    display: flex;
+    flex-direction: column;
+}
+
+.combat-arena {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+    justify-content: space-between;
+    padding: 16px;
+    border-radius: 16px;
+    background-color: var(--color-bg-secondary);
+    border-color: var(--color-panel-border);
+    border-width: 1px;
+
+}
+
+.team-grid {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    max-width: 400px;
+    margin: 0 12px;
+    padding-bottom: 8px;
+}
+
+.team-row {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 0;
+    margin-bottom: 8px;
+    padding: 0 4px;
+}
+
+.combatant-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1 1 0;
+    min-width: 120px;
+    min-height: 120px;
+    border-radius: 12px;
+    padding: 8px 6px;
+    margin: 0 4px;
+    border-width: 2px;
+
+    background-color: var(--color-bg-secondary);
+}
+
+.player-slot {
+    border-color: var(--color-team-player-border);
+    background-color: var(--color-team-player-fill);
+}
+
+.enemy-slot {
+    border-color: var(--color-team-enemy-border);
+    background-color: var(--color-team-enemy-fill);
+}
+
+.is-empty {
+    opacity: 0.4;
+    border-width: 2px;
+    border-color: var(--color-text-muted);
+}
+
+.combatant-slot.valid-target {
+    border-color: var(--color-accent-gold);
+}
+
+.combatant-slot.selected-target {
+    background-color: rgba(212, 175, 55, 0.2);
+    border-color: var(--color-accent-gold-strong);
+}
+
+.combatant-slot.invalid-target {
+    opacity: 0.35;
+}
+
+.combatant-slot.target-highlight {
+    border-width: 4px;
+    border-color: var(--color-accent-gold-strong);
+}
+
+.combatant-name {
+    margin-top: 4px;
+    font-size: 12px;
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    color: var(--color-text-primary);
+}
+
+.portrait-frame {
+    flex: 1 1 auto;
+    width: 100%;
+    margin: 6px 0;
+    border-radius: 8px;
+    border-color: var(--color-panel-border);
+    border-width: 1px;
+
+    background-color: rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.portrait {
+    width: 90%;
+    height: 90%;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+}
+
+.health-bar {
+    width: 90%;
+    height: 8px;
+    margin-bottom: 4px;
+}
+
+.health-bar > .unity-progress-bar__background {
+    background-color: #2a2a2a;
+    border-radius: 4px;
+}
+
+.health-bar > .unity-progress-bar__progress {
+    background-color: #3ba55d;
+    border-radius: 4px;
+}
+
+.action-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 80px;
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--color-bg-secondary);
+    border-top-color: var(--color-panel-border);
+    border-top-width: 1px;
+}
+
+.current-turn {
+    margin-right: auto;
+    font-size: 16px;
+    -unity-font-style: bold;
+    color: var(--color-accent-gold);
+}
+
+.action-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    border-color: var(--color-panel-border);
+    border-width: 1px;
+
+    margin-left: 12px;
+    -unity-font-style: bold;
+    color: #ffffff;
+    background-color: #333333;
+}
+
+.action-button:hover {
+    background-color: #4c4c4c;
+}
+
+.action-button.unity-disabled {
+    opacity: 0.5;
+}
+
+.attack-button {
+    background-color: #cc4125;
+}
+
+.attack-button:hover {
+    background-color: #a0351e;
+}
+
+.defend-button {
+    background-color: #1f4e79;
+}
+
+.defend-button:hover {
+    background-color: #163a58;
+}
+
+.item-button {
+    background-color: #2d5a27;
+}
+
+.item-button:hover {
+    background-color: #23471f;
+}
+
+.skill-button {
+    background-color: #4a2c5a;
+}
+
+.skill-button:hover {
+    background-color: #3a2247;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+
+}
+
+.modal-content {
+    width: 400px;
+    height: 500px;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: var(--color-modal-bg);
+    border-color: var(--color-accent-gold);
+    border-width: 1px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-title {
+    font-size: 18px;
+    -unity-font-style: bold;
+    color: var(--color-accent-gold-strong);
+    margin-bottom: 12px;
+}
+
+.modal-list {
+    flex: 1 1 auto;
+    border-color: var(--color-panel-border);
+    border-width: 1px;
+
+    border-radius: 12px;
+    background-color: var(--color-bg-secondary);
+    margin-bottom: 12px;
+}
+
+.modal-close {
+    align-self: flex-end;
+    width: 100px;
+    height: 32px;
+    border-radius: 8px;
+    border-color: var(--color-panel-border);
+    border-width: 1px;
+
+    background-color: var(--color-accent-gold);
+    color: #1a1a1a;
+    -unity-font-style: bold;
+}
+
+.modal-close:hover {
+    background-color: var(--color-accent-gold-strong);
+}
+
+.is-hidden {
+    display: none;
+}
+
+

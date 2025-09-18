@@ -1,0 +1,193 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="CombatView.uss" />
+    <ui:VisualElement name="combat-view" class="combat-view">
+        <ui:VisualElement name="combat-info-panel" class="combat-info-panel">
+            <ui:VisualElement class="info-group">
+                <ui:Label class="info-label" text="Turn" />
+                <ui:Label name="turn-counter" class="info-value" binding-path="TurnNumber" />
+            </ui:VisualElement>
+            <ui:VisualElement class="info-group">
+                <ui:Label class="info-label" text="Timer" />
+                <ui:Label name="battle-timer" class="info-value" binding-path="BattleTimer" />
+            </ui:VisualElement>
+            <ui:VisualElement class="info-group action-text">
+                <ui:Label class="info-label" text="Action" />
+                <ui:Label name="current-action" class="info-value" binding-path="CurrentActionText" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="combat-body" class="combat-body">
+            <ui:ScrollView name="combat-log" class="combat-log" vertical-scroller-visibility="Auto">
+                <ui:VisualElement name="log-messages" class="log-messages" />
+            </ui:ScrollView>
+            <ui:VisualElement name="combat-arena" class="combat-arena">
+                <ui:VisualElement name="player-grid" class="team-grid player-grid">
+                    <ui:VisualElement class="team-row">
+                        <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-0">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="player-portrait-0" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="player-health-0" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-1">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="player-portrait-1" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="player-health-1" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-2">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="player-portrait-2" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="player-health-2" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="team-row">
+                        <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-3">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="player-portrait-3" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="player-health-3" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-4">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="player-portrait-4" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="player-health-4" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-5">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="player-portrait-5" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="player-health-5" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="team-row">
+                        <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-6">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="player-portrait-6" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="player-health-6" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-7">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="player-portrait-7" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="player-health-7" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-8">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="player-portrait-8" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="player-health-8" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="enemy-grid" class="team-grid enemy-grid">
+                    <ui:VisualElement class="team-row">
+                        <ui:VisualElement class="combatant-slot enemy-slot is-empty" name="enemy-slot-0">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Enemy" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="enemy-portrait-0" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="enemy-health-0" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot enemy-slot is-empty" name="enemy-slot-1">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Enemy" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="enemy-portrait-1" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="enemy-health-1" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot enemy-slot is-empty" name="enemy-slot-2">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Enemy" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="enemy-portrait-2" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="enemy-health-2" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="team-row">
+                        <ui:VisualElement class="combatant-slot enemy-slot is-empty" name="enemy-slot-3">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Enemy" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="enemy-portrait-3" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="enemy-health-3" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot enemy-slot is-empty" name="enemy-slot-4">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Enemy" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="enemy-portrait-4" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="enemy-health-4" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot enemy-slot is-empty" name="enemy-slot-5">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Enemy" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="enemy-portrait-5" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="enemy-health-5" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="team-row">
+                        <ui:VisualElement class="combatant-slot enemy-slot is-empty" name="enemy-slot-6">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Enemy" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="enemy-portrait-6" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="enemy-health-6" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot enemy-slot is-empty" name="enemy-slot-7">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Enemy" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="enemy-portrait-7" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="enemy-health-7" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="combatant-slot enemy-slot is-empty" name="enemy-slot-8">
+                            <ui:Label class="combatant-name" binding-path="DisplayName" text="Enemy" />
+                            <ui:VisualElement class="portrait-frame">
+                                <ui:VisualElement class="portrait" name="enemy-portrait-8" />
+                            </ui:VisualElement>
+                            <ui:ProgressBar class="health-bar" name="enemy-health-8" low-value="0" high-value="1" binding-path="HealthRatio" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="action-bar" class="action-bar">
+            <ui:Label name="current-turn-character" class="current-turn" binding-path="CurrentTurnCharacter" />
+            <ui:Button name="attack-btn" class="action-button attack-button" text="Attack" />
+            <ui:Button name="defend-btn" class="action-button defend-button" text="Defend" />
+            <ui:Button name="item-btn" class="action-button item-button" text="Item" />
+            <ui:Button name="skill-btn" class="action-button skill-button" text="Skill" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="item-modal" class="modal-overlay is-hidden">
+            <ui:VisualElement class="modal-content item-modal">
+                <ui:Label class="modal-title" text="Items" />
+                <ui:ListView name="item-list" class="modal-list" selection-type="Single" />
+                <ui:Button name="item-close-btn" class="modal-close" text="Close" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="skill-modal" class="modal-overlay is-hidden">
+            <ui:VisualElement class="modal-content skill-modal">
+                <ui:Label class="modal-title" text="Skills" />
+                <ui:ListView name="skill-list" class="modal-list" selection-type="Single" />
+                <ui:Button name="skill-close-btn" class="modal-close" text="Close" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

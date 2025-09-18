@@ -1,5 +1,5 @@
 {
-    "name": "EchoesOfTheVoid.UI",
+    "name": "EchoesOfTheVoid.Editor",
     "rootNamespace": "",
     "references": [
         "GUID:f165bc6d603f7174d9ec9bfd424cb634"
