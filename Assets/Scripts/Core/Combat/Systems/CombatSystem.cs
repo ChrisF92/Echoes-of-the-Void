@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 using EchoesOfTheVoid.Core.Combat;
 using EchoesOfTheVoid.Core.Combat.Actions;
 using EchoesOfTheVoid.Core.Combat.Components;
 using EchoesOfTheVoid.Core.Combat.Entities;
+using EchoesOfTheVoid.Core.Combat.Gambits;
 using EchoesOfTheVoid.Core.Combat.Managers;
 using EchoesOfTheVoid.Core.Combat.Results;
 using EchoesOfTheVoid.Core.Combat.Turn;
@@ -28,6 +27,7 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
     private readonly List<ICombatant> _allCombatants = new();
     private readonly List<ICombatant> _playerTeam = new();
     private readonly List<ICombatant> _enemyTeam = new();
+    private readonly System.Random _random = new();
     private TurnOrderManager _turnOrderManager;
     private CombatantManager _combatantManager;
 
@@ -41,6 +41,7 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
     public event Action<ICombatant> OnTurnEnd;
     public event Action<CombatResult> OnCombatEnd;
     public event Action<ICombatant, ActionResult> OnActionExecuted;
+    public event Action<GambitEvaluationLog> OnGambitEvaluated;
 
     private void Awake()
     {
@@ -99,6 +100,39 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
         _allCombatants.Add(enemy);
         _combatantManager.RegisterCombatant(enemy);
       }
+    }
+
+    public void SetAutoCombatEnabled(ICombatant combatant, bool enabled)
+    {
+      if (combatant == null)
+      {
+        return;
+      }
+
+      if (combatant.IsAutoCombatEnabled == enabled)
+      {
+        return;
+      }
+
+      combatant.SetAutoCombatEnabled(enabled);
+
+      if (enabled && combatant == CurrentTurnCombatant && ShouldAutoAct(combatant))
+      {
+        TryExecuteAiTurn(combatant);
+      }
+    }
+
+    public void SetGambitProfile(ICombatant combatant, IGambitRuleSource profile)
+    {
+      if (combatant is Combatant concrete)
+      {
+        concrete.ApplyGambitProfile(profile);
+      }
+    }
+
+    public void SetGambitProfile(ICombatant combatant, GambitProfileData profile)
+    {
+      SetGambitProfile(combatant, profile as IGambitRuleSource);
     }
 
     public bool ExecuteAction(ICombatant actor, CombatAction action)
@@ -195,12 +229,141 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
       return Mathf.RoundToInt(finalDamage * variance);
     }
 
+
     private void HandleTurnStart(ICombatant combatant)
     {
       combatant.SetDefending(false);
       combatant.UpdateComponents(Time.deltaTime);
 
       OnTurnStart?.Invoke(combatant);
+
+      if (ShouldAutoAct(combatant))
+      {
+        TryExecuteAiTurn(combatant);
+      }
+    }
+
+    private bool ShouldAutoAct(ICombatant combatant)
+    {
+      if (combatant == null || !combatant.IsAlive)
+      {
+        return false;
+      }
+
+      if (!combatant.IsPlayerControlled)
+      {
+        return true;
+      }
+
+      return combatant.IsAutoCombatEnabled;
+    }
+
+    private void TryExecuteAiTurn(ICombatant combatant)
+    {
+      if (_currentState != CombatState.InProgress || combatant != CurrentTurnCombatant)
+      {
+        return;
+      }
+
+      CombatAction selectedAction = null;
+      GambitEvaluationLog evaluationLog = null;
+
+      if (combatant is Combatant concreteCombatant)
+      {
+        var gambitComponent = concreteCombatant.GetComponent<GambitComponent>();
+        if (gambitComponent != null)
+        {
+          var context = BuildGambitContext(concreteCombatant);
+          if (!gambitComponent.TryBuildAction(context, out selectedAction, out evaluationLog))
+          {
+            if (evaluationLog == null)
+            {
+              evaluationLog = new GambitEvaluationLog(concreteCombatant, null);
+            }
+          }
+        }
+        else
+        {
+          evaluationLog = new GambitEvaluationLog(concreteCombatant, null);
+          evaluationLog.Records.Add(new GambitRuleEvaluationRecord(null)
+          {
+            FailureReason = "No GambitComponent found on combatant"
+          });
+        }
+      }
+      else
+      {
+        Debug.LogWarning($"Gambit AI requires Combatant concrete type. Received: {combatant?.GetType().Name ?? "<null>"}");
+      }
+
+      if (selectedAction == null)
+      {
+        selectedAction = BuildFallbackAction(combatant, evaluationLog);
+      }
+
+      PublishGambitLog(evaluationLog);
+
+      if (selectedAction == null)
+      {
+        _turnOrderManager.EndCurrentTurn();
+        return;
+      }
+
+      if (!ExecuteAction(combatant, selectedAction))
+      {
+        _turnOrderManager.EndCurrentTurn();
+      }
+    }
+
+    private GambitRuntimeContext BuildGambitContext(Combatant actor)
+    {
+      var allies = GetAllyTargets(actor);
+      var enemies = GetEnemyTargets(actor);
+      var turnNumber = _turnOrderManager?.CurrentRound ?? 1;
+      return new GambitRuntimeContext(actor, allies, enemies, turnNumber, this, _random);
+    }
+
+    private CombatAction BuildFallbackAction(ICombatant actor, GambitEvaluationLog log)
+    {
+      var enemies = GetEnemyTargets(actor);
+      if (enemies.Count == 0)
+      {
+        log?.Records.Add(new GambitRuleEvaluationRecord(null)
+        {
+          FailureReason = "Fallback failed: no valid enemy targets"
+        });
+        return null;
+      }
+
+      var target = enemies[_random.Next(enemies.Count)];
+      var fallbackAction = new CombatAction
+      {
+        ActionType = CombatActionType.Attack,
+        Target = target
+      };
+
+      if (log != null)
+      {
+        log.Records.Add(new GambitRuleEvaluationRecord(null)
+        {
+          ActionBuilt = true,
+          Target = target,
+          FailureReason = "Fallback action executed"
+        });
+        log.SetResult(fallbackAction, target);
+      }
+
+      return fallbackAction;
+    }
+
+    private void PublishGambitLog(GambitEvaluationLog log)
+    {
+      if (log == null)
+      {
+        return;
+      }
+
+      OnGambitEvaluated?.Invoke(log);
     }
 
     private void HandleTurnEnd(ICombatant combatant)

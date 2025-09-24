@@ -1,0 +1,25 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Navigation/HamburgerMenu.uss?fileID=7433441132597879392&amp;guid=8c7234f428bf35f4b89a4618f5f031be&amp;type=3#HamburgerMenu" />
+    <ui:VisualElement name="hamburger-menu-container" class="hamburger-container">
+        <ui:Button name="hamburger-button" class="hamburger-button">
+            <ui:VisualElement class="hamburger-icon">
+                <ui:VisualElement class="hamburger-line" />
+                <ui:VisualElement class="hamburger-line" />
+                <ui:VisualElement class="hamburger-line" />
+            </ui:VisualElement>
+        </ui:Button>
+        <ui:VisualElement name="slide-panel" class="slide-panel slide-panel--hidden">
+            <ui:VisualElement class="panel-header">
+                <ui:Label text="Menu" class="panel-title" />
+                <ui:Button name="close-button" text="X" class="close-button" />
+            </ui:VisualElement>
+            <ui:VisualElement class="menu-items">
+                <ui:Button name="home-button" text="Home" class="menu-item-button" />
+                <ui:Button name="echoes-button" text="Echoes" class="menu-item-button" />
+                <ui:Button name="inventory-button" text="Inventory" class="menu-item-button" />
+                <ui:Button name="combat-button" text="Combat" class="menu-item-button" />
+                <ui:Button name="settings-button" text="Settings" class="menu-item-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,139 @@
+/* Main Container */
+.hamburger-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Hamburger Button */
+.hamburger-button {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    border-width: 2px;
+    border-color: rgba(100, 100, 100, 0.5);
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.2s;
+}
+
+.hamburger-button:hover {
+    background-color: rgba(40, 40, 40, 0.9);
+    border-color: rgba(150, 150, 150, 0.7);
+    scale: 1.05;
+}
+
+.hamburger-button:active {
+    scale: 0.95;
+}
+
+/* Hamburger Icon Lines */
+.hamburger-icon {
+    width: 24px;
+    height: 18px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hamburger-line {
+    width: 24px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+}
+
+/* Slide Panel */
+.slide-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 80%;
+    max-width: 350px;
+    background-color: rgba(20, 20, 20, 0.95);
+    border-right-width: 2px;
+    border-right-color: rgba(100, 100, 100, 0.3);
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.slide-panel--hidden {
+    translate: -100% 0;
+}
+
+/* Panel Header */
+.panel-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(100, 100, 100, 0.3);
+    background-color: rgba(40, 40, 40, 0.8);
+}
+
+.panel-title {
+    color: white;
+    font-size: 24px;
+    -unity-font-style: bold;
+}
+
+.close-button {
+    width: 35px;
+    height: 35px;
+    background-color: rgba(80, 80, 80, 0.8);
+    border-radius: 50%;
+    border-width: 1px;
+    border-color: rgba(120, 120, 120, 0.5);
+    color: white;
+    font-size: 18px;
+    -unity-font-style: bold;
+}
+
+.close-button:hover {
+    background-color: rgba(100, 100, 100, 0.8);
+}
+
+.close-button:active {
+    scale: 0.9;
+}
+
+/* Menu Items Container */
+.menu-items {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+/* Menu Item Buttons */
+.menu-item-button {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 12px;
+    background-color: rgba(60, 60, 60, 0.8);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgba(100, 100, 100, 0.4);
+    color: white;
+    font-size: 18px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-left;
+    padding-left: 20px;
+    transition-duration: 0.2s;
+}
+
+.menu-item-button:hover {
+    background-color: rgba(80, 80, 80, 0.9);
+    border-color: rgba(150, 150, 150, 0.6);
+    translate: 5px 0;
+}
+
+.menu-item-button:active {
+    background-color: rgba(40, 40, 40, 0.9);
+    scale: 0.98;
+}

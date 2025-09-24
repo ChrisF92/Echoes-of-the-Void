@@ -26,11 +26,6 @@ namespace EchoesOfTheVoid.Tests
     [SerializeField] private bool autoSimulateTurns;
     [SerializeField] private float autoTurnInterval = 2f;
 
-    [Header("Manual Controls")]
-    [SerializeField] private KeyCode simulateTurnKey = KeyCode.T;
-    [SerializeField] private KeyCode reopenItemsKey = KeyCode.I;
-    [SerializeField] private KeyCode reopenSkillsKey = KeyCode.K;
-
     private readonly List<Combatant> spawnedCombatants = new List<Combatant>();
     private Coroutine autoSimCoroutine;
 
@@ -38,7 +33,7 @@ namespace EchoesOfTheVoid.Tests
     {
       if (combatViewController == null)
       {
-        combatViewController = FindObjectOfType<CombatViewController>();
+        combatViewController = FindFirstObjectByType<CombatViewController>();
       }
 
       if (combatSystem == null)
@@ -75,21 +70,6 @@ namespace EchoesOfTheVoid.Tests
       if (combatViewController == null)
       {
         return;
-      }
-
-      if (simulateTurnKey != KeyCode.None && Input.GetKeyDown(simulateTurnKey))
-      {
-        combatViewController.SimulateCombatTurn();
-      }
-
-      if (reopenItemsKey != KeyCode.None && Input.GetKeyDown(reopenItemsKey))
-      {
-        combatViewController.TestItemUsage();
-      }
-
-      if (reopenSkillsKey != KeyCode.None && Input.GetKeyDown(reopenSkillsKey))
-      {
-        combatViewController.TestSkillUsage();
       }
     }
 

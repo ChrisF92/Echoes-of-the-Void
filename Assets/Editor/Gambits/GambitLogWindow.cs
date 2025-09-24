@@ -1,0 +1,220 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
+
+using EchoesOfTheVoid.Core.Combat.Gambits;
+using EchoesOfTheVoid.Core.Combat.Systems;
+
+namespace EchoesOfTheVoid.Editor.Gambits
+{
+  public class GambitLogWindow : EditorWindow
+  {
+    private const int MaxEntries = 200;
+
+    private readonly List<GambitEvaluationLog> _entries = new();
+    private Vector2 _scrollPosition;
+    private string _actorFilter = string.Empty;
+    private bool _showOnlySuccessful;
+    private bool _isBound;
+
+    [MenuItem("Window/Echoes/Gambit Log")]
+    public static void ShowWindow()
+    {
+      var window = GetWindow<GambitLogWindow>();
+      window.titleContent = new GUIContent("Gambit Log");
+      window.Show();
+    }
+
+    private void OnEnable()
+    {
+      EditorApplication.playModeStateChanged += HandlePlayModeStateChanged;
+      TryBind();
+    }
+
+    private void OnDisable()
+    {
+      EditorApplication.playModeStateChanged -= HandlePlayModeStateChanged;
+      Unbind();
+    }
+
+    private void HandlePlayModeStateChanged(PlayModeStateChange state)
+    {
+      if (state == PlayModeStateChange.EnteredPlayMode)
+      {
+        _entries.Clear();
+        TryBind();
+      }
+      else if (state == PlayModeStateChange.ExitingPlayMode)
+      {
+        Unbind();
+      }
+    }
+
+    private void TryBind()
+    {
+      if (_isBound || !EditorApplication.isPlaying)
+      {
+        return;
+      }
+
+      var system = CombatSystem.Instance;
+      if (system == null)
+      {
+        return;
+      }
+
+      system.OnGambitEvaluated += HandleGambitEvaluated;
+      _isBound = true;
+    }
+
+    private void Unbind()
+    {
+      if (!_isBound)
+      {
+        return;
+      }
+
+      var system = CombatSystem.Instance;
+      if (system != null)
+      {
+        system.OnGambitEvaluated -= HandleGambitEvaluated;
+      }
+
+      _isBound = false;
+    }
+
+    private void HandleGambitEvaluated(GambitEvaluationLog log)
+    {
+      if (log == null)
+      {
+        return;
+      }
+
+      _entries.Add(log);
+      if (_entries.Count > MaxEntries)
+      {
+        _entries.RemoveAt(0);
+      }
+
+      Repaint();
+    }
+
+    private void OnGUI()
+    {
+      DrawToolbar();
+
+      if (!EditorApplication.isPlaying)
+      {
+        EditorGUILayout.HelpBox("Enter Play Mode to record gambit activity.", MessageType.Info);
+        return;
+      }
+
+      if (!_isBound)
+      {
+        EditorGUILayout.HelpBox("CombatSystem instance not found. Start a battle to populate gambit logs.", MessageType.Warning);
+        if (GUILayout.Button("Retry Bind"))
+        {
+          TryBind();
+        }
+        return;
+      }
+
+      var filtered = ApplyFilters(_entries);
+      if (filtered.Count == 0)
+      {
+        EditorGUILayout.HelpBox("No gambit evaluations recorded yet with current filters.", MessageType.Info);
+        return;
+      }
+
+      _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
+      foreach (var entry in filtered)
+      {
+        DrawEntry(entry);
+      }
+      EditorGUILayout.EndScrollView();
+    }
+
+    private void DrawToolbar()
+    {
+      EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
+
+      var searchStyle = GUI.skin.FindStyle("ToolbarSeachTextField") ?? GUI.skin.FindStyle("ToolbarSearchTextField") ?? EditorStyles.toolbarTextField;
+      var newFilter = GUILayout.TextField(_actorFilter, searchStyle, GUILayout.MinWidth(140f));
+      if (!string.Equals(newFilter, _actorFilter, StringComparison.Ordinal))
+      {
+        _actorFilter = newFilter;
+      }
+
+      _showOnlySuccessful = GUILayout.Toggle(_showOnlySuccessful, "Successful Only", EditorStyles.toolbarButton);
+
+      if (GUILayout.Button("Clear", EditorStyles.toolbarButton))
+      {
+        _entries.Clear();
+      }
+
+      GUILayout.FlexibleSpace();
+      EditorGUILayout.EndHorizontal();
+    }
+
+    private List<GambitEvaluationLog> ApplyFilters(IEnumerable<GambitEvaluationLog> source)
+    {
+      var query = source;
+
+      if (!string.IsNullOrWhiteSpace(_actorFilter))
+      {
+        query = query.Where(entry => entry.Actor != null && entry.Actor.Name.IndexOf(_actorFilter, StringComparison.OrdinalIgnoreCase) >= 0);
+      }
+
+      if (_showOnlySuccessful)
+      {
+        query = query.Where(entry => entry.HasMatch);
+      }
+
+      return query.ToList();
+    }
+
+    private void DrawEntry(GambitEvaluationLog entry)
+    {
+      using (new EditorGUILayout.VerticalScope(GUI.skin.box))
+      {
+        var actorName = entry.Actor != null ? entry.Actor.Name : "<Unknown>";
+        var header = $"{entry.Timestamp:HH:mm:ss} - {actorName}";
+        EditorGUILayout.LabelField(header, EditorStyles.boldLabel);
+
+        EditorGUILayout.LabelField("Profile", !string.IsNullOrEmpty(entry.ProfileName) ? entry.ProfileName : "<None>");
+
+        if (entry.HasMatch && entry.SelectedAction != null)
+        {
+          var targetName = entry.SelectedTarget != null ? entry.SelectedTarget.Name : "<None>";
+          EditorGUILayout.LabelField("Result", $"{entry.SelectedAction.ActionType} -> {targetName}");
+        }
+        else
+        {
+          EditorGUILayout.LabelField("Result", "No matching rule");
+        }
+
+        foreach (var record in entry.Records)
+        {
+          DrawRecord(record);
+        }
+      }
+    }
+
+    private void DrawRecord(GambitRuleEvaluationRecord record)
+    {
+      var ruleName = string.IsNullOrEmpty(record.RuleName) ? "<Unnamed Rule>" : record.RuleName;
+      var status = record.ActionBuilt
+        ? "Success"
+        : record.ConditionMatched
+          ? "Passed Target"
+          : "Skipped";
+
+      var targetName = record.Target != null ? record.Target.Name : "--";
+      var details = string.IsNullOrEmpty(record.FailureReason) ? string.Empty : $" - {record.FailureReason}";
+
+      EditorGUILayout.LabelField($"- {ruleName}", $"{status} (Target: {targetName}){details}");
+    }
+  }
+}

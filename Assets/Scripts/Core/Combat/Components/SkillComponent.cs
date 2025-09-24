@@ -10,10 +10,10 @@ using EchoesOfTheVoid.Core.Combat.Results;
 
 namespace EchoesOfTheVoid.Core.Combat.Components
 {
-  public class SkillComponent : CombatComponent
+public class SkillComponent : CombatComponent
   {
     private readonly Dictionary<string, CombatSkill> _skills = new();
-    private readonly Dictionary<string, float> _cooldowns = new();
+    private readonly Dictionary<string, int> _cooldowns = new();
     private ICombatant _owner;
 
     public override void Initialize(ICombatant owner)
@@ -23,10 +23,14 @@ namespace EchoesOfTheVoid.Core.Combat.Components
 
     public override void Update(float deltaTime)
     {
+    }
+
+    public void OnTurnEnd()
+    {
       var keys = _cooldowns.Keys.ToList();
       foreach (var skillId in keys)
       {
-        _cooldowns[skillId] = Math.Max(0, _cooldowns[skillId] - deltaTime);
+        _cooldowns[skillId] = Math.Max(0, _cooldowns[skillId] - 1);
       }
     }
 
@@ -34,7 +38,7 @@ namespace EchoesOfTheVoid.Core.Combat.Components
     {
       var skill = new CombatSkill(skillData);
       _skills[skillData.skillId] = skill;
-      _cooldowns[skillData.skillId] = 0f;
+      _cooldowns[skillData.skillId] = 0;
     }
 
     public bool CanUseSkill(string skillId)
@@ -45,7 +49,7 @@ namespace EchoesOfTheVoid.Core.Combat.Components
       }
 
       return skill.CanUse(_owner) &&
-             _cooldowns[skillId] <= 0f &&
+             _cooldowns[skillId] <= 0 &&
              _owner.GetStat(StatType.Mana) >= skill.Data.manaCost;
     }
 
@@ -61,7 +65,8 @@ namespace EchoesOfTheVoid.Core.Combat.Components
 
       if (result.IsSuccess)
       {
-        _cooldowns[skillId] = skill.Data.cooldownTime;
+        var rawCooldown = skill.Data.cooldownTurns;
+        _cooldowns[skillId] = rawCooldown > 0 ? rawCooldown + 1 : 0;
         _owner.ConsumeMana(skill.Data.manaCost);
       }
 
@@ -71,6 +76,11 @@ namespace EchoesOfTheVoid.Core.Combat.Components
     public IEnumerable<CombatSkill> GetAvailableSkills()
     {
       return _skills.Values.Where(s => CanUseSkill(s.Data.skillId));
+    }
+
+    public int GetSkillCooldown(string skillId)
+    {
+      return _cooldowns.TryGetValue(skillId, out var cooldown) ? cooldown : 0;
     }
   }
 }

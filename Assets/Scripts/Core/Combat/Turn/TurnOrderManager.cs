@@ -5,6 +5,7 @@ using UnityEngine;
 
 using EchoesOfTheVoid.Core.Combat;
 using EchoesOfTheVoid.Core.Combat.Entities;
+using EchoesOfTheVoid.Core.Combat.Components;
 
 namespace EchoesOfTheVoid.Core.Combat.Turn
 {
@@ -62,6 +63,8 @@ namespace EchoesOfTheVoid.Core.Combat.Turn
     public void EndCurrentTurn()
     {
       var currentCombatant = CurrentCombatant;
+      var skillComponent = currentCombatant?.GetComponent<SkillComponent>();
+      skillComponent?.OnTurnEnd();
       OnTurnEnd?.Invoke(currentCombatant);
       AdvanceToNextTurn();
     }

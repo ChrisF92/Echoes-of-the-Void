@@ -8,6 +8,7 @@ namespace EchoesOfTheVoid.Core.Combat.Entities
     string Name { get; }
     bool IsAlive { get; }
     bool IsPlayerControlled { get; }
+    bool IsAutoCombatEnabled { get; }
     bool IsDefending { get; }
     CombatTeam Team { get; }
 
@@ -17,6 +18,7 @@ namespace EchoesOfTheVoid.Core.Combat.Entities
 
     void SetTeam(CombatTeam team);
     void SetDefending(bool defending);
+    void SetAutoCombatEnabled(bool enabled);
     void TakeDamage(int damage);
     void Heal(int amount);
     void ConsumeMana(int amount);

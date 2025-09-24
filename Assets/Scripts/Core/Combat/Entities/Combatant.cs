@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -6,7 +6,9 @@ using UnityEngine.Serialization;
 using EchoesOfTheVoid.Core.Combat.Components;
 using EchoesOfTheVoid.Core.Combat.Data;
 using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
+using EchoesOfTheVoid.Core.Combat.Gambits;
 using EchoesOfTheVoid.Core.Inventory.Data;
+
 namespace EchoesOfTheVoid.Core.Combat.Entities
 {
   public class Combatant : MonoBehaviour, ICombatant
@@ -26,10 +28,12 @@ namespace EchoesOfTheVoid.Core.Combat.Entities
     private readonly Dictionary<Type, CombatComponent> _components = new();
     private CombatTeam _team;
     private bool _isDefending;
+    [SerializeField] private bool _isAutoCombatEnabled;
 
     public string Name => _combatantName;
     public bool IsAlive => _currentStats.health > 0;
     public bool IsPlayerControlled => _isPlayerControlled;
+    public bool IsAutoCombatEnabled => _isAutoCombatEnabled;
     public bool IsDefending => _isDefending;
     public CombatTeam Team => _team;
 
@@ -66,11 +70,17 @@ namespace EchoesOfTheVoid.Core.Combat.Entities
       InitializeComponents();
       SetupSkillComponent(template.startingSkills);
       SetupInventoryComponent(template.startingItems);
+      SetupGambitComponent(template.gambitProfile);
     }
 
     private void InitializeStats()
     {
-      if (_currentStats.health == 0)
+      if (_baseStats == null)
+      {
+        _baseStats = new CombatStats();
+      }
+
+      if (_currentStats == null || _currentStats.health <= 0)
       {
         _currentStats = new CombatStats
         {
@@ -90,9 +100,15 @@ namespace EchoesOfTheVoid.Core.Combat.Entities
       {
         AddComponent(new SkillComponent());
       }
+
       if (GetComponent<InventoryComponent>() == null)
       {
         AddComponent(new InventoryComponent());
+      }
+
+      if (GetComponent<GambitComponent>() == null)
+      {
+        AddComponent(new GambitComponent());
       }
     }
 
@@ -118,6 +134,26 @@ namespace EchoesOfTheVoid.Core.Combat.Entities
           inventoryComponent.AddItem(itemStack.item, itemStack.quantity);
         }
       }
+    }
+
+    private void SetupGambitComponent(GambitProfile profile)
+    {
+      var gambitComponent = GetComponent<GambitComponent>();
+      if (gambitComponent != null)
+      {
+        gambitComponent.SetProfile(profile);
+      }
+    }
+
+    public void ApplyGambitProfile(IGambitRuleSource profile)
+    {
+      var gambitComponent = GetComponent<GambitComponent>();
+      gambitComponent?.SetProfileSource(profile);
+    }
+
+    public void ApplyGambitProfile(GambitProfileData profile)
+    {
+      ApplyGambitProfile(profile as IGambitRuleSource);
     }
 
     public int GetStat(StatType statType)
@@ -151,6 +187,11 @@ namespace EchoesOfTheVoid.Core.Combat.Entities
     public void SetTeam(CombatTeam team)
     {
       _team = team;
+    }
+
+    public void SetAutoCombatEnabled(bool enabled)
+    {
+      _isAutoCombatEnabled = enabled;
     }
 
     public void SetDefending(bool defending)
@@ -228,4 +269,3 @@ namespace EchoesOfTheVoid.Core.Combat.Entities
     }
   }
 }
-

@@ -17,7 +17,7 @@ namespace EchoesOfTheVoid.Core.Combat.ScriptableObjects
     [Header("Costs")]
     public int manaCost;
     public int staminaCost;
-    public float cooldownTime;
+    public int cooldownTurns;
 
     [Header("Targeting")]
     public TargetType targetType;

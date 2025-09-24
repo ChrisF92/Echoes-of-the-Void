@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
+  m_Name: EbonCultist
+  m_EditorClassIdentifier: 
+  combatantId: ebon_cultist
+  displayName: Ebon Cultist
+  portrait: {fileID: 0}
+  combatPrefab: {fileID: 0}
+  baseStats:
+    health: 140
+    mana: 90
+    attack: 22
+    defense: 12
+    speed: 15
+    luck: 12
+  startingSkills:
+  - {fileID: 11400000, guid: ab2cdf331da2484f9c53f0810e618f87, type: 2}
+  startingItems: []
+  isPlayerControlled: 0
+  gambitProfile: {fileID: 11400000, guid: ad63823d8f64b4a459476507931f3273, type: 2}
