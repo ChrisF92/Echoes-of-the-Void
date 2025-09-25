@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 326174862}
   - component: {fileID: 326174863}
+  - component: {fileID: 326174864}
   m_Layer: 0
   m_Name: Combat UI
   m_TagString: Untagged
@@ -174,6 +175,25 @@ MonoBehaviour:
   autoInitializeOnStart: 1
   autoSimulateTurns: 0
   autoTurnInterval: 2
+--- !u!114 &326174864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326174861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bf7a9dc6fe5602408f2a18dd15a2bb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EchoesOfTheVoid.Tests::EchoesOfTheVoid.Tests.PlayerGambitProfileTestDriver
+  combatSystem: {fileID: 613790648}
+  playerTemplates:
+  - {fileID: 11400000, guid: 4185e630906a4232a9a658eb0d418428, type: 2}
+  - {fileID: 11400000, guid: b8e9c4ecf9394fdba56d1fa94447b8d1, type: 2}
+  applyOnEnable: 1
+  enableAutoCombat: 1
+  waitTimeoutSeconds: 5
 --- !u!1 &613790647
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,8 +223,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 351bc4a3fe7c02d49a3fbb2583bffa46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Combat.Systems.CombatSystem
-  _turnDelay: 1
   _maxPlayersPerSide: 9
+  _defaultActionTiming:
+    windup: 0.25
+    resolution: 0.35
+    recovery: 0.5
+  _actionTimingOverrides: []
+  _autoDecisionDelay: 0.3
 --- !u!4 &613790649
 Transform:
   m_ObjectHideFlags: 0

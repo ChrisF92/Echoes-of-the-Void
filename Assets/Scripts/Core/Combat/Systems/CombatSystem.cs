@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,8 +21,10 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
     public static CombatSystem Instance { get; private set; }
 
     [Header("Combat Settings")]
-    [SerializeField] private float _turnDelay = 1f;
     [SerializeField] private int _maxPlayersPerSide = 9;
+    [SerializeField] private CombatActionTiming _defaultActionTiming = CombatActionTiming.Default;
+    [SerializeField] private List<CombatActionTimingOverride> _actionTimingOverrides = new();
+    [SerializeField, Min(0f)] private float _autoDecisionDelay = 0.3f;
 
     private CombatState _currentState = CombatState.Setup;
     private readonly List<ICombatant> _allCombatants = new();
@@ -30,6 +33,12 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
     private readonly System.Random _random = new();
     private TurnOrderManager _turnOrderManager;
     private CombatantManager _combatantManager;
+
+    private readonly Queue<PendingAction> _actionQueue = new();
+    private Coroutine _actionQueueRoutine;
+    private bool _isProcessingAction;
+    private Coroutine _autoActionRoutine;
+    private ICombatant _autoActionTarget;
 
     public CombatState CurrentState => _currentState;
     public ICombatant CurrentTurnCombatant => _turnOrderManager?.CurrentCombatant;
@@ -41,6 +50,7 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
     public event Action<ICombatant> OnTurnEnd;
     public event Action<CombatResult> OnCombatEnd;
     public event Action<ICombatant, ActionResult> OnActionExecuted;
+    public event Action<ICombatant, CombatAction, CombatActionPhase> OnActionPhase;
     public event Action<GambitEvaluationLog> OnGambitEvaluated;
 
     private void Awake()
@@ -49,6 +59,7 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
       {
         Instance = this;
         InitializeManagers();
+        EnsureTimingDefaults();
       }
       else
       {
@@ -64,6 +75,14 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
       _turnOrderManager.OnTurnStart += HandleTurnStart;
       _turnOrderManager.OnTurnEnd += HandleTurnEnd;
       _combatantManager.OnCombatantDefeated += HandleCombatantDefeated;
+    }
+
+    private void EnsureTimingDefaults()
+    {
+      if (_defaultActionTiming.Total <= 0f)
+      {
+        _defaultActionTiming = CombatActionTiming.Default;
+      }
     }
 
     public void StartCombat(List<ICombatant> players, List<ICombatant> enemies)
@@ -116,9 +135,18 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
 
       combatant.SetAutoCombatEnabled(enabled);
 
-      if (enabled && combatant == CurrentTurnCombatant && ShouldAutoAct(combatant))
+      if (!enabled)
       {
-        TryExecuteAiTurn(combatant);
+        if (_autoActionTarget == combatant)
+        {
+          CancelAutoAction();
+        }
+        return;
+      }
+
+      if (combatant == CurrentTurnCombatant && ShouldAutoAct(combatant))
+      {
+        ScheduleAutoAction(combatant);
       }
     }
 
@@ -143,23 +171,238 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
         return false;
       }
 
-      if (actor != CurrentTurnCombatant)
+      if (actor == null || actor != CurrentTurnCombatant)
       {
-        Debug.LogWarning($"It's not {actor.Name}'s turn");
+        Debug.LogWarning($"It's not {actor?.Name ?? "<null>"}'s turn");
         return false;
       }
 
+      if (_isProcessingAction || _actionQueue.Count > 0)
+      {
+        Debug.LogWarning("An action is already being processed.");
+        return false;
+      }
+
+      if (!CanQueueAction(actor, action))
+      {
+        return false;
+      }
+
+      EnqueueAction(actor, action);
+      return true;
+    }
+
+    private void EnqueueAction(ICombatant actor, CombatAction action)
+    {
+      _actionQueue.Enqueue(new PendingAction(actor, action));
+
+      if (_actionQueueRoutine == null)
+      {
+        _actionQueueRoutine = StartCoroutine(ProcessActionQueue());
+      }
+    }
+
+    private IEnumerator ProcessActionQueue()
+    {
+      _isProcessingAction = true;
+
+      while (_actionQueue.Count > 0)
+      {
+        var pending = _actionQueue.Dequeue();
+        yield return ResolveActionRoutine(pending);
+      }
+
+      _isProcessingAction = false;
+      _actionQueueRoutine = null;
+    }
+
+    private IEnumerator ResolveActionRoutine(PendingAction pending)
+    {
+      var actor = pending.Actor;
+      var action = pending.Action;
+
+      if (actor == null || action == null || !actor.IsAlive)
+      {
+        _turnOrderManager.EndCurrentTurn();
+        yield break;
+      }
+
+      var timing = GetTimingForAction(action.ActionType);
+
+      if (action.Target != null && !IsValidTarget(action.Target) && action.ActionType != CombatActionType.Defend)
+      {
+        OnActionExecuted?.Invoke(actor, ActionResult.Failed("Target is no longer valid."));
+        _turnOrderManager.EndCurrentTurn();
+        yield break;
+      }
+
+      RaiseActionPhase(actor, action, CombatActionPhase.Windup);
+      if (timing.windup > 0f)
+      {
+        yield return new WaitForSeconds(timing.windup);
+      }
+
+      RaiseActionPhase(actor, action, CombatActionPhase.Resolve);
       var result = ProcessAction(actor, action);
       OnActionExecuted?.Invoke(actor, result);
 
-      if (result.IsSuccess)
+      if (timing.resolution > 0f)
       {
-        _turnOrderManager.EndCurrentTurn();
-        return true;
+        yield return new WaitForSeconds(timing.resolution);
       }
 
-      return false;
+      RaiseActionPhase(actor, action, CombatActionPhase.Recovery);
+      if (timing.recovery > 0f)
+      {
+        yield return new WaitForSeconds(timing.recovery);
+      }
+
+      _turnOrderManager.EndCurrentTurn();
     }
+
+    private void RaiseActionPhase(ICombatant actor, CombatAction action, CombatActionPhase phase)
+    {
+      OnActionPhase?.Invoke(actor, action, phase);
+    }
+
+    private CombatActionTiming GetTimingForAction(CombatActionType actionType)
+    {
+      foreach (var timingOverride in _actionTimingOverrides)
+      {
+        if (timingOverride.actionType == actionType && timingOverride.timing.Total > 0f)
+        {
+          return timingOverride.timing;
+        }
+      }
+
+      return _defaultActionTiming.Total > 0f ? _defaultActionTiming : CombatActionTiming.Default;
+    }
+
+    private bool CanQueueAction(ICombatant actor, CombatAction action)
+    {
+      if (actor == null)
+      {
+        Debug.LogWarning("Actor is null.");
+        return false;
+      }
+
+      if (action == null)
+      {
+        Debug.LogWarning("Action is null.");
+        return false;
+      }
+
+      if (!actor.IsAlive)
+      {
+        Debug.LogWarning($"{actor.Name} cannot act while defeated.");
+        return false;
+      }
+
+      switch (action.ActionType)
+      {
+        case CombatActionType.Attack:
+          if (!IsValidTarget(action.Target))
+          {
+            Debug.LogWarning("Attack action requires a living target.");
+            return false;
+          }
+          break;
+        case CombatActionType.Defend:
+          break;
+        case CombatActionType.Skill:
+          if (string.IsNullOrEmpty(action.SkillId))
+          {
+            Debug.LogWarning("Skill action is missing a skill id.");
+            return false;
+          }
+
+          var skillComponent = actor.GetComponent<SkillComponent>();
+          if (skillComponent == null || !skillComponent.CanUseSkill(action.SkillId))
+          {
+            Debug.LogWarning($"{actor.Name} cannot use skill {action.SkillId} right now.");
+            return false;
+          }
+
+          if (action.Target != null && !IsValidTarget(action.Target))
+          {
+            Debug.LogWarning("Skill action has an invalid target.");
+            return false;
+          }
+          break;
+        case CombatActionType.Item:
+          if (action.ItemData == null)
+          {
+            Debug.LogWarning("Item action is missing item data.");
+            return false;
+          }
+
+          var inventory = actor.GetComponent<InventoryComponent>();
+          if (inventory == null || !inventory.HasItem(action.ItemData.itemId))
+          {
+            Debug.LogWarning($"{actor.Name} cannot use item {action.ItemData.itemId}.");
+            return false;
+          }
+
+          if (action.Target != null && !IsValidTarget(action.Target))
+          {
+            Debug.LogWarning("Item action has an invalid target.");
+            return false;
+          }
+          break;
+        default:
+          Debug.LogWarning($"Unhandled action type {action.ActionType}.");
+          return false;
+      }
+
+      return action.Target == null || IsValidTarget(action.Target);
+    }
+
+    private static bool IsValidTarget(ICombatant target)
+    {
+      return target != null && target.IsAlive;
+    }
+
+    private void ScheduleAutoAction(ICombatant combatant)
+    {
+      CancelAutoAction();
+
+      if (!isActiveAndEnabled || _autoDecisionDelay <= 0f)
+      {
+        TryExecuteAiTurn(combatant);
+        return;
+      }
+
+      _autoActionTarget = combatant;
+      _autoActionRoutine = StartCoroutine(AutoActionRoutine(combatant));
+    }
+
+    private void CancelAutoAction()
+    {
+      if (_autoActionRoutine != null)
+      {
+        StopCoroutine(_autoActionRoutine);
+        _autoActionRoutine = null;
+      }
+
+      _autoActionTarget = null;
+    }
+
+    private IEnumerator AutoActionRoutine(ICombatant combatant)
+    {
+      if (_autoDecisionDelay > 0f)
+      {
+        yield return new WaitForSeconds(_autoDecisionDelay);
+      }
+
+      _autoActionRoutine = null;
+      _autoActionTarget = null;
+
+      if (combatant != null && combatant == CurrentTurnCombatant && ShouldAutoAct(combatant))
+      {
+        TryExecuteAiTurn(combatant);
+      }
+    }
+
 
     private ActionResult ProcessAction(ICombatant actor, CombatAction action)
     {
@@ -239,7 +482,11 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
 
       if (ShouldAutoAct(combatant))
       {
-        TryExecuteAiTurn(combatant);
+        ScheduleAutoAction(combatant);
+      }
+      else
+      {
+        CancelAutoAction();
       }
     }
 
@@ -261,6 +508,13 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
     private void TryExecuteAiTurn(ICombatant combatant)
     {
       if (_currentState != CombatState.InProgress || combatant != CurrentTurnCombatant)
+      {
+        return;
+      }
+
+      CancelAutoAction();
+
+      if (_isProcessingAction || _actionQueue.Count > 0)
       {
         return;
       }
@@ -313,6 +567,18 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
       {
         _turnOrderManager.EndCurrentTurn();
       }
+    }
+
+    private readonly struct PendingAction
+    {
+      public PendingAction(ICombatant actor, CombatAction action)
+      {
+        Actor = actor;
+        Action = action;
+      }
+
+      public ICombatant Actor { get; }
+      public CombatAction Action { get; }
     }
 
     private GambitRuntimeContext BuildGambitContext(Combatant actor)
@@ -402,6 +668,12 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
     private void ChangeState(CombatState newState)
     {
       _currentState = newState;
+
+      if (newState != CombatState.InProgress)
+      {
+        CancelAutoAction();
+      }
+
       OnStateChanged?.Invoke(newState);
     }
 
@@ -431,3 +703,4 @@ namespace EchoesOfTheVoid.Core.Combat.Systems
     }
   }
 }
+

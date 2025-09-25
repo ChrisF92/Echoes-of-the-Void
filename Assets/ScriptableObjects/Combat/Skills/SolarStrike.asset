@@ -18,7 +18,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   manaCost: 12
   staminaCost: 0
-  cooldownTime: 2
+  cooldownTurns: 2
   targetType: 0
   canTargetSelf: 0
   canTargetAllies: 0
