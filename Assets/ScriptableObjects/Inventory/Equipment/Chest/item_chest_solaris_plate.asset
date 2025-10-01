@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b4e68cd40d31fc459ec1288d7437ea9, type: 3}
+  m_Name: item_chest_solaris_plate
+  m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Inventory.ScriptableObjects.EquipmentItemScriptableObject
+  ItemId: item_chest_solaris_plate
+  DisplayName: Solaris Plate
+  Description: Radiant plate harnessed from ancient sunforges.
+  Icon: {fileID: 0}
+  ItemType: 1
+  ConsumableInCombat: 0
+  UsableOutsideCombat: 0
+  MaxStackSize: 1
+  Effects: []
+  UseSound: {fileID: 0}
+  UseEffect: {fileID: 0}
+  Slot: 1
+  OccupiesBothHands: 0
+  StatModifiers:
+  - Stat: 3
+    FlatBonus: 18
+    PercentBonus: 0.08

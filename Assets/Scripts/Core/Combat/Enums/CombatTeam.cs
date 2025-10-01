@@ -1,7 +1,5 @@
-namespace EchoesOfTheVoid.Core.Combat
-{
-  public enum CombatTeam
-  {
+namespace EchoesOfTheVoid.Core.Combat {
+  public enum CombatTeam {
     Player,
     Enemy
   }

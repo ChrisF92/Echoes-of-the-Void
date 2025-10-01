@@ -1,82 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using EchoesOfTheVoid.Core.Combat;
 using EchoesOfTheVoid.Core.Combat.Entities;
 using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
 using EchoesOfTheVoid.Core.Combat.Systems;
 using EchoesOfTheVoid.UI.Combat;
+using UnityEngine;
 
-namespace EchoesOfTheVoid.Tests
-{
+namespace EchoesOfTheVoid.Tests {
   [DisallowMultipleComponent]
-  public class CombatUITestHarness : MonoBehaviour
-  {
+  public class CombatUITestHarness : MonoBehaviour {
     [Header("References")]
-    [SerializeField] private CombatViewController combatViewController;
-    [SerializeField] private CombatSystem combatSystem;
+    [SerializeField] private CombatViewController _combatViewController;
+    [SerializeField] private CombatSystem _combatSystem;
 
     [Header("Templates")]
-    [SerializeField] private List<CombatantTemplateScriptableObject> playerTemplates = new List<CombatantTemplateScriptableObject>();
-    [SerializeField] private List<CombatantTemplateScriptableObject> enemyTemplates = new List<CombatantTemplateScriptableObject>();
+    [SerializeField] private List<CombatantTemplateScriptableObject> _playerTemplates = new();
+    [SerializeField] private List<CombatantTemplateScriptableObject> _enemyTemplates = new();
 
     [Header("Behaviour")]
-    [SerializeField] private bool autoInitializeOnStart = true;
-    [SerializeField] private bool autoSimulateTurns;
-    [SerializeField] private float autoTurnInterval = 2f;
+    [SerializeField] private bool _autoInitializeOnStart = true;
+    [SerializeField] private bool _autoSimulateTurns;
+    [SerializeField] private float _autoTurnInterval = 2f;
 
-    private readonly List<Combatant> spawnedCombatants = new List<Combatant>();
-    private Coroutine autoSimCoroutine;
+    private readonly List<Combatant> _spawnedCombatants = new();
+    private Coroutine _autoSimCoroutine;
 
-    private void Awake()
-    {
-      if (combatViewController == null)
-      {
-        combatViewController = FindFirstObjectByType<CombatViewController>();
+    private void Awake() {
+      if (_combatViewController == null) {
+        _combatViewController = FindFirstObjectByType<CombatViewController>();
       }
 
-      if (combatSystem == null)
-      {
-        combatSystem = CombatSystem.Instance;
+      if (_combatSystem == null) {
+        _combatSystem = CombatSystem.Instance;
       }
     }
 
-    private void Start()
-    {
-      if (autoInitializeOnStart)
-      {
+    private void Start() {
+      if (_autoInitializeOnStart) {
         InitializeHarness();
-      }
-      else if (autoSimulateTurns)
-      {
+      } else if (_autoSimulateTurns) {
         StartAutoSimulation();
       }
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() {
       StopAutoSimulation();
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy() {
       StopAutoSimulation();
       CleanupSpawnedCombatants();
     }
 
-    private void Update()
-    {
-      if (combatViewController == null)
-      {
+    private void Update() {
+      if (_combatViewController == null) {
         return;
       }
     }
 
-    public void InitializeHarness()
-    {
-      if (combatViewController == null)
-      {
+    public void InitializeHarness() {
+      if (_combatViewController == null) {
         Debug.LogWarning("CombatUITestHarness requires a CombatViewController reference.", this);
         return;
       }
@@ -84,110 +68,89 @@ namespace EchoesOfTheVoid.Tests
       StopAutoSimulation();
       CleanupSpawnedCombatants();
 
-      var players = CreateCombatants(playerTemplates, true);
-      var enemies = CreateCombatants(enemyTemplates, false);
+      List<Combatant> players = CreateCombatants(_playerTemplates, true);
+      List<Combatant> enemies = CreateCombatants(_enemyTemplates, false);
 
-      combatViewController.InitializeBattle(players, enemies);
+      _combatViewController.InitializeBattle(players, enemies);
 
-      if (combatSystem != null)
-      {
+      if (_combatSystem != null) {
         var playerInterfaces = players.Cast<ICombatant>().ToList();
         var enemyInterfaces = enemies.Cast<ICombatant>().ToList();
-        combatSystem.StartCombat(playerInterfaces, enemyInterfaces);
-      }
-      else if (players.Count > 0)
-      {
-        combatViewController.SetActivePlayer(players[0]);
+        _combatSystem.StartCombat(playerInterfaces, enemyInterfaces);
+      } else if (players.Count > 0) {
+        _combatViewController.SetActivePlayer(players[0]);
       }
 
-      if (autoSimulateTurns)
-      {
+      if (_autoSimulateTurns) {
         StartAutoSimulation();
       }
     }
 
-    private List<Combatant> CreateCombatants(IEnumerable<CombatantTemplateScriptableObject> templates, bool isPlayerTeam)
-    {
+    private List<Combatant> CreateCombatants(IEnumerable<CombatantTemplateScriptableObject> templates, bool isPlayerTeam) {
       var results = new List<Combatant>();
-      if (templates == null)
-      {
+      if (templates == null) {
         return results;
       }
 
-      foreach (var template in templates)
-      {
-        if (template == null)
-        {
+      foreach (CombatantTemplateScriptableObject template in templates) {
+        if (template == null) {
           continue;
         }
 
-        var combatant = combatViewController.CreateTestCombatantFromTemplate(template, isPlayerTeam);
-        if (combatant == null)
-        {
+        Combatant combatant = _combatViewController.CreateTestCombatantFromTemplate(template, isPlayerTeam);
+        if (combatant == null) {
           continue;
         }
 
-        spawnedCombatants.Add(combatant);
+        _spawnedCombatants.Add(combatant);
         results.Add(combatant);
       }
 
       return results;
     }
 
-    private void StartAutoSimulation()
-    {
-      if (!autoSimulateTurns || autoTurnInterval <= 0f || combatViewController == null)
-      {
+    private void StartAutoSimulation() {
+      if (!_autoSimulateTurns || _autoTurnInterval <= 0f || _combatViewController == null) {
         return;
       }
 
       StopAutoSimulation();
-      autoSimCoroutine = StartCoroutine(AutoSimulationLoop());
+      _autoSimCoroutine = StartCoroutine(AutoSimulationLoop());
     }
 
-    private void StopAutoSimulation()
-    {
-      if (autoSimCoroutine != null)
-      {
-        StopCoroutine(autoSimCoroutine);
-        autoSimCoroutine = null;
+    private void StopAutoSimulation() {
+      if (_autoSimCoroutine != null) {
+        StopCoroutine(_autoSimCoroutine);
+        _autoSimCoroutine = null;
       }
     }
 
-    private IEnumerator AutoSimulationLoop()
-    {
-      var wait = new WaitForSeconds(autoTurnInterval);
-      while (true)
-      {
+    private IEnumerator AutoSimulationLoop() {
+      var wait = new WaitForSeconds(_autoTurnInterval);
+      while (true) {
         yield return wait;
-        combatViewController?.SimulateCombatTurn();
+        _combatViewController?.SimulateCombatTurn();
       }
     }
 
-    private void CleanupSpawnedCombatants()
-    {
-      for (var i = spawnedCombatants.Count - 1; i >= 0; i--)
-      {
-        var combatant = spawnedCombatants[i];
-        if (combatant == null)
-        {
-          spawnedCombatants.RemoveAt(i);
+    private void CleanupSpawnedCombatants() {
+      for (int i = _spawnedCombatants.Count - 1; i >= 0; i--) {
+        Combatant combatant = _spawnedCombatants[i];
+        if (combatant == null) {
+          _spawnedCombatants.RemoveAt(i);
           continue;
         }
 
-        if (Application.isPlaying)
-        {
+        if (Application.isPlaying) {
           Destroy(combatant.gameObject);
-        }
-        else
-        {
+        } else {
           DestroyImmediate(combatant.gameObject);
         }
 
-        spawnedCombatants.RemoveAt(i);
+        _spawnedCombatants.RemoveAt(i);
       }
 
-      spawnedCombatants.Clear();
+      _spawnedCombatants.Clear();
     }
   }
 }

@@ -2,146 +2,128 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public abstract class UIModal : MonoBehaviour
-{
-    [SerializeField] protected string _modalId;
-    [SerializeField] protected VisualTreeAsset _modalTemplate;
-    [SerializeField] protected bool _closeOnBackgroundClick = true;
-    
-    protected VisualElement _rootElement;
-    protected VisualElement _modalContainer;
-    protected VisualElement _backdrop;
-    
-    public string ModalId => _modalId;
-    public bool IsVisible => _modalContainer?.style.display == DisplayStyle.Flex;
-    
-    public event Action<UIModal> OnModalShown;
-    public event Action<UIModal> OnModalHidden;
-    
-    public virtual void Initialize(VisualElement root)
-    {
-        _rootElement = root;
-        CreateModalStructure();
-        SetupUI();
-        BindEvents();
-    }
-    
-    protected virtual void CreateModalStructure()
-    {
-        if (_modalTemplate == null)
-        {
-            Debug.LogError($"Modal '{_modalId}' missing UXML template!");
-            return;
-        }
+public abstract class UIModal : MonoBehaviour {
+  [SerializeField] protected string _modalId;
+  [SerializeField] protected VisualTreeAsset _modalTemplate;
+  [SerializeField] protected bool _closeOnBackgroundClick = true;
 
-        // Create backdrop/scrim
-        _backdrop = new VisualElement {
-            name = $"{_modalId}-backdrop"
-        };
-        _backdrop.AddToClassList("modal-backdrop");
-        _backdrop.style.position = Position.Absolute;
-        _backdrop.style.left = 0;
-        _backdrop.style.top = 0;
-        _backdrop.style.right = 0;
-        _backdrop.style.bottom = 0;
-        _backdrop.style.backgroundColor = new Color(0, 0, 0, 0.5f);
-        _backdrop.style.display = DisplayStyle.None;
-        
-        // Block all input by consuming events
-        _backdrop.pickingMode = PickingMode.Position;
-        _backdrop.focusable = true;
-        
-        if (_closeOnBackgroundClick)
-        {
-            _backdrop.RegisterCallback<ClickEvent>(OnBackdropClick);
-        }
-        
-        // Instantiate modal from template
-        _modalContainer = _modalTemplate.Instantiate();
-        _modalContainer.style.position = Position.Absolute;
-        _modalContainer.style.left = new StyleLength(StyleKeyword.Auto);
-        _modalContainer.style.top = new StyleLength(StyleKeyword.Auto);
-        _modalContainer.style.right = new StyleLength(StyleKeyword.Auto);
-        _modalContainer.style.bottom = new StyleLength(StyleKeyword.Auto);
-        
-        _backdrop.Add(_modalContainer);
-        _rootElement.Add(_backdrop);
-    }
-    
-    public virtual void Show()
-    {
-        if (_backdrop != null)
-        {
-            _backdrop.style.display = DisplayStyle.Flex;
-            _backdrop.Focus(); // Ensure modal has focus to block input
-            OnShow();
-            OnModalShown?.Invoke(this);
-        }
-    }
-    
-    public virtual void Hide()
-    {
-        if (_backdrop != null)
-        {
-            _backdrop.style.display = DisplayStyle.None;
-            OnHide();
-            OnModalHidden?.Invoke(this);
-        }
-    }
-    
-    protected virtual void OnBackdropClick(ClickEvent evt)
-    {
-        if (evt.target == _backdrop)
-        {
-            Hide();
-        }
+  protected VisualElement _rootElement;
+  protected VisualElement _modalContainer;
+  protected VisualElement _backdrop;
+
+  public string ModalId => _modalId;
+  public bool IsVisible => _modalContainer?.style.display == DisplayStyle.Flex;
+
+  public event Action<UIModal> OnModalShown;
+  public event Action<UIModal> OnModalHidden;
+
+  public virtual void Initialize(VisualElement root) {
+    _rootElement = root;
+    CreateModalStructure();
+    SetupUI();
+    BindEvents();
+  }
+
+  protected virtual void CreateModalStructure() {
+    if (_modalTemplate == null) {
+      Debug.LogError($"Modal '{_modalId}' missing UXML template!");
+      return;
     }
 
-    private void ConsumeEvent<T>(T evt) where T : EventBase<T>, new() {
-        // Consume the event to prevent it from reaching elements behind the modal
-        evt.StopPropagation();
+    // Create backdrop/scrim
+    _backdrop = new VisualElement {
+      name = $"{_modalId}-backdrop"
+    };
+    _backdrop.AddToClassList("modal-backdrop");
+    _backdrop.style.position = Position.Absolute;
+    _backdrop.style.left = 0;
+    _backdrop.style.top = 0;
+    _backdrop.style.right = 0;
+    _backdrop.style.bottom = 0;
+    _backdrop.style.backgroundColor = new Color(0, 0, 0, 0.5f);
+    _backdrop.style.display = DisplayStyle.None;
+
+    // Block all input by consuming events
+    _backdrop.pickingMode = PickingMode.Position;
+    _backdrop.focusable = true;
+
+    if (_closeOnBackgroundClick) {
+      _backdrop.RegisterCallback<ClickEvent>(OnBackdropClick);
     }
-    
-    protected virtual void SetupUI()
-    {
-        // Override in derived classes to setup UI elements
+
+    // Instantiate modal from template
+    _modalContainer = _modalTemplate.Instantiate();
+    _modalContainer.style.position = Position.Absolute;
+    _modalContainer.style.left = new StyleLength(StyleKeyword.Auto);
+    _modalContainer.style.top = new StyleLength(StyleKeyword.Auto);
+    _modalContainer.style.right = new StyleLength(StyleKeyword.Auto);
+    _modalContainer.style.bottom = new StyleLength(StyleKeyword.Auto);
+
+    _backdrop.Add(_modalContainer);
+    _rootElement.Add(_backdrop);
+  }
+
+  public virtual void Show() {
+    if (_backdrop != null) {
+      _backdrop.style.display = DisplayStyle.Flex;
+      _backdrop.Focus(); // Ensure modal has focus to block input
+      OnShow();
+      OnModalShown?.Invoke(this);
     }
-    
-    protected virtual void BindEvents()
-    {
-        // Consume all events to prevent input from reaching elements behind the modal
-        _backdrop.RegisterCallback<PointerDownEvent>(ConsumeEvent, TrickleDown.TrickleDown);
-        _backdrop.RegisterCallback<PointerUpEvent>(ConsumeEvent, TrickleDown.TrickleDown);
-        _backdrop.RegisterCallback<PointerMoveEvent>(ConsumeEvent, TrickleDown.TrickleDown);
-        _backdrop.RegisterCallback<KeyDownEvent>(ConsumeEvent, TrickleDown.TrickleDown);
-        _backdrop.RegisterCallback<KeyUpEvent>(ConsumeEvent, TrickleDown.TrickleDown);
-        _backdrop.RegisterCallback<WheelEvent>(ConsumeEvent, TrickleDown.TrickleDown);
-        
-        // Override in derived classes to bind button events, etc.
+  }
+
+  public virtual void Hide() {
+    if (_backdrop != null) {
+      _backdrop.style.display = DisplayStyle.None;
+      OnHide();
+      OnModalHidden?.Invoke(this);
     }
-    
-    protected virtual void OnShow()
-    {
-        // Override in derived classes for custom show logic
+  }
+
+  protected virtual void OnBackdropClick(ClickEvent evt) {
+    if (evt.target == _backdrop) {
+      Hide();
     }
-    
-    protected virtual void OnHide()
-    {
-        // Override in derived classes for custom hide logic
-    }
-    
-    protected T FindElement<T>(string name) where T : VisualElement
-    {
-        return _modalContainer?.Q<T>(name);
-    }
-    
-    protected Button FindButton(string name)
-    {
-        return _modalContainer?.Q<Button>(name);
-    }
-    
-    protected Label FindLabel(string name)
-    {
-        return _modalContainer?.Q<Label>(name);
-    }
+  }
+
+  private void ConsumeEvent<T>(T evt) where T : EventBase<T>, new() {
+    // Consume the event to prevent it from reaching elements behind the modal
+    evt.StopPropagation();
+  }
+
+  protected virtual void SetupUI() {
+    // Override in derived classes to setup UI elements
+  }
+
+  protected virtual void BindEvents() {
+    // Consume all events to prevent input from reaching elements behind the modal
+    _backdrop.RegisterCallback<PointerDownEvent>(ConsumeEvent, TrickleDown.TrickleDown);
+    _backdrop.RegisterCallback<PointerUpEvent>(ConsumeEvent, TrickleDown.TrickleDown);
+    _backdrop.RegisterCallback<PointerMoveEvent>(ConsumeEvent, TrickleDown.TrickleDown);
+    _backdrop.RegisterCallback<KeyDownEvent>(ConsumeEvent, TrickleDown.TrickleDown);
+    _backdrop.RegisterCallback<KeyUpEvent>(ConsumeEvent, TrickleDown.TrickleDown);
+    _backdrop.RegisterCallback<WheelEvent>(ConsumeEvent, TrickleDown.TrickleDown);
+
+    // Override in derived classes to bind button events, etc.
+  }
+
+  protected virtual void OnShow() {
+    // Override in derived classes for custom show logic
+  }
+
+  protected virtual void OnHide() {
+    // Override in derived classes for custom hide logic
+  }
+
+  protected T FindElement<T>(string name) where T : VisualElement {
+    return _modalContainer?.Q<T>(name);
+  }
+
+  protected Button FindButton(string name) {
+    return _modalContainer?.Q<Button>(name);
+  }
+
+  protected Label FindLabel(string name) {
+    return _modalContainer?.Q<Label>(name);
+  }
 }

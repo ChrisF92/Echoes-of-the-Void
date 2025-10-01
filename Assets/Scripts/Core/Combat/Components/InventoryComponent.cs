@@ -1,75 +1,120 @@
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 
 using EchoesOfTheVoid.Core.Combat.Entities;
+using EchoesOfTheVoid.Core.Combat.Wrappers;
 using EchoesOfTheVoid.Core.Inventory.Results;
 using EchoesOfTheVoid.Core.Inventory.ScriptableObjects;
-using EchoesOfTheVoid.Core.Combat.Wrappers;
-using EchoesOfTheVoid.Core.Inventory.Database;
+using EchoesOfTheVoid.Core.Inventory.Systems;
 
-namespace EchoesOfTheVoid.Core.Combat.Components
-{
-  public class InventoryComponent : CombatComponent
-  {
-    private readonly Dictionary<string, int> _items = new();
+namespace EchoesOfTheVoid.Core.Combat.Components {
+  public class InventoryComponent : CombatComponent {
+    private const int DefaultCapacity = 30;
     private ICombatant _owner;
 
-    public override void Initialize(ICombatant owner)
-    {
+    public InventoryComponent() : this(DefaultCapacity) {
+    }
+
+    public InventoryComponent(int capacity) {
+      Inventory = new ItemInventory(capacity > 0 ? capacity : DefaultCapacity);
+    }
+
+    public ItemInventory Inventory { get; }
+
+    public event System.Action<int, InventorySlot> OnSlotChanged {
+      add => Inventory.OnSlotChanged += value;
+      remove => Inventory.OnSlotChanged -= value;
+    }
+
+    public event System.Action<ItemScriptableObject, int> OnItemAdded {
+      add => Inventory.OnItemAdded += value;
+      remove => Inventory.OnItemAdded -= value;
+    }
+
+    public event System.Action<ItemScriptableObject, int> OnItemRemoved {
+      add => Inventory.OnItemRemoved += value;
+      remove => Inventory.OnItemRemoved -= value;
+    }
+
+    public override void Initialize(ICombatant owner) {
       _owner = owner;
     }
 
-    public override void Update(float deltaTime)
-    {
+    public override void Update(float deltaTime) {
     }
 
-    public void AddItem(ItemScriptableObject itemData, int quantity = 1)
-    {
-      if (_items.ContainsKey(itemData.itemId))
-      {
-        _items[itemData.itemId] = System.Math.Min(_items[itemData.itemId] + quantity, itemData.maxStackSize);
+    public bool AddItem(ItemScriptableObject itemData, int quantity = 1) {
+      if (itemData == null || quantity <= 0) {
+        return false;
       }
-      else
-      {
-        _items[itemData.itemId] = System.Math.Min(quantity, itemData.maxStackSize);
+
+      bool success = Inventory.AddItem(itemData, quantity, out int added);
+      if (!success) {
+        Debug.LogWarning($"InventoryComponent on {_owner?.Name ?? "Unknown"} could not store all of {itemData.DisplayName} ({added}/{quantity}).");
       }
+
+      return success;
     }
 
-    public bool HasItem(string itemId, int quantity = 1)
-    {
-      return _items.TryGetValue(itemId, out var count) && count >= quantity;
+    public bool RemoveItem(ItemScriptableObject itemData, int quantity = 1) {
+      return itemData != null && Inventory.RemoveItem(itemData, quantity, out _);
     }
 
-    public ItemResult UseItem(ItemScriptableObject itemData, ICombatant target = null)
-    {
-      if (!HasItem(itemData.itemId))
-      {
+    public bool RemoveItem(string itemId, int quantity = 1) {
+      return Inventory.RemoveItem(itemId, quantity, out _);
+    }
+
+    public bool HasItem(string itemId, int quantity = 1) {
+      return Inventory.HasItem(itemId, quantity);
+    }
+
+    public bool HasItem(ItemScriptableObject itemData, int quantity = 1) {
+      return Inventory.HasItem(itemData, quantity);
+    }
+
+    public int GetItemCount(string itemId) {
+      return Inventory.GetItemCount(itemId);
+    }
+
+    public int GetItemCount(ItemScriptableObject itemData) {
+      return Inventory.GetItemCount(itemData);
+    }
+
+    public ItemResult UseItem(ItemScriptableObject itemData, ICombatant target = null) {
+      if (itemData == null) {
+        return ItemResult.Failed("Item not set");
+      }
+
+      if (!HasItem(itemData)) {
         return ItemResult.Failed("Item not available");
       }
 
-      if (!itemData.consumableInCombat)
-      {
+      if (!itemData.ConsumableInCombat) {
         return ItemResult.Failed("Cannot use this item in combat");
       }
 
       var item = new CombatItem(itemData);
-      var result = item.Use(_owner, target);
+      ItemResult result = item.Use(_owner, target);
 
-      if (result.IsSuccess)
-      {
-        _items[itemData.itemId]--;
-        if (_items[itemData.itemId] <= 0)
-        {
-          _items.Remove(itemData.itemId);
-        }
+      if (result.IsSuccess) {
+        _ = Inventory.RemoveItem(itemData, 1, out _);
       }
 
       return result;
     }
 
-    public IEnumerable<ItemScriptableObject> GetUsableItems()
-    {
-      return ItemDatabase.Instance.GetItems().Where(item => HasItem(item.itemId) && item.consumableInCombat);
+    public IEnumerable<ItemScriptableObject> GetUsableItems() {
+      var seen = new HashSet<string>();
+      foreach (InventorySlot slot in Inventory.Slots) {
+        ItemScriptableObject item = slot.Item;
+        if (item == null || !item.ConsumableInCombat) {
+          continue;
+        }
+
+        if (seen.Add(item.ItemId)) {
+          yield return item;
+        }
+      }
     }
   }
 }

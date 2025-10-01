@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+  <ui:VisualElement name="tab-equipment" class="inventory-tab-content">
+    <ui:ListView name="tab-list-equipment" class="inventory-list" selection-type="Single" />
+    <ui:Label name="tab-empty-equipment" class="inventory-empty-message" text="No equipment available." />
+  </ui:VisualElement>
+</ui:UXML>

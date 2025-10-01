@@ -1,7 +1,5 @@
-namespace EchoesOfTheVoid.Core.Combat
-{
-  public enum StatType
-  {
+namespace EchoesOfTheVoid.Core.Combat {
+  public enum StatType {
     Health,
     Mana,
     Attack,

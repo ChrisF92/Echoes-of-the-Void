@@ -3,11 +3,9 @@ using EchoesOfTheVoid.Core.Combat.Actions;
 using EchoesOfTheVoid.Core.Combat.Entities;
 using Sirenix.OdinInspector;
 
-namespace EchoesOfTheVoid.Core.Combat.Gambits
-{
+namespace EchoesOfTheVoid.Core.Combat.Gambits {
   [Serializable]
-  public abstract class GambitActionBlock
-  {
+  public abstract class GambitActionBlock {
     [ShowInInspector, ReadOnly]
     public virtual string Summary => GetType().Name;
 

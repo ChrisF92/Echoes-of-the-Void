@@ -1,7 +1,5 @@
-namespace EchoesOfTheVoid.Core.Combat
-{
-  public enum TargetType
-  {
+namespace EchoesOfTheVoid.Core.Combat {
+  public enum TargetType {
     Single,
     Multiple,
     Self,

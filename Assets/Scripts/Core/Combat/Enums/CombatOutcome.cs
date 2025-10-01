@@ -1,7 +1,5 @@
-namespace EchoesOfTheVoid.Core.Combat
-{
-  public enum CombatOutcome
-  {
+namespace EchoesOfTheVoid.Core.Combat {
+  public enum CombatOutcome {
     Victory,
     Defeat,
     Draw,

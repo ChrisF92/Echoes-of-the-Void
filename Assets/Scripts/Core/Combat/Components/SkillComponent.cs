@@ -1,86 +1,67 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EchoesOfTheVoid.Core.Combat;
 
 using EchoesOfTheVoid.Core.Combat.Entities;
 using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
 using EchoesOfTheVoid.Core.Combat.Wrappers;
 using EchoesOfTheVoid.Core.Combat.Results;
 
-namespace EchoesOfTheVoid.Core.Combat.Components
-{
-public class SkillComponent : CombatComponent
-  {
+namespace EchoesOfTheVoid.Core.Combat.Components {
+  public class SkillComponent : CombatComponent {
     private readonly Dictionary<string, CombatSkill> _skills = new();
     private readonly Dictionary<string, int> _cooldowns = new();
     private ICombatant _owner;
 
-    public override void Initialize(ICombatant owner)
-    {
+    public override void Initialize(ICombatant owner) {
       _owner = owner;
     }
 
-    public override void Update(float deltaTime)
-    {
+    public override void Update(float deltaTime) {
     }
 
-    public void OnTurnEnd()
-    {
+    public void OnTurnEnd() {
       var keys = _cooldowns.Keys.ToList();
-      foreach (var skillId in keys)
-      {
+      foreach (string skillId in keys) {
         _cooldowns[skillId] = Math.Max(0, _cooldowns[skillId] - 1);
       }
     }
 
-    public void LearnSkill(SkillScriptableObject skillData)
-    {
+    public void LearnSkill(SkillScriptableObject skillData) {
       var skill = new CombatSkill(skillData);
-      _skills[skillData.skillId] = skill;
-      _cooldowns[skillData.skillId] = 0;
+      _skills[skillData.SkillId] = skill;
+      _cooldowns[skillData.SkillId] = 0;
     }
 
-    public bool CanUseSkill(string skillId)
-    {
-      if (!_skills.TryGetValue(skillId, out var skill))
-      {
-        return false;
-      }
-
-      return skill.CanUse(_owner) &&
+    public bool CanUseSkill(string skillId) {
+      return _skills.TryGetValue(skillId, out CombatSkill skill) && skill.CanUse(_owner) &&
              _cooldowns[skillId] <= 0 &&
-             _owner.GetStat(StatType.Mana) >= skill.Data.manaCost;
+             _owner.GetStat(StatType.Mana) >= skill.Data.ManaCost;
     }
 
-    public SkillResult UseSkill(string skillId, ICombatant target = null)
-    {
-      if (!CanUseSkill(skillId))
-      {
+    public SkillResult UseSkill(string skillId, ICombatant target = null) {
+      if (!CanUseSkill(skillId)) {
         return SkillResult.Failed("Cannot use skill");
       }
 
-      var skill = _skills[skillId];
-      var result = skill.Execute(_owner, target);
+      CombatSkill skill = _skills[skillId];
+      SkillResult result = skill.Execute(_owner, target);
 
-      if (result.IsSuccess)
-      {
-        var rawCooldown = skill.Data.cooldownTurns;
+      if (result.IsSuccess) {
+        int rawCooldown = skill.Data.CooldownTurns;
         _cooldowns[skillId] = rawCooldown > 0 ? rawCooldown + 1 : 0;
-        _owner.ConsumeMana(skill.Data.manaCost);
+        _owner.ConsumeMana(skill.Data.ManaCost);
       }
 
       return result;
     }
 
-    public IEnumerable<CombatSkill> GetAvailableSkills()
-    {
-      return _skills.Values.Where(s => CanUseSkill(s.Data.skillId));
+    public IEnumerable<CombatSkill> GetAvailableSkills() {
+      return _skills.Values.Where(s => CanUseSkill(s.Data.SkillId));
     }
 
-    public int GetSkillCooldown(string skillId)
-    {
-      return _cooldowns.TryGetValue(skillId, out var cooldown) ? cooldown : 0;
+    public int GetSkillCooldown(string skillId) {
+      return _cooldowns.TryGetValue(skillId, out int cooldown) ? cooldown : 0;
     }
   }
 }

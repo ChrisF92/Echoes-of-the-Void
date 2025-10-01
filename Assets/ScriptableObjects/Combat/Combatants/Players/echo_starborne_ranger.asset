@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
+  m_Name: echo_starborne_ranger
+  m_EditorClassIdentifier: 
+  isPlayerControlled: 1
+  combatantId: echo_starborne_ranger
+  displayName: Starborne Ranger
+  portrait: {fileID: 0}
+  combatPrefab: {fileID: 0}
+  baseStats:
+    Health: 100
+    Mana: 50
+    Attack: 15
+    Defense: 10
+    Speed: 12
+    Luck: 5
+  startingSkills:
+  - {fileID: 11400000, guid: 64d36f4f3d33d184aaf8f87b619662d6, type: 2}
+  startingItems:
+  - Item: {fileID: 0}
+    Quantity: 0
+  startingEquipment: []
+  gambitProfile: {fileID: 0}

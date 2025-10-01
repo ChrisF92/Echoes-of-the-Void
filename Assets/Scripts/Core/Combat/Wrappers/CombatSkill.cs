@@ -1,75 +1,69 @@
 using System.Collections.Generic;
-using UnityEngine;
-
-using EchoesOfTheVoid.Core.Combat.Entities;
 using EchoesOfTheVoid.Core.Combat.Effects;
-using EchoesOfTheVoid.Core.Combat;
+using EchoesOfTheVoid.Core.Combat.Entities;
 using EchoesOfTheVoid.Core.Combat.Results;
 using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
+using UnityEngine;
 
-namespace EchoesOfTheVoid.Core.Combat.Wrappers
-{
-  public class CombatSkill
-  {
+namespace EchoesOfTheVoid.Core.Combat.Wrappers {
+  public class CombatSkill {
     public SkillScriptableObject Data { get; }
 
-    public CombatSkill(SkillScriptableObject data)
-    {
+    public CombatSkill(SkillScriptableObject data) {
       Data = data;
     }
 
-    public bool CanUse(ICombatant user)
-    {
-      return user.IsAlive && user.GetStat(StatType.Mana) >= Data.manaCost;
+    public bool CanUse(ICombatant user) {
+      return user.IsAlive && user.GetStat(StatType.Mana) >= Data.ManaCost;
     }
 
-    public SkillResult Execute(ICombatant user, ICombatant target)
-    {
+    public SkillResult Execute(ICombatant user, ICombatant target) {
       var effects = new List<CombatEffect>();
 
-      foreach (var effectData in Data.effects)
-      {
-        var actualTarget = effectData.targetSelf ? user : target;
-        var effectValue = CalculateEffectValue(effectData, user);
+      foreach (SkillEffectData effectData in Data.Effects) {
+        ICombatant actualTarget = effectData.TargetSelf ? user : target;
+        int effectValue = CalculateEffectValue(effectData, user);
 
-        effects.Add(new CombatEffect
-        {
-          Type = effectData.effectType,
+        effects.Add(new CombatEffect {
+          Type = effectData.EffectType,
           Value = effectValue,
           Target = actualTarget
         });
       }
 
-      foreach (var effect in effects)
-      {
+      foreach (CombatEffect effect in effects) {
         ApplyEffect(effect);
       }
 
-      return SkillResult.Success($"{user.Name} uses {Data.displayName}!");
+      return SkillResult.Success($"{user.Name} uses {Data.DisplayName}!");
     }
 
-    private int CalculateEffectValue(SkillEffectData effectData, ICombatant user)
-    {
-      var baseValue = effectData.baseValue;
+    private int CalculateEffectValue(SkillEffectData effectData, ICombatant user) {
+      int baseValue = effectData.BaseValue;
 
-      if (effectData.statScaling > 0f)
-      {
-        var statValue = user.GetStat(effectData.scalingStat);
-        baseValue += Mathf.RoundToInt(statValue * effectData.statScaling);
+      if (effectData.StatScaling > 0f) {
+        int statValue = user.GetStat(effectData.ScalingStat);
+        baseValue += Mathf.RoundToInt(statValue * effectData.StatScaling);
       }
 
-      return Mathf.RoundToInt(baseValue * effectData.damageCurve.Evaluate(1f));
+      return Mathf.RoundToInt(baseValue * effectData.DamageCurve.Evaluate(1f));
     }
 
-    private void ApplyEffect(CombatEffect effect)
-    {
-      switch (effect.Type)
-      {
+    private void ApplyEffect(CombatEffect effect) {
+      switch (effect.Type) {
         case EffectType.Damage:
           effect.Target.TakeDamage(effect.Value);
           break;
         case EffectType.Heal:
           effect.Target.Heal(effect.Value);
+          break;
+        case EffectType.Buff:
+          break;
+        case EffectType.Debuff:
+          break;
+        case EffectType.StatusEffect:
+          break;
+        default:
           break;
       }
     }

@@ -3,8 +3,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 350px;
+    height: 100%;
 }
 
 /* Hamburger Button */
@@ -54,7 +54,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 80%;
+    width: 100%;
     max-width: 350px;
     background-color: rgba(20, 20, 20, 0.95);
     border-right-width: 2px;

@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+  <ui:VisualElement name="tab-keyitems" class="inventory-tab-content">
+    <ui:ListView name="tab-list-keyitems" class="inventory-list" selection-type="Single" />
+    <ui:Label name="tab-empty-keyitems" class="inventory-empty-message" text="No key items available." />
+  </ui:VisualElement>
+</ui:UXML>

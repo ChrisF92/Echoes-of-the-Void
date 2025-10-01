@@ -1,51 +1,41 @@
 using System;
-using EchoesOfTheVoid.Core.Combat;
 using EchoesOfTheVoid.Core.Combat.Entities;
 using Sirenix.OdinInspector;
 
-namespace EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations
-{
+namespace EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations {
   [Serializable]
-  public class AllyHealthBelowPercentBlock : TargetConditionBlock
-  {
+  public class AllyHealthBelowPercentBlock : TargetConditionBlock {
     [PropertyRange(0.05f, 1f)]
-    public float threshold = 0.5f;
+    public float Threshold = 0.5f;
 
-    public bool includeSelf = true;
+    public bool IncludeSelf = true;
 
-    public override string Summary => $"Ally HP < {(int)(threshold * 100)}%";
+    public override string Summary => $"Ally HP < {(int)(Threshold * 100)}%";
 
-    public override bool TrySelectTarget(GambitRuntimeContext context, out ICombatant target, out string failureReason)
-    {
+    public override bool TrySelectTarget(GambitRuntimeContext context, out ICombatant target, out string failureReason) {
       target = null;
-      if (context == null)
-      {
+      if (context == null) {
         failureReason = "No context";
         return false;
       }
 
-      foreach (var ally in context.Allies)
-      {
-        if (ally == null || !ally.IsAlive)
-        {
+      foreach (ICombatant ally in context.Allies) {
+        if (ally == null || !ally.IsAlive) {
           continue;
         }
 
-        if (!includeSelf && ally == context.Actor)
-        {
+        if (!IncludeSelf && ally == context.Actor) {
           continue;
         }
 
-        var maxHealth = ally.GetMaxStat(StatType.Health);
-        if (maxHealth <= 0)
-        {
+        int maxHealth = ally.GetMaxStat(StatType.Health);
+        if (maxHealth <= 0) {
           continue;
         }
 
-        var currentHealth = ally.GetStat(StatType.Health);
-        var percent = (float)currentHealth / maxHealth;
-        if (percent < threshold)
-        {
+        int currentHealth = ally.GetStat(StatType.Health);
+        float percent = (float)currentHealth / maxHealth;
+        if (percent < Threshold) {
           target = ally;
           failureReason = null;
           return true;

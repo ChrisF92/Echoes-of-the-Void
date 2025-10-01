@@ -1,140 +1,107 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-
-using EchoesOfTheVoid.Core.Combat;
-using EchoesOfTheVoid.Core.Combat.Entities;
 using EchoesOfTheVoid.Core.Combat.Components;
+using EchoesOfTheVoid.Core.Combat.Entities;
 
-namespace EchoesOfTheVoid.Core.Combat.Turn
-{
-  public class TurnOrderManager
-  {
+namespace EchoesOfTheVoid.Core.Combat.Turn {
+  public class TurnOrderManager {
     private readonly List<CombatTurnEntry> _turnOrder = new();
     private int _currentTurnIndex;
-    private int _roundCounter;
 
     public ICombatant CurrentCombatant => _turnOrder.Count > 0 ? _turnOrder[_currentTurnIndex].Combatant : null;
-    public int CurrentRound => _roundCounter;
+    public int CurrentRound { get; private set; }
 
     public event Action<ICombatant> OnTurnStart;
     public event Action<ICombatant> OnTurnEnd;
     public event Action<int> OnNewRound;
 
-    public void StartCombat(List<ICombatant> allCombatants)
-    {
+    public void StartCombat(List<ICombatant> allCombatants) {
       InitializeTurnOrder(allCombatants);
       _currentTurnIndex = 0;
-      _roundCounter = 1;
+      CurrentRound = 1;
       StartCurrentTurn();
     }
 
-    private void InitializeTurnOrder(List<ICombatant> combatants)
-    {
+    private void InitializeTurnOrder(List<ICombatant> combatants) {
       _turnOrder.Clear();
-      foreach (var combatant in combatants.Where(c => c.IsAlive))
-      {
+      foreach (ICombatant combatant in combatants.Where(static c => c.IsAlive)) {
         _turnOrder.Add(new CombatTurnEntry(combatant));
       }
       SortTurnOrder();
     }
 
-    private void SortTurnOrder()
-    {
-      _turnOrder.Sort((a, b) =>
-      {
-        var speedComparison = b.Combatant.GetStat(StatType.Speed).CompareTo(a.Combatant.GetStat(StatType.Speed));
-        if (speedComparison != 0)
-        {
+    private void SortTurnOrder() {
+      _turnOrder.Sort(static (a, b) => {
+        int speedComparison = b.Combatant.GetStat(StatType.Speed).CompareTo(a.Combatant.GetStat(StatType.Speed));
+        if (speedComparison != 0) {
           return speedComparison;
         }
 
-        var luckComparison = b.Combatant.GetStat(StatType.Luck).CompareTo(a.Combatant.GetStat(StatType.Luck));
-        if (luckComparison != 0)
-        {
-          return luckComparison;
-        }
-
-        return UnityEngine.Random.Range(-1, 2);
+        int luckComparison = b.Combatant.GetStat(StatType.Luck).CompareTo(a.Combatant.GetStat(StatType.Luck));
+        return luckComparison != 0 ? luckComparison : UnityEngine.Random.Range(-1, 2);
       });
     }
 
-    public void EndCurrentTurn()
-    {
-      var currentCombatant = CurrentCombatant;
-      var skillComponent = currentCombatant?.GetComponent<SkillComponent>();
+    public void EndCurrentTurn() {
+      ICombatant currentCombatant = CurrentCombatant;
+      SkillComponent skillComponent = currentCombatant?.GetComponent<SkillComponent>();
       skillComponent?.OnTurnEnd();
       OnTurnEnd?.Invoke(currentCombatant);
       AdvanceToNextTurn();
     }
 
-    private void AdvanceToNextTurn()
-    {
+    private void AdvanceToNextTurn() {
       _currentTurnIndex++;
 
-      if (_currentTurnIndex >= _turnOrder.Count)
-      {
+      if (_currentTurnIndex >= _turnOrder.Count) {
         _currentTurnIndex = 0;
-        _roundCounter++;
-        OnNewRound?.Invoke(_roundCounter);
+        CurrentRound++;
+        OnNewRound?.Invoke(CurrentRound);
       }
 
-      while (_currentTurnIndex < _turnOrder.Count && !CurrentCombatant.IsAlive)
-      {
+      while (_currentTurnIndex < _turnOrder.Count && !CurrentCombatant.IsAlive) {
         _currentTurnIndex++;
       }
 
-      if (_currentTurnIndex >= _turnOrder.Count)
-      {
+      if (_currentTurnIndex >= _turnOrder.Count) {
         _currentTurnIndex = 0;
       }
 
-      if (CurrentCombatant?.IsAlive == true)
-      {
+      if (CurrentCombatant?.IsAlive == true) {
         StartCurrentTurn();
       }
     }
 
-    private void StartCurrentTurn()
-    {
-      if (CurrentCombatant != null)
-      {
+    private void StartCurrentTurn() {
+      if (CurrentCombatant != null) {
         OnTurnStart?.Invoke(CurrentCombatant);
       }
     }
 
-    public void RemoveCombatant(ICombatant combatant)
-    {
-      var entryToRemove = _turnOrder.FirstOrDefault(entry => entry.Combatant == combatant);
-      if (entryToRemove != null)
-      {
-        var removedIndex = _turnOrder.IndexOf(entryToRemove);
-        _turnOrder.Remove(entryToRemove);
+    public void RemoveCombatant(ICombatant combatant) {
+      CombatTurnEntry entryToRemove = _turnOrder.FirstOrDefault(entry => entry.Combatant == combatant);
+      if (entryToRemove != null) {
+        int removedIndex = _turnOrder.IndexOf(entryToRemove);
+        _ = _turnOrder.Remove(entryToRemove);
 
-        if (removedIndex <= _currentTurnIndex)
-        {
+        if (removedIndex <= _currentTurnIndex) {
           _currentTurnIndex = Math.Max(0, _currentTurnIndex - 1);
         }
 
-        if (_currentTurnIndex >= _turnOrder.Count)
-        {
+        if (_currentTurnIndex >= _turnOrder.Count) {
           _currentTurnIndex = 0;
         }
       }
     }
 
-    public List<ICombatant> GetTurnOrder()
-    {
-      return _turnOrder.Select(entry => entry.Combatant).ToList();
+    public List<ICombatant> GetTurnOrder() {
+      return _turnOrder.Select(static entry => entry.Combatant).ToList();
     }
 
-    public int GetTurnPosition(ICombatant combatant)
-    {
-      for (var i = 0; i < _turnOrder.Count; i++)
-      {
-        if (_turnOrder[i].Combatant == combatant)
-        {
+    public int GetTurnPosition(ICombatant combatant) {
+      for (int i = 0; i < _turnOrder.Count; i++) {
+        if (_turnOrder[i].Combatant == combatant) {
           return i;
         }
       }

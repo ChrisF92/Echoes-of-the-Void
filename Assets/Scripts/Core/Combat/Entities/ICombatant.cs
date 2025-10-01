@@ -1,10 +1,8 @@
 using System;
 using EchoesOfTheVoid.Core.Combat.Components;
 
-namespace EchoesOfTheVoid.Core.Combat.Entities
-{
-  public interface ICombatant
-  {
+namespace EchoesOfTheVoid.Core.Combat.Entities {
+  public interface ICombatant {
     string Name { get; }
     bool IsAlive { get; }
     bool IsPlayerControlled { get; }

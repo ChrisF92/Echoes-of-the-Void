@@ -8,11 +8,13 @@ using EchoesOfTheVoid.Core.Combat.Gambits;
 using EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations;
 using EchoesOfTheVoid.Core.Inventory.Data;
 
-namespace EchoesOfTheVoid.Core.Combat.ScriptableObjects
-{
+namespace EchoesOfTheVoid.Core.Combat.ScriptableObjects {
   [CreateAssetMenu(fileName = "New Combatant Template", menuName = "Combat/Combatant Template")]
-  public class CombatantTemplateScriptableObject : ScriptableObject
-  {
+  public class CombatantTemplateScriptableObject : ScriptableObject {
+
+    [Header("AI Behavior")]
+    public bool isPlayerControlled = false;
+
     [Header("Basic Info")]
     public string combatantId;
     public string displayName;
@@ -25,76 +27,65 @@ namespace EchoesOfTheVoid.Core.Combat.ScriptableObjects
     [Header("Starting Skills")]
     public List<SkillScriptableObject> startingSkills = new();
 
+    [HideIf(nameof(isPlayerControlled))]
     [Header("Starting Items")]
     public List<ItemStackData> startingItems = new();
+    [HideIf(nameof(isPlayerControlled))]
+    [Header("Starting Equipment")]
+    public List<EquippedItemData> startingEquipment = new();
 
-    [Header("AI Behavior")]
-    public bool isPlayerControlled = false;
 
     [HideIf(nameof(isPlayerControlled))]
+    [Header("Gambits")]
     [InlineEditor]
     public GambitProfile gambitProfile;
 
-    private void OnValidate()
-    {
-      if (isPlayerControlled || gambitProfile == null)
-      {
+    private void OnValidate() {
+      if (isPlayerControlled || gambitProfile == null) {
         return;
       }
 
-      if (startingSkills == null)
-      {
-        startingSkills = new List<SkillScriptableObject>();
-      }
+      startingSkills ??= new List<SkillScriptableObject>();
 
-      if (startingItems == null)
-      {
-        startingItems = new List<ItemStackData>();
-      }
+      startingItems ??= new List<ItemStackData>();
 
-      if (gambitProfile.rules == null || gambitProfile.rules.Count == 0)
-      {
+      startingEquipment ??= new List<EquippedItemData>();
+      if (gambitProfile.rules == null || gambitProfile.rules.Count == 0) {
         return;
       }
 
-      var ownedSkillIds = new HashSet<string>(startingSkills.Where(skill => skill != null).Select(skill => skill.skillId));
-      var ownedItemIds = new HashSet<string>(startingItems.Where(stack => stack != null && stack.item != null).Select(stack => stack.item.itemId));
+      var ownedSkillIds = new HashSet<string>(startingSkills.Where(skill => skill != null).Select(skill => skill.SkillId));
+      var ownedItemIds = new HashSet<string>(startingItems.Where(stack => stack != null && stack.Item != null).Select(stack => stack.Item.ItemId));
 
       var missingSkills = new HashSet<string>();
       var missingItems = new HashSet<string>();
 
-      foreach (var rule in gambitProfile.rules)
-      {
-        if (rule?.action is SkillActionBlock skillBlock && skillBlock.skill != null && !ownedSkillIds.Contains(skillBlock.skill.skillId))
-        {
-          var skillName = string.IsNullOrEmpty(skillBlock.skill.displayName) ? skillBlock.skill.name : skillBlock.skill.displayName;
-          missingSkills.Add(skillName);
+      foreach (GambitRuleDefinition rule in gambitProfile.rules) {
+        if (rule?.Action is SkillActionBlock skillBlock && skillBlock.skill != null && !ownedSkillIds.Contains(skillBlock.skill.SkillId)) {
+          string skillName = string.IsNullOrEmpty(skillBlock.skill.DisplayName) ? skillBlock.skill.name : skillBlock.skill.DisplayName;
+          _ = missingSkills.Add(skillName);
         }
 
-        if (rule?.action is ItemActionBlock itemBlock && itemBlock.item != null && !ownedItemIds.Contains(itemBlock.item.itemId))
-        {
-          var itemName = string.IsNullOrEmpty(itemBlock.item.displayName) ? itemBlock.item.name : itemBlock.item.displayName;
-          missingItems.Add(itemName);
+        if (rule?.Action is ItemActionBlock itemBlock && itemBlock.item != null && !ownedItemIds.Contains(itemBlock.item.ItemId)) {
+          string itemName = string.IsNullOrEmpty(itemBlock.item.DisplayName) ? itemBlock.item.name : itemBlock.item.DisplayName;
+          _ = missingItems.Add(itemName);
         }
       }
 
-      if (missingSkills.Count == 0 && missingItems.Count == 0)
-      {
+      if (missingSkills.Count == 0 && missingItems.Count == 0) {
         return;
       }
 
       var messageParts = new List<string>();
-      if (missingSkills.Count > 0)
-      {
+      if (missingSkills.Count > 0) {
         messageParts.Add($"skills [{string.Join(", ", missingSkills)}]");
       }
 
-      if (missingItems.Count > 0)
-      {
+      if (missingItems.Count > 0) {
         messageParts.Add($"items [{string.Join(", ", missingItems)}]");
       }
 
-      var displayLabel = string.IsNullOrEmpty(displayName) ? name : displayName;
+      string displayLabel = string.IsNullOrEmpty(displayName) ? name : displayName;
       Debug.LogWarning($"Combatant template '{displayLabel}' has gambit actions referencing missing {string.Join(" and ", messageParts)}.", this);
     }
   }

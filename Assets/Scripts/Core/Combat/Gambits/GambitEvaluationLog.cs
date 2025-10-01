@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using EchoesOfTheVoid.Core.Combat.Actions;
 using EchoesOfTheVoid.Core.Combat.Entities;
 
-namespace EchoesOfTheVoid.Core.Combat.Gambits
-{
-  public class GambitEvaluationLog
-  {
-    public GambitEvaluationLog(Combatant actor, IGambitRuleSource profile)
-    {
+namespace EchoesOfTheVoid.Core.Combat.Gambits {
+  public class GambitEvaluationLog {
+    public GambitEvaluationLog(Combatant actor, IGambitRuleSource profile) {
       Actor = actor;
       Profile = profile;
       Timestamp = DateTime.UtcNow;
@@ -24,20 +21,17 @@ namespace EchoesOfTheVoid.Core.Combat.Gambits
 
     public bool HasMatch => SelectedAction != null;
 
-    public void SetResult(CombatAction action, ICombatant target)
-    {
+    public void SetResult(CombatAction action, ICombatant target) {
       SelectedAction = action;
       SelectedTarget = target;
     }
   }
 
-  public class GambitRuleEvaluationRecord
-  {
-    public GambitRuleEvaluationRecord(GambitRuleDefinition rule)
-    {
+  public class GambitRuleEvaluationRecord {
+    public GambitRuleEvaluationRecord(GambitRuleDefinition rule) {
       Rule = rule;
-      RuleName = rule?.ruleName;
-      WasEnabled = rule?.isEnabled ?? false;
+      RuleName = rule?.RuleName;
+      WasEnabled = rule?.IsEnabled ?? false;
     }
 
     public GambitRuleDefinition Rule { get; }

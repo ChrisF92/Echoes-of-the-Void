@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+  <ui:VisualElement name="tab-consumables" class="inventory-tab-content">
+    <ui:ListView name="tab-list-consumables" class="inventory-list" selection-type="Single" />
+    <ui:Label name="tab-empty-consumables" class="inventory-empty-message" text="No consumables available." />
+  </ui:VisualElement>
+</ui:UXML>

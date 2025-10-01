@@ -8,8 +8,8 @@ public class HamburgerMenu : MonoBehaviour {
   private Button _closeButton;
   private VisualElement _slidePanel;
   private VisualElement _backdrop;
+  private VisualElement _hamburgerContainer;
 
-  // Menu item buttons
   private Button _homeButton;
   private Button _echoesButton;
   private Button _inventoryButton;
@@ -24,30 +24,38 @@ public class HamburgerMenu : MonoBehaviour {
   private void SetupUI() {
     VisualElement root = _uiDocument.rootVisualElement;
 
-    // Get main elements
+    _hamburgerContainer = root.Q<VisualElement>("hamburger-menu-container");
     _hamburgerButton = root.Q<Button>("hamburger-button");
     _closeButton = root.Q<Button>("close-button");
     _slidePanel = root.Q<VisualElement>("slide-panel");
     _backdrop = root.Q<VisualElement>("backdrop");
 
-    // Get menu item buttons
     _homeButton = root.Q<Button>("home-button");
     _echoesButton = root.Q<Button>("echoes-button");
     _inventoryButton = root.Q<Button>("inventory-button");
     _combatButton = root.Q<Button>("combat-button");
     _settingsButton = root.Q<Button>("settings-button");
 
-    // Ensure menu starts closed
+    if (_hamburgerContainer != null) {
+      _hamburgerContainer.pickingMode = PickingMode.Ignore;
+    }
+
+    if (_hamburgerButton != null) {
+      _hamburgerButton.pickingMode = PickingMode.Position;
+    }
+
+    if (_slidePanel != null) {
+      _slidePanel.pickingMode = PickingMode.Ignore;
+    }
+
     CloseMenu(false);
   }
 
   private void BindEvents() {
-    // Main menu controls
     _hamburgerButton?.RegisterCallback<ClickEvent>(OnHamburgerClicked);
     _closeButton?.RegisterCallback<ClickEvent>(OnCloseClicked);
     _backdrop?.RegisterCallback<ClickEvent>(OnBackdropClicked);
 
-    // Menu item buttons
     _homeButton?.RegisterCallback<ClickEvent>(OnHomeClicked);
     _echoesButton?.RegisterCallback<ClickEvent>(OnEchoesClicked);
     _inventoryButton?.RegisterCallback<ClickEvent>(OnInventoryClicked);
@@ -78,6 +86,10 @@ public class HamburgerMenu : MonoBehaviour {
 
     IsOpen = true;
     _slidePanel?.RemoveFromClassList("slide-panel--hidden");
+
+    if (_slidePanel != null) {
+      _slidePanel.pickingMode = PickingMode.Position;
+    }
   }
 
   public void CloseMenu(bool animate = true) {
@@ -87,9 +99,12 @@ public class HamburgerMenu : MonoBehaviour {
 
     IsOpen = false;
     _slidePanel?.AddToClassList("slide-panel--hidden");
+
+    if (_slidePanel != null) {
+      _slidePanel.pickingMode = PickingMode.Ignore;
+    }
   }
 
-  // Menu item click handlers
   private void OnHomeClicked(ClickEvent evt) {
     NavigationManager.Instance.NavigateToScreen("HomeScreen");
     CloseMenu();
@@ -115,8 +130,7 @@ public class HamburgerMenu : MonoBehaviour {
     CloseMenu();
   }
 
-  // Public methods for external control
-  public bool IsOpen { get; private set; } = false;
+  public bool IsOpen { get; private set; }
 
   public void SetMenuItemActive(string menuItem, bool active) {
     Button button = menuItem.ToLower() switch {
@@ -128,12 +142,14 @@ public class HamburgerMenu : MonoBehaviour {
       _ => null
     };
 
-    if (button != null) {
-      if (active) {
-        button.AddToClassList("menu-item-button--active");
-      } else {
-        button.RemoveFromClassList("menu-item-button--active");
-      }
+    if (button == null) {
+      return;
+    }
+
+    if (active) {
+      button.AddToClassList("menu-item-button--active");
+    } else {
+      button.RemoveFromClassList("menu-item-button--active");
     }
   }
 }
