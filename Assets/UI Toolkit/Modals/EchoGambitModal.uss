@@ -1,4 +1,4 @@
-.gambit-modal {
+﻿.gambit-modal {
   width: 90%;
   max-width: 1600px;
   min-width: 960px;
@@ -49,11 +49,85 @@
   margin-right: 0;
 }
 
+.gambit-slot-selector {
+  flex-direction: column;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(109, 162, 255, 0.2);
+}
+
+.gambit-slot-selector__title {
+  font-size: 16px;
+  -unity-font-style: bold;
+  margin-bottom: 6px;
+  color: rgba(244, 246, 255, 0.9);
+}
+
+.gambit-slot-selector__buttons {
+  flex-direction: row;
+  margin-bottom: 8px;
+}
+
+.gambit-slot-selector__button {
+  flex-grow: 1;
+  margin-right: 6px;
+  min-height: 32px;
+  background-color: rgba(244, 246, 255, 0.08);
+  color: rgba(244, 246, 255, 0.9);
+  border-radius: 6px;
+}
+
+.gambit-slot-selector__button--end {
+  margin-right: 0;
+}
+
+.gambit-slot-selector__button--selected {
+  background-color: rgba(66, 139, 255, 0.25);
+  color: #f4f6ff;
+}
+
+.gambit-slot-selector__button--active {
+  border-width: 1px;
+  border-color: rgba(142, 212, 255, 0.9);
+}
+
+.gambit-slot-selector__name-field {
+  margin-bottom: 6px;
+}
+
+.gambit-slot-selector__active {
+  font-size: 13px;
+  color: rgba(244, 246, 255, 0.75);
+  margin-bottom: 6px;
+}
+
+.gambit-slot-selector__action {
+  align-self: flex-start;
+  min-width: 140px;
+  min-height: 30px;
+  background-color: rgba(244, 246, 255, 0.08);
+  color: rgba(244, 246, 255, 0.9);
+}
+
+.gambit-panel__title-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
 .gambit-panel__title {
   font-size: 18px;
   -unity-font-style: bold;
   color: rgba(244, 246, 255, 0.9);
-  margin-bottom: 12px;
+}
+
+.gambit-panel__action {
+  min-width: 110px;
+  min-height: 30px;
+  background-color: rgba(66, 139, 255, 0.95);
+  color: #0b1324;
 }
 
 .gambit-rule-list {
@@ -64,10 +138,13 @@
 }
 
 .gambit-rule-item {
+  min-height: 52px;
+  justify-content: center;
   flex-direction: column;
   padding: 10px;
   background-color: rgba(244, 246, 255, 0.04);
 }
+
 
 .gambit-rule-item__name {
   -unity-font-style: bold;
@@ -101,8 +178,17 @@
 .gambit-detail__value {
   font-size: 14px;
   color: rgba(244, 246, 255, 0.9);
-  min-height: 20px;
+  min-height: 28px;
   margin-bottom: 8px;
+  background-color: rgba(244, 246, 255, 0.08);
+  border-radius: 6px;
+  justify-content: flex-start;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.gambit-detail__value:disabled {
+  color: rgba(244, 246, 255, 0.35);
 }
 
 .gambit-detail__actions,
@@ -136,6 +222,16 @@
   min-height: 18px;
   margin-top: 6px;
 }
+
+
+.gambit-slot-selector__name-field .unity-text-input,
+.gambit-detail__name .unity-text-input {
+  color: #0b1324;
+  background-color: rgba(255, 255, 255, 0.92);
+}
+
+
+
 
 
 

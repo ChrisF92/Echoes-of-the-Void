@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using EchoesOfTheVoid.Core.Combat.Gambits;
 using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
@@ -381,7 +381,7 @@ namespace EchoesOfTheVoid.Core.Roster {
       return true;
     }
 
-    public bool TrySetGambitProfile(string instanceId, IGambitRuleSource profile, out string errorMessage) {
+    public bool TrySetGambitProfile(string instanceId, IGambitRuleSource profile, out string errorMessage, int slotIndex = -1, bool setActiveSlot = true) {
       errorMessage = string.Empty;
 
       if (!TryGetEcho(instanceId, out PlayerEchoData echo)) {
@@ -389,14 +389,24 @@ namespace EchoesOfTheVoid.Core.Roster {
         return false;
       }
 
+      int resolvedSlot = slotIndex;
+      if (resolvedSlot < 0 || resolvedSlot >= PlayerEchoData.GambitProfileSlotCount) {
+        resolvedSlot = echo.ActiveGambitSlot;
+      }
+
+      resolvedSlot = Mathf.Clamp(resolvedSlot, 0, PlayerEchoData.GambitProfileSlotCount - 1);
+
       GambitProfileData cloned = CloneGambitProfile(profile);
-      echo.SetGambitProfile(cloned);
+      echo.SetGambitProfileSlot(resolvedSlot, cloned);
+
+      if (setActiveSlot) {
+        echo.SetActiveGambitSlot(resolvedSlot);
+      }
 
       OnEchoUpdated?.Invoke(echo);
       OnRosterChanged?.Invoke();
       return true;
     }
-
     private void EnsureStateContainers() {
       _ownedEchoes ??= new List<PlayerEchoData>();
       _partyAssignments ??= new List<string>(_formationSlotCount);
@@ -580,6 +590,7 @@ namespace EchoesOfTheVoid.Core.Roster {
     }
   }
 }
+
 
 
 

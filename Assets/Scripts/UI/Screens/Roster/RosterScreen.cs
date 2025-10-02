@@ -87,7 +87,7 @@ namespace EchoesOfTheVoid.UI.Roster {
       }
 
       if (_gambitModal != null) {
-        _gambitModal.ConfigureServices(_rosterService);
+        _gambitModal.ConfigureServices(_rosterService, ResolvePlayerInventory());
         _gambitModal.OnGambitApplied += HandleGambitApplied;
       }
 
@@ -137,7 +137,7 @@ namespace EchoesOfTheVoid.UI.Roster {
       }
 
       if (_gambitModal != null) {
-        _gambitModal.ConfigureServices(_rosterService);
+        _gambitModal.ConfigureServices(_rosterService, ResolvePlayerInventory());
       }
 
       RefreshAll();
@@ -578,7 +578,7 @@ namespace EchoesOfTheVoid.UI.Roster {
       }
 
       if (_gambitModal != null) {
-        _gambitModal.ConfigureServices(_rosterService);
+        _gambitModal.ConfigureServices(_rosterService, ResolvePlayerInventory());
         _gambitModal.ShowForEcho(echo);
       }
 
@@ -682,5 +682,6 @@ namespace EchoesOfTheVoid.UI.Roster {
     }
   }
 }
+
 
 

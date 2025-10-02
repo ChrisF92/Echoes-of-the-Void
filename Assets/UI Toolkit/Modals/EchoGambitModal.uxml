@@ -1,4 +1,4 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+﻿<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
   <ui:Style src="EchoGambitModal.uss" />
   <ui:VisualElement name="gambit-modal-root" class="gambit-modal">
     <ui:VisualElement class="gambit-modal__header">
@@ -7,16 +7,30 @@
     </ui:VisualElement>
     <ui:VisualElement class="gambit-modal__body">
       <ui:VisualElement class="gambit-modal__panel">
-        <ui:Label class="gambit-panel__title" text="Rules" />
+        <ui:VisualElement class="gambit-slot-selector">
+          <ui:Label class="gambit-slot-selector__title" text="Profile Slots" />
+          <ui:VisualElement class="gambit-slot-selector__buttons">
+            <ui:Button name="slot-button-0" class="gambit-slot-selector__button" text="1. Slot" />
+            <ui:Button name="slot-button-1" class="gambit-slot-selector__button" text="2. Slot" />
+            <ui:Button name="slot-button-2" class="gambit-slot-selector__button gambit-slot-selector__button--end" text="3. Slot" />
+          </ui:VisualElement>
+          <ui:TextField name="slot-name-field" class="gambit-slot-selector__name-field" label="Profile Name" />
+          <ui:Label name="active-slot-label" class="gambit-slot-selector__active" text="Active Slot: 1" />
+          <ui:Button name="set-active-button" class="gambit-slot-selector__action" text="Set Active Slot" />
+        </ui:VisualElement>
+        <ui:VisualElement class="gambit-panel__title-row">
+          <ui:Label class="gambit-panel__title" text="Rules" />
+          <ui:Button name="add-rule-button" class="gambit-panel__action" text="Add Rule" />
+        </ui:VisualElement>
         <ui:ListView name="rule-list" class="gambit-rule-list" selection-type="Single" />
       </ui:VisualElement>
       <ui:VisualElement class="gambit-modal__panel gambit-detail">
         <ui:TextField name="rule-name-field" class="gambit-detail__name" label="Rule Name" />
         <ui:Toggle name="enabled-toggle" class="gambit-detail__toggle" text="Enabled" />
         <ui:Label name="condition-label" class="gambit-detail__label" text="Condition" />
-        <ui:Label name="condition-value" class="gambit-detail__value" text="" />
+        <ui:Button name="condition-value" class="gambit-detail__value" text="Select condition" />
         <ui:Label name="action-label" class="gambit-detail__label" text="Action" />
-        <ui:Label name="action-value" class="gambit-detail__value" text="" />
+        <ui:Button name="action-value" class="gambit-detail__value" text="Select action" />
         <ui:VisualElement class="gambit-detail__actions">
           <ui:Button name="move-up-button" class="gambit-detail__button" text="Move Up" />
           <ui:Button name="move-down-button" class="gambit-detail__button" text="Move Down" />

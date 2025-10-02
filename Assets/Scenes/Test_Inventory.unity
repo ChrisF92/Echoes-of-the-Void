@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.PlayerRosterService
   _maxOwnedEchoes: 10
-  _maxPartySize: 6
+  _maxPartySize: 1
   _playerInventory: {fileID: 49951560}
   _ownedEchoes:
   - _instanceId: 17a46e0b03564db986ac4cde386d61b7
@@ -277,10 +277,21 @@ MonoBehaviour:
     _customName: 
     _level: 1
     _equipmentLoadout: []
-    _gambitProfile:
+    _legacyGambitProfile:
       profileId: 
       displayName: 
       rules: []
+    _gambitProfiles:
+    - profileId: 
+      displayName: 
+      rules: []
+    - profileId: 
+      displayName: 
+      rules: []
+    - profileId: 
+      displayName: 
+      rules: []
+    _activeGambitSlot: 0
     _preferredFormationSlot: {x: 0, y: 0}
     _isLocked: 0
   - _instanceId: 02c600ea6a29477fb5c6809d18df7459
@@ -288,10 +299,21 @@ MonoBehaviour:
     _customName: 
     _level: 1
     _equipmentLoadout: []
-    _gambitProfile:
+    _legacyGambitProfile:
       profileId: 
       displayName: 
       rules: []
+    _gambitProfiles:
+    - profileId: 
+      displayName: 
+      rules: []
+    - profileId: 
+      displayName: 
+      rules: []
+    - profileId: 
+      displayName: 
+      rules: []
+    _activeGambitSlot: 0
     _preferredFormationSlot: {x: 0, y: 0}
     _isLocked: 0
   _partyAssignments:
@@ -795,6 +817,7 @@ MonoBehaviour:
   _modalTemplate: {fileID: 9197481963319205126, guid: 6763a91cffc5c794ca3d2581ae628295, type: 3}
   _closeOnBackgroundClick: 1
   _rosterService: {fileID: 49951563}
+  _playerInventory: {fileID: 0}
 --- !u!4 &1504089328
 Transform:
   m_ObjectHideFlags: 0

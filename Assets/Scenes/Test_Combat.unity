@@ -165,16 +165,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1fe14ce251178d459ebdabf51013fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EchoesOfTheVoid.Tests::EchoesOfTheVoid.Tests.CombatUITestHarness
-  combatViewController: {fileID: 1412557143}
-  combatSystem: {fileID: 613790648}
-  playerTemplates:
+  _combatViewController: {fileID: 1412557143}
+  _combatSystem: {fileID: 613790648}
+  _playerTemplates:
   - {fileID: 11400000, guid: 4185e630906a4232a9a658eb0d418428, type: 2}
   - {fileID: 11400000, guid: b8e9c4ecf9394fdba56d1fa94447b8d1, type: 2}
-  enemyTemplates:
+  _enemyTemplates:
   - {fileID: 11400000, guid: 4706d4321928443aa8ec94e4964390b5, type: 2}
-  autoInitializeOnStart: 1
-  autoSimulateTurns: 0
-  autoTurnInterval: 2
+  _autoInitializeOnStart: 1
+  _autoSimulateTurns: 0
+  _autoTurnInterval: 2
 --- !u!114 &326174864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,13 +187,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf7a9dc6fe5602408f2a18dd15a2bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EchoesOfTheVoid.Tests::EchoesOfTheVoid.Tests.PlayerGambitProfileTestDriver
-  combatSystem: {fileID: 613790648}
-  playerTemplates:
+  _combatSystem: {fileID: 613790648}
+  _playerTemplates:
   - {fileID: 11400000, guid: 4185e630906a4232a9a658eb0d418428, type: 2}
   - {fileID: 11400000, guid: b8e9c4ecf9394fdba56d1fa94447b8d1, type: 2}
-  applyOnEnable: 1
-  enableAutoCombat: 1
-  waitTimeoutSeconds: 5
+  _applyOnEnable: 1
+  _enableAutoCombat: 1
+  _waitTimeoutSeconds: 5
 --- !u!1 &613790647
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,9 +225,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Combat.Systems.CombatSystem
   _maxPlayersPerSide: 9
   _defaultActionTiming:
-    windup: 0.25
-    resolution: 0.35
-    recovery: 0.5
+    Windup: 0.25
+    Resolution: 0.35
+    Recovery: 0.5
   _actionTimingOverrides: []
   _autoDecisionDelay: 0.3
 --- !u!4 &613790649
@@ -496,8 +496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 009d8665af952f24ea718aea85986245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EchoesOfTheVoid.UI::EchoesOfTheVoid.UI.Combat.CombatViewController
-  uiDocument: {fileID: 1412557142}
-  combatSystem: {fileID: 613790648}
+  _uiDocument: {fileID: 1412557142}
+  _combatSystem: {fileID: 613790648}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
