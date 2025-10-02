@@ -1,0 +1,141 @@
+.gambit-modal {
+  width: 90%;
+  max-width: 1600px;
+  min-width: 960px;
+  max-height: 90%;
+  min-height: 600px;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin: 32px;
+  padding: 24px;
+  background-color: rgba(8, 12, 24, 0.96);
+  border-radius: 12px;
+  border-width: 1px;
+  border-color: rgba(109, 162, 255, 0.35);
+  color: #f4f6ff;
+}
+
+.gambit-modal__header {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.gambit-modal__title {
+  font-size: 26px;
+  -unity-font-style: bold;
+  color: #f4f6ff;
+}
+
+.gambit-modal__body {
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.gambit-modal__panel {
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: rgba(16, 20, 38, 0.78);
+  border-width: 1px;
+  border-color: rgba(109, 162, 255, 0.25);
+  border-radius: 10px;
+  padding: 16px;
+  margin-right: 18px;
+}
+
+.gambit-detail {
+  margin-right: 0;
+}
+
+.gambit-panel__title {
+  font-size: 18px;
+  -unity-font-style: bold;
+  color: rgba(244, 246, 255, 0.9);
+  margin-bottom: 12px;
+}
+
+.gambit-rule-list {
+  flex-grow: 1;
+  background-color: rgba(8, 12, 24, 0.6);
+  border-width: 1px;
+  border-color: rgba(109, 162, 255, 0.2);
+}
+
+.gambit-rule-item {
+  flex-direction: column;
+  padding: 10px;
+  background-color: rgba(244, 246, 255, 0.04);
+}
+
+.gambit-rule-item__name {
+  -unity-font-style: bold;
+  color: rgba(244, 246, 255, 0.95);
+  margin-bottom: 4px;
+}
+
+.gambit-rule-item__summary {
+  font-size: 13px;
+  color: rgba(244, 246, 255, 0.7);
+}
+
+.gambit-detail__name {
+  font-size: 18px;
+  -unity-font-style: bold;
+  margin-bottom: 8px;
+  color: rgba(244, 246, 255, 0.95);
+}
+
+.gambit-detail__toggle {
+  margin-bottom: 10px;
+}
+
+.gambit-detail__label {
+  font-size: 13px;
+  color: rgba(244, 246, 255, 0.75);
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.gambit-detail__value {
+  font-size: 14px;
+  color: rgba(244, 246, 255, 0.9);
+  min-height: 20px;
+  margin-bottom: 8px;
+}
+
+.gambit-detail__actions,
+.gambit-detail__footer {
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.gambit-detail__button {
+  min-width: 120px;
+  min-height: 34px;
+  margin-right: 10px;
+  background-color: rgba(244, 246, 255, 0.1);
+  color: #f4f6ff;
+}
+
+#remove-button,
+#cancel-button {
+  margin-right: 0;
+}
+
+.gambit-detail__button--primary {
+  background-color: rgba(66, 139, 255, 0.95);
+  color: #0b1324;
+}
+
+.gambit-detail__error {
+  font-size: 13px;
+  color: #ff8686;
+  min-height: 18px;
+  margin-top: 6px;
+}
+
+
+

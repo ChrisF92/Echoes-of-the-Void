@@ -1,0 +1,228 @@
+.equipment-modal {
+  width: 92%;
+  max-width: 1680px;
+  min-width: 1024px;
+  max-height: 92%;
+  min-height: 640px;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin: 32px;
+  padding: 28px;
+  background-color: rgba(10, 16, 30, 0.96);
+  border-radius: 12px;
+  border-width: 1px;
+  border-color: rgba(109, 162, 255, 0.35);
+  color: #f4f6ff;
+}
+
+.equipment-modal__header {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.equipment-modal__title {
+  font-size: 26px;
+  -unity-font-style: bold;
+  color: #f4f6ff;
+}
+
+.equipment-modal__close {
+  min-width: 110px;
+}
+
+.equipment-modal__body {
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.equipment-modal__panel {
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: rgba(16, 22, 36, 0.78);
+  border-width: 1px;
+  border-color: rgba(109, 162, 255, 0.25);
+  border-radius: 10px;
+  padding: 18px;
+  margin-right: 20px;
+  min-height: 0;
+  min-width: 0;
+  flex-basis: 0;
+}
+
+#slot-panel {
+  flex: 0 0 260px;
+  min-width: 260px;
+}
+
+#inventory-panel {
+  flex: 0 0 320px;
+  min-width: 320px;
+}
+
+.equipment-detail {
+  margin-right: 0;
+}
+
+.equipment-panel__title {
+  font-size: 18px;
+  -unity-font-style: bold;
+  color: rgba(244, 246, 255, 0.9);
+  margin-bottom: 12px;
+}
+
+.equipment-slot-list,
+.equipment-inventory-list {
+  flex-grow: 1;
+  background-color: rgba(8, 12, 24, 0.6);
+  border-width: 1px;
+  border-color: rgba(109, 162, 255, 0.2);
+  min-height: 0;
+}
+
+.equipment-slot-item {
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px 14px;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(109, 162, 255, 0.12);
+  min-height: 64px;
+}
+
+.equipment-slot-item__name {
+  flex: none;
+  font-size: 11px;
+  color: rgba(244, 246, 255, 0.55);
+  margin-bottom: 4px;
+}
+
+.equipment-slot-item__item {
+  font-size: 16px;
+  color: rgba(244, 246, 255, 0.9);
+}
+
+.equipment-slot-item--filled .equipment-slot-item__item {
+  -unity-font-style: bold;
+}
+
+.equipment-slot-item--empty .equipment-slot-item__item {
+  color: rgba(244, 246, 255, 0.45);
+  -unity-font-style: italic;
+}
+
+.equipment-inventory-item {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(109, 162, 255, 0.12);
+}
+
+.equipment-inventory-item__name {
+  flex-grow: 1;
+  color: rgba(244, 246, 255, 0.85);
+  margin-right: 12px;
+}
+
+.equipment-inventory-item__count {
+  color: rgba(244, 246, 255, 0.65);
+  min-width: 48px;
+  -unity-text-align: middle-right;
+}
+
+.equipment-detail__section {
+  flex-direction: column;
+  background-color: rgba(12, 18, 32, 0.85);
+  border-width: 1px;
+  border-color: rgba(109, 162, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  min-height: 0;
+  min-width: 0;
+}
+
+.equipment-detail__section-title {
+  font-size: 16px;
+  -unity-font-style: bold;
+  color: rgba(244, 246, 255, 0.85);
+  margin-bottom: 6px;
+}
+
+.equipment-detail__slot-name,
+.equipment-detail__item-name,
+.equipment-detail__description {
+  white-space: normal;
+}
+
+.equipment-detail__slot-name {
+  font-size: 13px;
+  color: rgba(244, 246, 255, 0.65);
+  margin-bottom: 4px;
+}
+
+.equipment-detail__item-name {
+  font-size: 18px;
+  -unity-font-style: bold;
+  color: rgba(244, 246, 255, 0.95);
+  margin-bottom: 6px;
+}
+
+.equipment-detail__description {
+  font-size: 14px;
+  color: rgba(244, 246, 255, 0.8);
+  margin-bottom: 10px;
+}
+
+.equipment-detail__stats {
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.equipment-detail__stats > * {
+  margin-bottom: 8px;
+}
+
+.equipment-detail__error {
+  font-size: 13px;
+  color: #ff8686;
+  min-height: 18px;
+  margin-top: 4px;
+}
+
+.equipment-detail__button {
+  min-width: 130px;
+  min-height: 34px;
+  margin-top: 8px;
+  margin-right: 0;
+  align-self: flex-start;
+  background-color: rgba(244, 246, 255, 0.1);
+  color: #f4f6ff;
+}
+
+.equipment-detail__button--primary {
+  background-color: rgba(66, 139, 255, 0.95);
+  color: #0b1324;
+}
+
+.equipment-detail__stat-row {
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 13px;
+  color: rgba(244, 246, 255, 0.85);
+}
+
+.equipment-detail__stat-value {
+  -unity-font-style: bold;
+}
+
+.equipment-detail__empty {
+  font-size: 13px;
+  color: rgba(244, 246, 255, 0.6);
+  -unity-font-style: italic;
+}
+
+

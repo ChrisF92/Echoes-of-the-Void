@@ -206,8 +206,11 @@
 .inventory-detail-actions {
   display: flex;
   flex-direction: row;
-  gap: 8px;
   margin-bottom: 12px;
+}
+
+.inventory-detail-actions > * {
+  margin-right: 8px;
 }
 
 .inventory-action-button {

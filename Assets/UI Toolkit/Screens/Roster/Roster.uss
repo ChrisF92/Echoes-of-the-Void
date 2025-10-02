@@ -1,0 +1,205 @@
+.roster-screen {
+  flex-grow: 1;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.roster-header {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.roster-title {
+  font-size: 28px;
+  -unity-font-style: bold;
+}
+
+.roster-summary {
+  font-size: 16px;
+  color: #BBBBBB;
+}
+
+.roster-close-button {
+  min-width: 120px;
+}
+
+.roster-body {
+  flex-grow: 1;
+  flex-direction: row;
+}
+
+.roster-owned-panel,
+.roster-party-panel,
+.roster-detail-panel {
+  flex-direction: column;
+  background-color: rgba(25, 25, 40, 0.75);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.roster-owned-panel {
+  width: 260px;
+  margin-right: 16px;
+}
+
+.roster-party-panel {
+  flex-grow: 1;
+  margin-right: 16px;
+}
+
+.roster-detail-panel {
+  width: 280px;
+}
+
+.roster-section-title {
+  font-size: 18px;
+  -unity-font-style: bold;
+  margin-bottom: 12px;
+}
+
+.roster-owned-list {
+  flex-grow: 1;
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.1);
+  margin-bottom: 12px;
+}
+
+.roster-empty-message {
+  font-size: 14px;
+  color: #888888;
+  -unity-text-align: middle-center;
+}
+
+.roster-party-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.roster-party-slot {
+  display: flex;
+  min-height: 110px;
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #CCCCCC;
+  -unity-text-align: middle-center;
+  padding: 6px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: 30%;
+  flex-shrink: 0;
+}
+
+.roster-party-slot--locked {
+  border-color: rgba(200, 80, 80, 0.6);
+  color: rgba(200, 80, 80, 0.8);
+  background-color: rgba(80, 20, 20, 0.3);
+}
+
+.roster-party-slot--occupied {
+  border-color: rgba(120, 180, 255, 0.9);
+  background-color: rgba(40, 60, 120, 0.45);
+}
+
+.roster-party-slot--selected {
+  border-width: 2px;
+  border-color: #6DFE9A;
+}
+
+.roster-hint {
+  font-size: 13px;
+  color: #888888;
+  -unity-text-align: middle-center;
+}
+
+.roster-detail-name {
+  font-size: 20px;
+  -unity-font-style: bold;
+  margin-bottom: 8px;
+}
+
+.roster-detail-slot {
+  font-size: 14px;
+  color: #AAAAAA;
+  margin-bottom: 12px;
+}
+
+.roster-detail-scroll {
+  flex-grow: 1;
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.08);
+  margin-bottom: 12px;
+}
+
+.roster-detail-stats {
+  flex-direction: column;
+  padding: 8px;
+}
+
+.roster-detail-actions {
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.roster-action-button {
+  min-height: 32px;
+  margin-bottom: 6px;
+}
+
+.roster-confirm-button {
+  margin-top: 8px;
+  min-height: 36px;
+  font-size: 16px;
+  -unity-font-style: bold;
+}
+
+.roster-owned-item {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+}
+
+.roster-owned-item__name {
+  font-size: 15px;
+}
+
+.roster-owned-item__status {
+  font-size: 13px;
+  color: #777777;
+}
+
+.roster-owned-item__status--party {
+  color: #6DFE9A;
+}
+
+.roster-party-slot__label {
+  -unity-text-align: middle-center;
+  font-size: 14px;
+}
+
+.roster-detail-stat-row {
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 2px 0;
+  margin-bottom: 8px;
+}
+
+.roster-detail-stat-name {
+  font-size: 14px;
+  color: #CCCCCC;
+}
+
+.roster-detail-stat-value {
+  font-size: 14px;
+  -unity-font-style: bold;
+}

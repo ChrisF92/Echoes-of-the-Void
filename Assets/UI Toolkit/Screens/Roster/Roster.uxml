@@ -1,0 +1,46 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+  <ui:Style src="Roster.uss" />
+  <ui:VisualElement name="roster-root" class="roster-screen">
+    <ui:VisualElement name="roster-header" class="roster-header">
+      <ui:Label name="roster-title" class="roster-title" text="Roster" />
+      <ui:Label name="roster-summary" class="roster-summary" text="0 / 0" />
+      <ui:Button name="close-button" class="roster-close-button" text="Close" />
+    </ui:VisualElement>
+    <ui:VisualElement name="roster-body" class="roster-body">
+      <ui:VisualElement name="owned-panel" class="roster-owned-panel">
+        <ui:Label name="owned-title" class="roster-section-title" text="Owned Echoes" />
+        <ui:ListView name="owned-list" class="roster-owned-list" selection-type="Single" />
+        <ui:Label name="owned-empty" class="roster-empty-message" text="No echoes recruited." />
+      </ui:VisualElement>
+      <ui:VisualElement name="party-panel" class="roster-party-panel">
+        <ui:Label name="party-title" class="roster-section-title" text="Party Formation" />
+        <ui:VisualElement name="party-grid" class="roster-party-grid">
+          <ui:VisualElement name="party-slot-0" class="roster-party-slot" />
+          <ui:VisualElement name="party-slot-1" class="roster-party-slot" />
+          <ui:VisualElement name="party-slot-2" class="roster-party-slot" />
+          <ui:VisualElement name="party-slot-3" class="roster-party-slot" />
+          <ui:VisualElement name="party-slot-4" class="roster-party-slot" />
+          <ui:VisualElement name="party-slot-5" class="roster-party-slot" />
+          <ui:VisualElement name="party-slot-6" class="roster-party-slot" />
+          <ui:VisualElement name="party-slot-7" class="roster-party-slot" />
+          <ui:VisualElement name="party-slot-8" class="roster-party-slot" />
+        </ui:VisualElement>
+        <ui:Label name="party-hint" class="roster-hint" text="Select an echo then choose a slot." />
+      </ui:VisualElement>
+      <ui:VisualElement name="detail-panel" class="roster-detail-panel">
+        <ui:Label name="detail-name" class="roster-detail-name" text="Select an echo" />
+        <ui:Label name="detail-slot" class="roster-detail-slot" text="" />
+        <ui:ScrollView name="detail-scroll" class="roster-detail-scroll" mode="Vertical">
+          <ui:VisualElement name="detail-stats" class="roster-detail-stats" />
+        </ui:ScrollView>
+        <ui:VisualElement name="detail-actions" class="roster-detail-actions">
+          <ui:Button name="assign-button" class="roster-action-button" text="Assign to Slot" />
+          <ui:Button name="remove-button" class="roster-action-button" text="Remove from Party" />
+          <ui:Button name="equipment-button" class="roster-action-button" text="Edit Equipment" />
+          <ui:Button name="gambit-button" class="roster-action-button" text="Edit Gambits" />
+        </ui:VisualElement>
+        <ui:Button name="confirm-button" class="roster-confirm-button" text="Confirm Party" />
+      </ui:VisualElement>
+    </ui:VisualElement>
+  </ui:VisualElement>
+</ui:UXML>

@@ -111,7 +111,7 @@ public class HamburgerMenu : MonoBehaviour {
   }
 
   private void OnEchoesClicked(ClickEvent evt) {
-    NavigationManager.Instance.NavigateToScreen("EchoesScreen");
+    NavigationManager.Instance.NavigateToScreen("RosterScreen");
     CloseMenu();
   }
 

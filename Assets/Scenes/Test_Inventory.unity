@@ -187,8 +187,9 @@ GameObject:
   - component: {fileID: 49951561}
   - component: {fileID: 49951560}
   - component: {fileID: 49951562}
+  - component: {fileID: 49951563}
   m_Layer: 0
-  m_Name: Player Inventory
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -255,6 +256,57 @@ MonoBehaviour:
   _inventory: {fileID: 49951560}
   _slotLayout: 03000000040000000000000001000000020000000500000006000000
   _startingEquipment: []
+--- !u!114 &49951563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49951559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4182268980d3ea24cba86b4f8dee4ef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.PlayerRosterService
+  _maxOwnedEchoes: 10
+  _maxPartySize: 6
+  _playerInventory: {fileID: 49951560}
+  _ownedEchoes:
+  - _instanceId: 17a46e0b03564db986ac4cde386d61b7
+    _template: {fileID: 11400000, guid: 4185e630906a4232a9a658eb0d418428, type: 2}
+    _customName: 
+    _level: 1
+    _equipmentLoadout: []
+    _gambitProfile:
+      profileId: 
+      displayName: 
+      rules: []
+    _preferredFormationSlot: {x: 0, y: 0}
+    _isLocked: 0
+  - _instanceId: 02c600ea6a29477fb5c6809d18df7459
+    _template: {fileID: 11400000, guid: b8e9c4ecf9394fdba56d1fa94447b8d1, type: 2}
+    _customName: 
+    _level: 1
+    _equipmentLoadout: []
+    _gambitProfile:
+      profileId: 
+      displayName: 
+      rules: []
+    _preferredFormationSlot: {x: 0, y: 0}
+    _isLocked: 0
+  _partyAssignments:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &63734927
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,6 +571,57 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &774400485
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 774400487}
+  - component: {fileID: 774400486}
+  m_Layer: 0
+  m_Name: Roster Screen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &774400486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774400485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411dca9c1a2ab8344825a594362e5e53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EchoesOfTheVoid.UI::EchoesOfTheVoid.UI.Roster.RosterScreen
+  _screenId: RosterScreen
+  _screenTemplate: {fileID: 9197481963319205126, guid: 4f5383dfd7e27a24b928786555dd0b55, type: 3}
+  _rosterService: {fileID: 49951563}
+  _encounterBootstrapper: {fileID: 0}
+  _equipmentModal: {fileID: 1444141682}
+  _gambitModal: {fileID: 1504089327}
+  _playerInventory: {fileID: 49951560}
+--- !u!4 &774400487
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774400485}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1400105164
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,6 +645,55 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1400105164}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1444141681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1444141683}
+  - component: {fileID: 1444141682}
+  m_Layer: 0
+  m_Name: Echo Equipment Modal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1444141682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444141681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41542b6dc280b1f4fb8560a6e1bafed8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EchoesOfTheVoid.UI::EchoesOfTheVoid.UI.Modals.EchoEquipmentModal
+  _modalId: EchoEquipmentModal
+  _modalTemplate: {fileID: 9197481963319205126, guid: 4cdc3bc7f82f1194c80158a150d05dd5, type: 3}
+  _closeOnBackgroundClick: 1
+  _rosterService: {fileID: 49951563}
+  _playerInventory: {fileID: 49951560}
+--- !u!4 &1444141683
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444141681}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -602,6 +754,54 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1446979070}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1504089326
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1504089328}
+  - component: {fileID: 1504089327}
+  m_Layer: 0
+  m_Name: Echo Gambit Modal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1504089327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504089326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9686be2586d30d24a9ab99f363b7cd67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EchoesOfTheVoid.UI::EchoesOfTheVoid.UI.Modals.EchoGambitModal
+  _modalId: EchoGambitModal
+  _modalTemplate: {fileID: 9197481963319205126, guid: 6763a91cffc5c794ca3d2581ae628295, type: 3}
+  _closeOnBackgroundClick: 1
+  _rosterService: {fileID: 49951563}
+--- !u!4 &1504089328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504089326}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -683,3 +883,6 @@ SceneRoots:
   - {fileID: 34965196}
   - {fileID: 2038470413}
   - {fileID: 599092101}
+  - {fileID: 774400487}
+  - {fileID: 1504089328}
+  - {fileID: 1444141683}

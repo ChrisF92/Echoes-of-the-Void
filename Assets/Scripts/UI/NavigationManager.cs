@@ -22,8 +22,9 @@ public class NavigationManager : MonoBehaviour {
     if (Instance == null) {
       Instance = this;
       DontDestroyOnLoad(gameObject);
-    } else {
+    } else if (Instance != this) {
       Destroy(gameObject);
+      return;
     }
   }
 
@@ -125,3 +126,5 @@ public class NavigationManager : MonoBehaviour {
     return _modals.ContainsKey(modalId) && _modals[modalId].IsVisible;
   }
 }
+
+

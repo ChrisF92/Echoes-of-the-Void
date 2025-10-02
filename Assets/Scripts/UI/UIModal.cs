@@ -40,6 +40,8 @@ public abstract class UIModal : MonoBehaviour {
     _backdrop.style.top = 0;
     _backdrop.style.right = 0;
     _backdrop.style.bottom = 0;
+    _backdrop.style.justifyContent = Justify.Center;
+    _backdrop.style.alignItems = Align.Center;
     _backdrop.style.backgroundColor = new Color(0, 0, 0, 0.5f);
     _backdrop.style.display = DisplayStyle.None;
 
@@ -53,11 +55,11 @@ public abstract class UIModal : MonoBehaviour {
 
     // Instantiate modal from template
     _modalContainer = _modalTemplate.Instantiate();
-    _modalContainer.style.position = Position.Absolute;
-    _modalContainer.style.left = new StyleLength(StyleKeyword.Auto);
-    _modalContainer.style.top = new StyleLength(StyleKeyword.Auto);
-    _modalContainer.style.right = new StyleLength(StyleKeyword.Auto);
-    _modalContainer.style.bottom = new StyleLength(StyleKeyword.Auto);
+    _modalContainer.style.position = Position.Relative;
+    _modalContainer.style.left = StyleKeyword.Undefined;
+    _modalContainer.style.top = StyleKeyword.Undefined;
+    _modalContainer.style.right = StyleKeyword.Undefined;
+    _modalContainer.style.bottom = StyleKeyword.Undefined;
 
     _backdrop.Add(_modalContainer);
     _rootElement.Add(_backdrop);

@@ -1,0 +1,37 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+  <ui:Style src="EchoEquipmentModal.uss" />
+  <ui:VisualElement name="equipment-modal-root" class="equipment-modal">
+    <ui:VisualElement name="equipment-modal-header" class="equipment-modal__header">
+      <ui:Label name="equipment-title" class="equipment-modal__title" text="Equipment" />
+      <ui:Button name="close-button" class="equipment-modal__close" text="Close" />
+    </ui:VisualElement>
+    <ui:VisualElement name="equipment-modal-body" class="equipment-modal__body">
+      <ui:VisualElement name="slot-panel" class="equipment-modal__panel">
+        <ui:Label class="equipment-panel__title" text="Slots" />
+        <ui:ListView name="slot-list" class="equipment-slot-list" selection-type="Single" />
+      </ui:VisualElement>
+      <ui:VisualElement name="inventory-panel" class="equipment-modal__panel">
+        <ui:Label class="equipment-panel__title" text="Available Gear" />
+        <ui:ListView name="inventory-list" class="equipment-inventory-list" selection-type="Single" />
+      </ui:VisualElement>
+      <ui:VisualElement name="detail-panel" class="equipment-modal__panel equipment-detail">
+        <ui:VisualElement class="equipment-detail__section equipment-detail__section--slot">
+          <ui:Label class="equipment-detail__section-title" text="Selected Slot" />
+          <ui:Label name="slot-name" class="equipment-detail__slot-name" text="Select a slot" />
+          <ui:Label name="slot-item-name" class="equipment-detail__item-name" text="" />
+          <ui:Label name="slot-description" class="equipment-detail__description" text="" />
+          <ui:VisualElement name="slot-stats" class="equipment-detail__stats" />
+          <ui:Button name="unequip-button" class="equipment-detail__button" text="Unequip" />
+        </ui:VisualElement>
+        <ui:VisualElement class="equipment-detail__section equipment-detail__section--gear">
+          <ui:Label class="equipment-detail__section-title" text="Selected Gear" />
+          <ui:Label name="gear-name" class="equipment-detail__item-name" text="Select gear to view details" />
+          <ui:Label name="gear-description" class="equipment-detail__description" text="" />
+          <ui:VisualElement name="gear-stats" class="equipment-detail__stats" />
+          <ui:Button name="equip-button" class="equipment-detail__button equipment-detail__button--primary" text="Equip" />
+        </ui:VisualElement>
+        <ui:Label name="error-label" class="equipment-detail__error" text="" />
+      </ui:VisualElement>
+    </ui:VisualElement>
+  </ui:VisualElement>
+</ui:UXML>
