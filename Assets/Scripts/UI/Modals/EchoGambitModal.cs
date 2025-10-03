@@ -8,7 +8,6 @@ using EchoesOfTheVoid.Core.Combat.Gambits;
 using EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations;
 using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
 using EchoesOfTheVoid.Core.Inventory;
-using EchoesOfTheVoid.Core.Inventory.Data;
 using EchoesOfTheVoid.Core.Inventory.Player;
 using EchoesOfTheVoid.Core.Inventory.ScriptableObjects;
 using EchoesOfTheVoid.Core.Inventory.Systems;
@@ -532,10 +531,10 @@ namespace EchoesOfTheVoid.UI.Modals {
       menu.AddItem("Basic/Attack", false, () => SetRuleAction(new AttackActionBlock()));
       menu.AddItem("Basic/Defend", false, () => SetRuleAction(new DefendActionBlock()));
 
-      List<SkillScriptableObject> skills = EnumerateAvailableSkills().ToList();
+      var skills = EnumerateAvailableSkills().ToList();
       if (skills.Count > 0) {
-        foreach (SkillScriptableObject skill in skills) {
-          SkillScriptableObject capturedSkill = skill;
+        foreach (SkillSO skill in skills) {
+          SkillSO capturedSkill = skill;
           menu.AddItem($"Skills/{capturedSkill.DisplayName}", false, () => SetRuleAction(new SkillActionBlock {
             skill = capturedSkill,
             requireCanUse = true
@@ -545,7 +544,7 @@ namespace EchoesOfTheVoid.UI.Modals {
         menu.AddDisabledItem("Skills/No available skills", false);
       }
 
-      List<ItemScriptableObject> items = EnumerateAvailableItems().ToList();
+      var items = EnumerateAvailableItems().ToList();
       if (items.Count > 0) {
         foreach (ItemScriptableObject item in items) {
           ItemScriptableObject capturedItem = item;
@@ -595,13 +594,13 @@ namespace EchoesOfTheVoid.UI.Modals {
       return rule != null;
     }
 
-    private IEnumerable<SkillScriptableObject> EnumerateAvailableSkills() {
-      if (_currentEcho?.Template?.startingSkills == null) {
+    private IEnumerable<SkillSO> EnumerateAvailableSkills() {
+      if (_currentEcho?.Template?.StartingSkills == null) {
         yield break;
       }
 
-      var seen = new HashSet<SkillScriptableObject>();
-      foreach (SkillScriptableObject skill in _currentEcho.Template.startingSkills) {
+      var seen = new HashSet<SkillSO>();
+      foreach (SkillSO skill in _currentEcho.Template.StartingSkills) {
         if (skill == null || !seen.Add(skill)) {
           continue;
         }

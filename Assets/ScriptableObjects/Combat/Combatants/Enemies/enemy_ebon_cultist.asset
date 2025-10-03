@@ -12,20 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
   m_Name: enemy_ebon_cultist
   m_EditorClassIdentifier: 
-  isPlayerControlled: 0
-  combatantId: enemy_ebon_cultist
-  displayName: Ebon Cultist
-  portrait: {fileID: 0}
-  combatPrefab: {fileID: 0}
-  baseStats:
+  IsPlayerControlled: 0
+  CombatantId: ebon_cultist
+  DisplayName: Ebon Cultist
+  Portrait: {fileID: 0}
+  CombatPrefab: {fileID: 0}
+  BaseStats:
     Health: 100
     Mana: 50
     Attack: 15
     Defense: 10
     Speed: 12
     Luck: 5
-  startingSkills:
+  StartingSkills:
   - {fileID: 11400000, guid: 64d36f4f3d33d184aaf8f87b619662d6, type: 2}
-  startingItems: []
-  startingEquipment: []
-  gambitProfile: {fileID: 11400000, guid: ad63823d8f64b4a459476507931f3273, type: 2}
+  StartingItems: []
+  StartingEquipment: []
+  GambitProfile: {fileID: 11400000, guid: ad63823d8f64b4a459476507931f3273, type: 2}

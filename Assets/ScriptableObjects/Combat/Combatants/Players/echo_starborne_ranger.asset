@@ -12,22 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
   m_Name: echo_starborne_ranger
   m_EditorClassIdentifier: 
-  isPlayerControlled: 1
-  combatantId: echo_starborne_ranger
-  displayName: Starborne Ranger
-  portrait: {fileID: 0}
-  combatPrefab: {fileID: 0}
-  baseStats:
-    Health: 100
+  IsPlayerControlled: 1
+  CombatantId: starborne_ranger
+  DisplayName: Starborne Ranger
+  Portrait: {fileID: 0}
+  CombatPrefab: {fileID: 0}
+  BaseStats:
+    Health: 50
     Mana: 50
     Attack: 15
     Defense: 10
     Speed: 12
     Luck: 5
-  startingSkills:
-  - {fileID: 11400000, guid: 64d36f4f3d33d184aaf8f87b619662d6, type: 2}
-  startingItems:
-  - Item: {fileID: 0}
-    Quantity: 0
-  startingEquipment: []
-  gambitProfile: {fileID: 0}
+  StartingSkills:
+  - {fileID: 11400000, guid: 71225a0ba9a550343a34777ef68d5890, type: 2}
+  StartingItems: []
+  StartingEquipment: []
+  GambitProfile: {fileID: 0}

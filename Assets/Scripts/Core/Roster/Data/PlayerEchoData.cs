@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Serialization;
-
 using EchoesOfTheVoid.Core.Combat.Gambits;
 using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
 using EchoesOfTheVoid.Core.Inventory.Data;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace EchoesOfTheVoid.Core.Roster.Data {
   [Serializable]
@@ -13,7 +12,7 @@ namespace EchoesOfTheVoid.Core.Roster.Data {
     public const int GambitProfileSlotCount = 3;
 
     [SerializeField] private string _instanceId;
-    [SerializeField] private CombatantTemplateScriptableObject _template;
+    [SerializeField] private CombatantSO _template;
     [SerializeField] private string _customName;
     [SerializeField] private int _level = 1;
     [SerializeField] private List<EquippedItemData> _equipmentLoadout = new();
@@ -23,21 +22,21 @@ namespace EchoesOfTheVoid.Core.Roster.Data {
     [SerializeField] private Vector2Int _preferredFormationSlot = new(-1, -1);
     [SerializeField] private bool _isLocked;
 
-    public PlayerEchoData(string instanceId, CombatantTemplateScriptableObject template) {
+    public PlayerEchoData(string instanceId, CombatantSO template) {
       _instanceId = !string.IsNullOrWhiteSpace(instanceId)
         ? instanceId
         : Guid.NewGuid().ToString("N");
       _template = template;
-      _customName = template != null ? template.displayName : string.Empty;
+      _customName = template != null ? template.DisplayName : string.Empty;
       EnsureGambitProfileSlots();
     }
 
     public string InstanceId => _instanceId;
-    public CombatantTemplateScriptableObject Template => _template;
-    public string TemplateId => _template != null ? _template.combatantId : string.Empty;
+    public CombatantSO Template => _template;
+    public string TemplateId => _template != null ? _template.CombatantId : string.Empty;
     public string DisplayName => !string.IsNullOrWhiteSpace(_customName)
       ? _customName
-      : _template != null ? _template.displayName : "Unnamed Echo";
+      : _template != null ? _template.DisplayName : "Unnamed Echo";
     public int Level => Math.Max(1, _level);
     public IReadOnlyList<EquippedItemData> EquipmentLoadout => _equipmentLoadout;
     public Vector2Int PreferredFormationSlot => _preferredFormationSlot;
@@ -139,9 +138,7 @@ namespace EchoesOfTheVoid.Core.Roster.Data {
     }
 
     private void EnsureGambitProfileSlots() {
-      if (_gambitProfiles == null) {
-        _gambitProfiles = new List<GambitProfileData>(GambitProfileSlotCount);
-      }
+      _gambitProfiles ??= new List<GambitProfileData>(GambitProfileSlotCount);
 
       if (_legacyGambitProfile != null) {
         if (_gambitProfiles.Count == 0) {

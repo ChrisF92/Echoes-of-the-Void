@@ -46,18 +46,18 @@ namespace EchoesOfTheVoid.Core.Roster {
       return combatant;
     }
 
-    private static Combatant InstantiateCombatant(CombatantTemplateScriptableObject template, Transform parent) {
+    private static Combatant InstantiateCombatant(CombatantSO template, Transform parent) {
       GameObject spawned;
       Combatant combatant;
 
-      if (template.combatPrefab != null) {
-        spawned = Object.Instantiate(template.combatPrefab, parent);
+      if (template.CombatPrefab != null) {
+        spawned = Object.Instantiate(template.CombatPrefab, parent);
         combatant = spawned.GetComponent<Combatant>();
         if (combatant == null) {
           combatant = spawned.AddComponent<Combatant>();
         }
       } else {
-        string name = string.IsNullOrWhiteSpace(template.displayName) ? "PlayerCombatant" : template.displayName;
+        string name = string.IsNullOrWhiteSpace(template.DisplayName) ? "PlayerCombatant" : template.DisplayName;
         spawned = new GameObject(name);
         if (parent != null) {
           spawned.transform.SetParent(parent, false);

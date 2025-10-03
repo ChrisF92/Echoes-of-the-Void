@@ -243,7 +243,7 @@ namespace EchoesOfTheVoid.Core.Roster {
       return slotIndex >= 0 && ClearSlot(slotIndex);
     }
 
-    public bool TryAddEcho(CombatantTemplateScriptableObject template, out PlayerEchoData echo, string instanceId = null) {
+    public bool TryAddEcho(CombatantSO template, out PlayerEchoData echo, string instanceId = null) {
       echo = null;
       if (template == null) {
         return false;
@@ -255,8 +255,8 @@ namespace EchoesOfTheVoid.Core.Roster {
 
       echo = new PlayerEchoData(instanceId, template);
       echo.EnsureIdentity();
-      echo.SetGambitProfile(CloneGambitProfile(template.gambitProfile));
-      echo.SetEquipment(template.startingEquipment);
+      echo.SetGambitProfile(CloneGambitProfile(template.GambitProfile));
+      echo.SetEquipment(template.StartingEquipment);
       _ownedEchoes.Add(echo);
       _echoLookup[echo.InstanceId] = echo;
 

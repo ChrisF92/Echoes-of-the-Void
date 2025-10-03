@@ -25,6 +25,7 @@ MonoBehaviour:
   CanTargetEnemies: 0
   Effects:
   - EffectType: 1
+    StatusEffect: {fileID: 0}
     BaseValue: 35
     StatScaling: 0.5
     ScalingStat: 1

@@ -129,7 +129,6 @@ GameObject:
   m_Component:
   - component: {fileID: 326174862}
   - component: {fileID: 326174863}
-  - component: {fileID: 326174864}
   m_Layer: 0
   m_Name: Combat UI
   m_TagString: Untagged
@@ -175,25 +174,6 @@ MonoBehaviour:
   _autoInitializeOnStart: 1
   _autoSimulateTurns: 0
   _autoTurnInterval: 2
---- !u!114 &326174864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 326174861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bf7a9dc6fe5602408f2a18dd15a2bb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: EchoesOfTheVoid.Tests::EchoesOfTheVoid.Tests.PlayerGambitProfileTestDriver
-  _combatSystem: {fileID: 613790648}
-  _playerTemplates:
-  - {fileID: 11400000, guid: 4185e630906a4232a9a658eb0d418428, type: 2}
-  - {fileID: 11400000, guid: b8e9c4ecf9394fdba56d1fa94447b8d1, type: 2}
-  _applyOnEnable: 1
-  _enableAutoCombat: 1
-  _waitTimeoutSeconds: 5
 --- !u!1 &613790647
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +255,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Inventory.Database.ItemDatabase
   _allItems:
-  - {fileID: 11400000, guid: 8f979cd7a6de45d68e39744564d1c6a8, type: 2}
+  - {fileID: 11400000, guid: 11c8bbb5c8427634f94bb0661113c002, type: 2}
+  - {fileID: 11400000, guid: d0783b2615f77ee46a60e00f801257a5, type: 2}
+  - {fileID: 11400000, guid: 0289348624b69c946a6055cfe071d1e2, type: 2}
+  - {fileID: 11400000, guid: 589e2a6d1aa330e409aa73923a069dbe, type: 2}
+  - {fileID: 11400000, guid: e8c3a18429b2c6e4eb3434aa17d8b151, type: 2}
+  - {fileID: 11400000, guid: 4cdf50f5da66cf54ebe0fcdf7d9ddad1, type: 2}
+  - {fileID: 11400000, guid: f42657811f2cdee4ca2654ad91f88641, type: 2}
+  - {fileID: 11400000, guid: 420560fa42f79654488df3b243db3970, type: 2}
+  - {fileID: 11400000, guid: 2d8f029493dbcc14ab984eac66507838, type: 2}
+  - {fileID: 11400000, guid: 27c5bf308d111994994b81658fd88f3e, type: 2}
+  - {fileID: 11400000, guid: 80f076a477b0a3a4595dcf78f032c73e, type: 2}
+  - {fileID: 11400000, guid: 94a1d5b6bba268741abf51fa69e90811, type: 2}
+  - {fileID: 11400000, guid: 29fe835174d8aec40aa9c9eb2a9c3d9f, type: 2}
+  - {fileID: 11400000, guid: 8106fcb379b9ec2438c34c97ebc40e3f, type: 2}
+  - {fileID: 11400000, guid: 8557dac15fbbbae4383f3db9a525d3e6, type: 2}
 --- !u!4 &614652331
 Transform:
   m_ObjectHideFlags: 0

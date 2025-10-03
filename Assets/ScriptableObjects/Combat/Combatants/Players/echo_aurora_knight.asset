@@ -12,20 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
   m_Name: echo_aurora_knight
   m_EditorClassIdentifier: 
-  isPlayerControlled: 1
-  combatantId: echo_aurora_knight
-  displayName: Aurora Knight
-  portrait: {fileID: 0}
-  combatPrefab: {fileID: 0}
-  baseStats:
+  IsPlayerControlled: 1
+  CombatantId: aurora_knight
+  DisplayName: Aurora Knight
+  Portrait: {fileID: 0}
+  CombatPrefab: {fileID: 0}
+  BaseStats:
     Health: 100
-    Mana: 50
-    Attack: 15
+    Mana: 75
+    Attack: 5
     Defense: 10
     Speed: 12
     Luck: 5
-  startingSkills:
-  - {fileID: 11400000, guid: 71225a0ba9a550343a34777ef68d5890, type: 2}
-  startingItems: []
-  startingEquipment: []
-  gambitProfile: {fileID: 0}
+  StartingSkills:
+  - {fileID: 11400000, guid: 64d36f4f3d33d184aaf8f87b619662d6, type: 2}
+  StartingItems: []
+  StartingEquipment: []
+  GambitProfile: {fileID: 0}

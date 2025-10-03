@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -57,7 +56,7 @@ namespace EchoesOfTheVoid.UI.Roster {
       }
 
       if (_screenTemplate == null) {
-        _screenTemplate = UnityEditor.AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI Toolkit/Screens/Roster/Roster.uxml");
+        _screenTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI Toolkit/Screens/Roster/Roster.uxml");
       }
     }
 #endif
@@ -220,11 +219,7 @@ namespace EchoesOfTheVoid.UI.Roster {
 
         Label statusLabel = element.Q<Label>("roster-owned-item__status");
         if (statusLabel != null) {
-          if (viewModel.IsInParty && viewModel.PartySlotIndex >= 0) {
-            statusLabel.text = $"Party Slot {viewModel.PartySlotIndex + 1}";
-          } else {
-            statusLabel.text = "Reserve";
-          }
+          statusLabel.text = viewModel.IsInParty && viewModel.PartySlotIndex >= 0 ? $"Party Slot {viewModel.PartySlotIndex + 1}" : "Reserve";
 
           statusLabel.EnableInClassList("roster-owned-item__status--party", viewModel.IsInParty);
         }
@@ -358,10 +353,8 @@ namespace EchoesOfTheVoid.UI.Roster {
         string labelText;
         if (info.IsLocked) {
           labelText = "Locked";
-        } else if (echo != null) {
-          labelText = echo.DisplayName;
         } else {
-          labelText = $"Slot {slot.SlotIndex + 1}";
+          labelText = echo != null ? echo.DisplayName : $"Slot {slot.SlotIndex + 1}";
         }
 
         slot.Label.text = labelText;
@@ -398,7 +391,7 @@ namespace EchoesOfTheVoid.UI.Roster {
 
       _detailStatsRoot.Clear();
 
-      CombatStats baseStats = echo.Template.baseStats;
+      CombatStats baseStats = echo.Template.BaseStats;
       if (baseStats == null) {
         return;
       }

@@ -17,7 +17,7 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
     [SerializeField] private Transform _enemyPartyParent;
 
     [Header("Fallbacks")]
-    [SerializeField] private List<CombatantTemplateScriptableObject> _defaultEnemyTemplates = new();
+    [SerializeField] private List<CombatantSO> _defaultEnemyTemplates = new();
 
     private readonly List<Combatant> _spawnedPlayerCombatants = new();
     private readonly List<Combatant> _spawnedEnemyCombatants = new();
@@ -34,7 +34,7 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
       }
     }
 
-    public void BeginEncounter(IEnumerable<CombatantTemplateScriptableObject> enemyTemplates = null) {
+    public void BeginEncounter(IEnumerable<CombatantSO> enemyTemplates = null) {
       CleanupSpawnedCombatants();
 
       if (_rosterService == null) {
@@ -50,7 +50,7 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
 
       _spawnedPlayerCombatants.AddRange(playerCombatants);
 
-      List<CombatantTemplateScriptableObject> enemyTemplateList = ResolveEnemyTemplates(enemyTemplates);
+      List<CombatantSO> enemyTemplateList = ResolveEnemyTemplates(enemyTemplates);
       List<Combatant> enemyCombatants = BuildEnemyParty(enemyTemplateList, _enemyPartyParent);
       _spawnedEnemyCombatants.AddRange(enemyCombatants);
 
@@ -63,20 +63,20 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
       }
     }
 
-    private List<Combatant> BuildEnemyParty(IEnumerable<CombatantTemplateScriptableObject> templates, Transform parent) {
+    private List<Combatant> BuildEnemyParty(IEnumerable<CombatantSO> templates, Transform parent) {
       var result = new List<Combatant>();
       if (templates == null) {
         return result;
       }
 
-      foreach (CombatantTemplateScriptableObject template in templates) {
+      foreach (CombatantSO template in templates) {
         if (template == null) {
           continue;
         }
 
-        var tempEcho = new PlayerEchoData(template.combatantId, template);
-        tempEcho.SetEquipment(template.startingEquipment);
-        tempEcho.SetGambitProfile(RosterCloneUtility.CloneGambitProfile(template.gambitProfile));
+        var tempEcho = new PlayerEchoData(template.CombatantId, template);
+        tempEcho.SetEquipment(template.StartingEquipment);
+        tempEcho.SetGambitProfile(RosterCloneUtility.CloneGambitProfile(template.GambitProfile));
 
         Combatant combatant = RosterCombatPartyBuilder.CreateCombatantForEcho(tempEcho, parent);
         if (combatant == null) {
@@ -90,12 +90,12 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
       return result;
     }
 
-    private List<CombatantTemplateScriptableObject> ResolveEnemyTemplates(IEnumerable<CombatantTemplateScriptableObject> enemyTemplates) {
+    private List<CombatantSO> ResolveEnemyTemplates(IEnumerable<CombatantSO> enemyTemplates) {
       if (enemyTemplates != null) {
         return enemyTemplates.Where(static template => template != null).ToList();
       }
 
-      _defaultEnemyTemplates ??= new List<CombatantTemplateScriptableObject>();
+      _defaultEnemyTemplates ??= new List<CombatantSO>();
       return _defaultEnemyTemplates.Where(static template => template != null).ToList();
     }
 
