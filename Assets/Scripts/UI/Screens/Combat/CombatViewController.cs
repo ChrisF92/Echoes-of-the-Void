@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +7,13 @@ using UnityEngine.UIElements;
 using Unity.Properties;
 using EchoesOfTheVoid.Core.Combat.Actions;
 using EchoesOfTheVoid.Core.Combat.Components;
+using EchoesOfTheVoid.Core.Combat.Effects;
 using EchoesOfTheVoid.Core.Combat.Entities;
 using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
 using EchoesOfTheVoid.Core.Combat.Systems;
 using EchoesOfTheVoid.Core.Combat;
 using EchoesOfTheVoid.Core.Combat.Results;
+using EchoesOfTheVoid.Core.Inventory.Results;
 using ItemData = EchoesOfTheVoid.Core.Inventory.ScriptableObjects.ItemScriptableObject;
 
 namespace EchoesOfTheVoid.UI.Combat {
@@ -164,7 +166,7 @@ namespace EchoesOfTheVoid.UI.Combat {
     private readonly Dictionary<Combatant, Vector2Int> _combatantGridPositions = new();
     private readonly Dictionary<VisualElement, SlotVisualCache> _slotCache = new();
     private readonly Dictionary<Combatant, CombatantEventSubscription> _combatantEventSubscriptions = new();
-    private readonly Dictionary<Combatant, CombatantTemplateScriptableObject> _combatantTemplates = new();
+    private readonly Dictionary<Combatant, CombatantSO> _combatantTemplates = new();
 
     private bool _isSelectingTarget;
     private CombatActionType _currentAction = CombatActionType.Attack;
@@ -200,11 +202,11 @@ namespace EchoesOfTheVoid.UI.Combat {
     private float _battleTimerSeconds;
     private Coroutine _battleTimerRoutine;
 
-    private SkillScriptableObject _pendingSkill;
+    private SkillSO _pendingSkill;
     private ItemData _pendingItem;
 
     private readonly List<ItemData> _itemSource = new();
-    private readonly List<SkillScriptableObject> _skillSource = new();
+    private readonly List<SkillSO> _skillSource = new();
 
     private bool _isInitialized;
 
@@ -251,6 +253,10 @@ namespace EchoesOfTheVoid.UI.Combat {
         _combatSystem.OnTurnStart += HandleCombatTurnStart;
         _combatSystem.OnTurnEnd += HandleCombatTurnEnd;
         _combatSystem.OnActionExecuted += HandleActionExecuted;
+
+        if (_combatSystem.StatusEffectManager != null) {
+          _combatSystem.StatusEffectManager.OnEffectTicked += HandleStatusEffectTick;
+        }
       }
     }
 
@@ -259,6 +265,10 @@ namespace EchoesOfTheVoid.UI.Combat {
         _combatSystem.OnTurnStart -= HandleCombatTurnStart;
         _combatSystem.OnTurnEnd -= HandleCombatTurnEnd;
         _combatSystem.OnActionExecuted -= HandleActionExecuted;
+
+        if (_combatSystem.StatusEffectManager != null) {
+          _combatSystem.StatusEffectManager.OnEffectTicked -= HandleStatusEffectTick;
+        }
       }
     }
 
@@ -470,8 +480,8 @@ namespace EchoesOfTheVoid.UI.Combat {
         uiData.UpdateFromCombatant(combatant, gridPosition);
       }
 
-      if (_combatantTemplates.TryGetValue(combatant, out CombatantTemplateScriptableObject template) && template != null) {
-        uiData.SetPortrait(template.portrait);
+      if (_combatantTemplates.TryGetValue(combatant, out CombatantSO template) && template != null) {
+        uiData.SetPortrait(template.Portrait);
       }
 
       PopulateCombatantSlot(slot, combatant, gridPosition);
@@ -529,7 +539,7 @@ namespace EchoesOfTheVoid.UI.Combat {
         uiData = new CombatantUIData(combatant, GetGridPosition(combatant));
         _combatantUIData[combatant] = uiData;
       } else {
-        Sprite portrait = _combatantTemplates.TryGetValue(combatant, out CombatantTemplateScriptableObject template) ? template.portrait : uiData.Portrait;
+        Sprite portrait = _combatantTemplates.TryGetValue(combatant, out CombatantSO template) ? template.Portrait : uiData.Portrait;
         uiData.UpdateFromCombatant(combatant, GetGridPosition(combatant), portrait);
       }
 
@@ -753,7 +763,7 @@ namespace EchoesOfTheVoid.UI.Combat {
           }
           break;
         case CombatActionType.Skill:
-          SkillScriptableObject skill = actionData as SkillScriptableObject ?? _pendingSkill;
+          SkillSO skill = actionData as SkillSO ?? _pendingSkill;
           if (skill == null) {
             AddCombatMessage("Select a skill first.", MessageType.System);
             return;
@@ -792,26 +802,53 @@ namespace EchoesOfTheVoid.UI.Combat {
       switch (action.ActionType) {
         case CombatActionType.Attack:
           if (action.Target is Combatant targetCombatant) {
-            targetCombatant.TakeDamage(Mathf.Max(1, caster.GetStat(StatType.Attack) - targetCombatant.GetStat(StatType.Defense)));
-            AddCombatMessage($"{caster.Name} attacks {targetCombatant.Name}.", MessageType.Damage);
+            int before = targetCombatant.GetStat(StatType.Health);
+            int simulatedDamage = Mathf.Max(1, caster.GetStat(StatType.Attack) - targetCombatant.GetStat(StatType.Defense));
+            targetCombatant.TakeDamage(simulatedDamage);
+            int after = targetCombatant.GetStat(StatType.Health);
+            int actualDamage = Math.Max(0, before - after);
+
+            var effect = new CombatEffect {
+              Type = EffectType.Damage,
+              Target = targetCombatant,
+              Value = simulatedDamage,
+              AppliedValue = actualDamage
+            };
+
+            string message = CombatLogMessageBuilder.BuildActionMessage(
+              caster?.Name,
+              CombatActionType.Attack.ToString(),
+              CombatLogMessageBuilder.BuildEffectSummaries(new[] { effect })
+            );
+
+            AddCombatMessage(message, ResolveMessageType(new[] { effect }));
           }
           break;
         case CombatActionType.Defend:
           caster.SetDefending(true);
-          AddCombatMessage($"{caster.Name} is defending.", MessageType.System);
+          string defendMessage = CombatLogMessageBuilder.BuildActionMessage(
+            caster?.Name,
+            CombatActionType.Defend.ToString(),
+            new[] { "is bracing for impact" }
+          );
+          AddCombatMessage(defendMessage, MessageType.System);
           break;
         case CombatActionType.Item:
           if (action.ItemData != null) {
             InventoryComponent inventory = caster.GetComponent<InventoryComponent>();
-            _ = (inventory?.UseItem(action.ItemData, action.Target));
-            AddCombatMessage($"{caster.Name} uses {action.ItemData.DisplayName}.", MessageType.Healing);
+            ItemResult result = inventory?.UseItem(action.ItemData, action.Target);
+            if (result != null) {
+              AddCombatMessage(result.Message, ResolveMessageType(result.Effects));
+            }
           }
           break;
         case CombatActionType.Skill:
           if (!string.IsNullOrEmpty(action.SkillId)) {
             SkillComponent skillComponent = caster.GetComponent<SkillComponent>();
-            _ = (skillComponent?.UseSkill(action.SkillId, action.Target));
-            AddCombatMessage($"{caster.Name} casts {action.SkillId}.", MessageType.System);
+            SkillResult result = skillComponent?.UseSkill(action.SkillId, action.Target);
+            if (result != null) {
+              AddCombatMessage(result.Message, ResolveMessageType(result.Effects));
+            }
           }
           break;
         default:
@@ -898,7 +935,7 @@ namespace EchoesOfTheVoid.UI.Combat {
 
     private void BindSkillEntry(VisualElement element, int index) {
       if (element is Label label && index >= 0 && index < _skillSource.Count) {
-        SkillScriptableObject skill = _skillSource[index];
+        SkillSO skill = _skillSource[index];
         label.text = skill.DisplayName;
         label.tooltip = skill.Description;
       }
@@ -914,7 +951,7 @@ namespace EchoesOfTheVoid.UI.Combat {
     }
 
     private void HandleSkillSelectionChanged(IEnumerable<object> selectedSkills) {
-      var skill = selectedSkills?.FirstOrDefault() as SkillScriptableObject;
+      var skill = selectedSkills?.FirstOrDefault() as SkillSO;
       if (skill == null) {
         return;
       }
@@ -938,7 +975,7 @@ namespace EchoesOfTheVoid.UI.Combat {
       }
     }
 
-    private void OnSkillSelected(SkillScriptableObject skill) {
+    private void OnSkillSelected(SkillSO skill) {
       _pendingSkill = skill;
       HideModals();
 
@@ -960,6 +997,12 @@ namespace EchoesOfTheVoid.UI.Combat {
 
       Label entry = _logEntryPool.Count > 0 ? _logEntryPool.Pop() : new Label();
       entry.text = message;
+      entry.style.whiteSpace = WhiteSpace.Normal;
+      entry.style.flexGrow = 1f;
+      entry.style.flexShrink = 1f;
+      if (!entry.ClassListContains("log-message")) {
+        entry.AddToClassList("log-message");
+      }
       entry.RemoveFromClassList("log-message-normal");
       entry.RemoveFromClassList("log-message-damage");
       entry.RemoveFromClassList("log-message-healing");
@@ -1056,12 +1099,10 @@ namespace EchoesOfTheVoid.UI.Combat {
 
     private void OnCombatantDamaged(Combatant combatant, int damage) {
       UpdateCombatantDisplay(combatant);
-      AddCombatMessage($"{combatant.Name} takes {damage} damage.", MessageType.Damage);
     }
 
     private void OnCombatantHealed(Combatant combatant, int healing) {
       UpdateCombatantDisplay(combatant);
-      AddCombatMessage($"{combatant.Name} recovers {healing} HP.", MessageType.Healing);
     }
 
     private void OnCombatantDefeated(Combatant combatant) {
@@ -1229,14 +1270,14 @@ namespace EchoesOfTheVoid.UI.Combat {
       return item != null && item.Effects.Any(effect => !effect.TargetSelf);
     }
 
-    private bool RequiresTarget(SkillScriptableObject skill) {
+    private bool RequiresTarget(SkillSO skill) {
       return skill != null && skill.TargetType switch {
         TargetType.Self => false,
         TargetType.All => false,
         TargetType.AllAllies => false,
         TargetType.Multiple => true,
         TargetType.AllEnemies => true,
-        TargetType.Single => throw new NotImplementedException(),
+        TargetType.Single => skill.CanTargetAllies || skill.CanTargetEnemies,
         _ => skill.CanTargetEnemies || skill.CanTargetAllies
       };
     }
@@ -1254,17 +1295,34 @@ namespace EchoesOfTheVoid.UI.Combat {
 
       bool hasDamage = effects.Any(effect => effect.EffectType == EffectType.Damage);
       bool hasHeal = effects.Any(effect => effect.EffectType == EffectType.Heal);
+      bool hasDebuff = effects.Any(effect =>
+        effect.EffectType == EffectType.ApplyStatus &&
+        effect.StatusEffect != null &&
+        effect.StatusEffect.IsDebuff);
+      bool hasBuff = effects.Any(effect =>
+        effect.EffectType == EffectType.ApplyStatus &&
+        effect.StatusEffect != null &&
+        !effect.StatusEffect.IsDebuff);
 
-      if (hasDamage && hasHeal) {
+      bool targetsEnemies = hasDamage || hasDebuff;
+      bool targetsAllies = hasHeal || hasBuff;
+
+      if (targetsEnemies && targetsAllies) {
         return _playerTeam.Concat(_enemyTeam).Where(combatant => combatant.IsAlive).ToList();
       }
 
-      return hasDamage
-        ? caster.IsPlayerControlled ? _enemyTeam : _playerTeam
-        : hasHeal ? caster.IsPlayerControlled ? _playerTeam : _enemyTeam : new List<Combatant> { caster };
+      if (targetsEnemies) {
+        return caster.IsPlayerControlled ? _enemyTeam : _playerTeam;
+      }
+
+      if (targetsAllies) {
+        return caster.IsPlayerControlled ? _playerTeam : _enemyTeam;
+      }
+
+      return new List<Combatant> { caster };
     }
 
-    private IEnumerable<Combatant> GetTargetsForSkill(SkillScriptableObject skill, Combatant caster) {
+    private IEnumerable<Combatant> GetTargetsForSkill(SkillSO skill, Combatant caster) {
       return skill == null
         ? new List<Combatant> { caster }
         : skill.TargetType switch {
@@ -1273,12 +1331,35 @@ namespace EchoesOfTheVoid.UI.Combat {
           TargetType.AllEnemies => caster.IsPlayerControlled ? _enemyTeam : _playerTeam,
           TargetType.All => _playerTeam.Concat(_enemyTeam).Where(c => c.IsAlive).ToList(),
           TargetType.Multiple => caster.IsPlayerControlled ? _enemyTeam : _playerTeam,
-          TargetType.Single => throw new NotImplementedException(),
+          TargetType.Single => GetSingleTargetCandidates(skill, caster),
           _ => BuildSkillTargetsByAffinity(skill, caster)
         };
     }
 
-    private IEnumerable<Combatant> BuildSkillTargetsByAffinity(SkillScriptableObject skill, Combatant caster) {
+    private IEnumerable<Combatant> GetSingleTargetCandidates(SkillSO skill, Combatant caster) {
+      if (skill == null || caster == null) {
+        return Enumerable.Empty<Combatant>();
+      }
+
+      var results = new List<Combatant>();
+
+      if (skill.CanTargetSelf && caster.IsAlive) {
+        results.Add(caster);
+      }
+
+      if (skill.CanTargetAllies) {
+        var allies = caster.IsPlayerControlled ? _playerTeam : _enemyTeam;
+        results.AddRange(allies.Where(ally => ally != null && ally.IsAlive && ally != caster));
+      }
+
+      if (skill.CanTargetEnemies) {
+        var enemies = caster.IsPlayerControlled ? _enemyTeam : _playerTeam;
+        results.AddRange(enemies.Where(enemy => enemy != null && enemy.IsAlive));
+      }
+
+      return results.Where(combatant => combatant != null && combatant.IsAlive).Distinct();
+    }
+    private IEnumerable<Combatant> BuildSkillTargetsByAffinity(SkillSO skill, Combatant caster) {
       var results = new List<Combatant>();
 
       if (skill.CanTargetSelf) {
@@ -1306,7 +1387,7 @@ namespace EchoesOfTheVoid.UI.Combat {
       listView.selectionChanged += selectionHandler;
     }
 
-    public void RegisterCombatantTemplate(Combatant combatant, CombatantTemplateScriptableObject template) {
+    public void RegisterCombatantTemplate(Combatant combatant, CombatantSO template) {
       if (combatant == null || template == null) {
         return;
       }
@@ -1315,18 +1396,18 @@ namespace EchoesOfTheVoid.UI.Combat {
       UpdateCombatantDisplay(combatant);
     }
 
-    public void GenerateTestCombatants(List<CombatantTemplateScriptableObject> playerTemplates, List<CombatantTemplateScriptableObject> enemyTemplates) {
+    public void GenerateTestCombatants(List<CombatantSO> playerTemplates, List<CombatantSO> enemyTemplates) {
       var players = new List<Combatant>();
       var enemies = new List<Combatant>();
 
       if (playerTemplates != null) {
-        foreach (CombatantTemplateScriptableObject template in playerTemplates) {
+        foreach (CombatantSO template in playerTemplates) {
           players.Add(CreateTestCombatantFromTemplate(template, true));
         }
       }
 
       if (enemyTemplates != null) {
-        foreach (CombatantTemplateScriptableObject template in enemyTemplates) {
+        foreach (CombatantSO template in enemyTemplates) {
           enemies.Add(CreateTestCombatantFromTemplate(template, false));
         }
       }
@@ -1334,12 +1415,12 @@ namespace EchoesOfTheVoid.UI.Combat {
       InitializeBattle(players, enemies);
     }
 
-    public Combatant CreateTestCombatantFromTemplate(CombatantTemplateScriptableObject template, bool isPlayerTeam) {
+    public Combatant CreateTestCombatantFromTemplate(CombatantSO template, bool isPlayerTeam) {
       if (template == null) {
         return null;
       }
 
-      var go = new GameObject($"Test_{template.displayName}");
+      var go = new GameObject($"Test_{template.DisplayName}");
       Combatant combatant = go.AddComponent<Combatant>();
       combatant.InitializeFromTemplate(template);
       combatant.SetTeam(isPlayerTeam ? CombatTeam.Player : CombatTeam.Enemy);
@@ -1385,7 +1466,55 @@ namespace EchoesOfTheVoid.UI.Combat {
         return;
       }
 
-      AddCombatMessage(result.Message, result.IsSuccess ? MessageType.System : MessageType.System);
+      MessageType type = result.IsSuccess ? ResolveMessageType(result.Effects) : MessageType.System;
+      AddCombatMessage(result.Message, type);
+    }
+
+    private void HandleStatusEffectTick(ICombatant target, StatusEffect effect, int amount) {
+      if (target is not Combatant combatant) {
+        return;
+      }
+
+      UpdateCombatantDisplay(combatant);
+
+      if (effect == null || amount <= 0) {
+        return;
+      }
+
+      string message = CombatLogMessageBuilder.BuildStatusEffectTickMessage(combatant.Name, effect, amount);
+      MessageType type = effect.EffectType == StatusEffectType.HealOverTime ? MessageType.Healing : MessageType.Damage;
+      AddCombatMessage(message, type);
+    }
+
+    private MessageType ResolveMessageType(IReadOnlyCollection<CombatEffect> effects) {
+      if (effects == null || effects.Count == 0) {
+        return MessageType.System;
+      }
+
+      bool hasDamage = false;
+      bool hasHealing = false;
+
+      foreach (CombatEffect effect in effects) {
+        if (effect == null) {
+          continue;
+        }
+
+        if (effect.Type == EffectType.Damage && effect.AppliedValue > 0) {
+          hasDamage = true;
+        } else if (effect.Type == EffectType.Heal && effect.AppliedValue > 0) {
+          hasHealing = true;
+        }
+      }
+
+      if (hasDamage && !hasHealing) {
+        return MessageType.Damage;
+      }
+
+      if (hasHealing && !hasDamage) {
+        return MessageType.Healing;
+      }
+
+      return MessageType.System;
     }
 
     private class SlotVisualCache {

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EchoesOfTheVoid.Core.Combat.ScriptableObjects {
   [CreateAssetMenu(fileName = "New Skill", menuName = "Combat/Skill")]
-  public class SkillScriptableObject : ScriptableObject {
+  public class SkillSO : ScriptableObject {
     [Header("Basic Info")]
     public string SkillId;
     public string DisplayName;

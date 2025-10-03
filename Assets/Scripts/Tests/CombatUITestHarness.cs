@@ -15,8 +15,8 @@ namespace EchoesOfTheVoid.Tests {
     [SerializeField] private CombatSystem _combatSystem;
 
     [Header("Templates")]
-    [SerializeField] private List<CombatantTemplateScriptableObject> _playerTemplates = new();
-    [SerializeField] private List<CombatantTemplateScriptableObject> _enemyTemplates = new();
+    [SerializeField] private List<CombatantSO> _playerTemplates = new();
+    [SerializeField] private List<CombatantSO> _enemyTemplates = new();
 
     [Header("Behaviour")]
     [SerializeField] private bool _autoInitializeOnStart = true;
@@ -86,13 +86,13 @@ namespace EchoesOfTheVoid.Tests {
       }
     }
 
-    private List<Combatant> CreateCombatants(IEnumerable<CombatantTemplateScriptableObject> templates, bool isPlayerTeam) {
+    private List<Combatant> CreateCombatants(IEnumerable<CombatantSO> templates, bool isPlayerTeam) {
       var results = new List<Combatant>();
       if (templates == null) {
         return results;
       }
 
-      foreach (CombatantTemplateScriptableObject template in templates) {
+      foreach (CombatantSO template in templates) {
         if (template == null) {
           continue;
         }

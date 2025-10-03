@@ -1,66 +1,65 @@
 using System.Collections.Generic;
 using System.Linq;
-using Sirenix.OdinInspector;
-using UnityEngine;
-
 using EchoesOfTheVoid.Core.Combat.Data;
 using EchoesOfTheVoid.Core.Combat.Gambits;
 using EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations;
 using EchoesOfTheVoid.Core.Inventory.Data;
+using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace EchoesOfTheVoid.Core.Combat.ScriptableObjects {
   [CreateAssetMenu(fileName = "New Combatant Template", menuName = "Combat/Combatant Template")]
-  public class CombatantTemplateScriptableObject : ScriptableObject {
+  public class CombatantSO : ScriptableObject {
 
     [Header("AI Behavior")]
-    public bool isPlayerControlled = false;
+    public bool IsPlayerControlled = false;
 
     [Header("Basic Info")]
-    public string combatantId;
-    public string displayName;
-    public Sprite portrait;
-    public GameObject combatPrefab;
+    public string CombatantId;
+    public string DisplayName;
+    public Sprite Portrait;
+    public GameObject CombatPrefab;
 
     [Header("Base Stats")]
-    public CombatStats baseStats;
+    public CombatStats BaseStats;
 
     [Header("Starting Skills")]
-    public List<SkillScriptableObject> startingSkills = new();
+    public List<SkillSO> StartingSkills = new();
 
-    [HideIf(nameof(isPlayerControlled))]
+    [HideIf(nameof(IsPlayerControlled))]
     [Header("Starting Items")]
-    public List<ItemStackData> startingItems = new();
-    [HideIf(nameof(isPlayerControlled))]
+    public List<ItemStackData> StartingItems = new();
+    [HideIf(nameof(IsPlayerControlled))]
     [Header("Starting Equipment")]
-    public List<EquippedItemData> startingEquipment = new();
+    public List<EquippedItemData> StartingEquipment = new();
 
 
-    [HideIf(nameof(isPlayerControlled))]
+    [HideIf(nameof(IsPlayerControlled))]
     [Header("Gambits")]
     [InlineEditor]
-    public GambitProfile gambitProfile;
+    public GambitProfile GambitProfile;
 
     private void OnValidate() {
-      if (isPlayerControlled || gambitProfile == null) {
+      if (IsPlayerControlled || GambitProfile == null) {
         return;
       }
 
-      startingSkills ??= new List<SkillScriptableObject>();
+      StartingSkills ??= new List<SkillSO>();
 
-      startingItems ??= new List<ItemStackData>();
+      StartingItems ??= new List<ItemStackData>();
 
-      startingEquipment ??= new List<EquippedItemData>();
-      if (gambitProfile.rules == null || gambitProfile.rules.Count == 0) {
+      StartingEquipment ??= new List<EquippedItemData>();
+      if (GambitProfile.rules == null || GambitProfile.rules.Count == 0) {
         return;
       }
 
-      var ownedSkillIds = new HashSet<string>(startingSkills.Where(skill => skill != null).Select(skill => skill.SkillId));
-      var ownedItemIds = new HashSet<string>(startingItems.Where(stack => stack != null && stack.Item != null).Select(stack => stack.Item.ItemId));
+      var ownedSkillIds = new HashSet<string>(StartingSkills.Where(static skill => skill != null).Select(static skill => skill.SkillId));
+      var ownedItemIds = new HashSet<string>(StartingItems.Where(static stack => stack != null && stack.Item != null).Select(static stack => stack.Item.ItemId));
 
       var missingSkills = new HashSet<string>();
       var missingItems = new HashSet<string>();
 
-      foreach (GambitRuleDefinition rule in gambitProfile.rules) {
+      foreach (GambitRuleDefinition rule in GambitProfile.rules) {
         if (rule?.Action is SkillActionBlock skillBlock && skillBlock.skill != null && !ownedSkillIds.Contains(skillBlock.skill.SkillId)) {
           string skillName = string.IsNullOrEmpty(skillBlock.skill.DisplayName) ? skillBlock.skill.name : skillBlock.skill.DisplayName;
           _ = missingSkills.Add(skillName);
@@ -85,7 +84,7 @@ namespace EchoesOfTheVoid.Core.Combat.ScriptableObjects {
         messageParts.Add($"items [{string.Join(", ", missingItems)}]");
       }
 
-      string displayLabel = string.IsNullOrEmpty(displayName) ? name : displayName;
+      string displayLabel = string.IsNullOrEmpty(DisplayName) ? name : DisplayName;
       Debug.LogWarning($"Combatant template '{displayLabel}' has gambit actions referencing missing {string.Join(" and ", messageParts)}.", this);
     }
   }

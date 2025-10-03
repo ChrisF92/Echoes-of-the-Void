@@ -24,7 +24,7 @@ namespace EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations {
           continue;
         }
 
-        if (!IncludeSelf && ally == context.Actor) {
+        if (!IncludeSelf && ReferenceEquals(ally, context.Actor)) {
           continue;
         }
 
