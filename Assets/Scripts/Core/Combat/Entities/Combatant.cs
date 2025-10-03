@@ -42,10 +42,10 @@ namespace EchoesOfTheVoid.Core.Combat.Entities {
       InitializeComponents();
     }
 
-    public void InitializeFromTemplate(CombatantTemplateScriptableObject template) {
-      Name = template.displayName;
-      IsPlayerControlled = template.isPlayerControlled;
-      _baseStats = template.baseStats;
+    public void InitializeFromTemplate(CombatantSO template) {
+      Name = template.DisplayName;
+      IsPlayerControlled = template.IsPlayerControlled;
+      _baseStats = template.BaseStats;
       _currentStats = new CombatStats {
         Health = _baseStats.Health,
         Mana = _baseStats.Mana,
@@ -56,10 +56,10 @@ namespace EchoesOfTheVoid.Core.Combat.Entities {
       };
 
       InitializeComponents();
-      SetupSkillComponent(template.startingSkills);
-      SetupInventoryComponent(template.startingItems);
-      SetupEquipmentComponent(template.startingEquipment);
-      SetupGambitComponent(template.gambitProfile);
+      SetupSkillComponent(template.StartingSkills);
+      SetupInventoryComponent(template.StartingItems);
+      SetupEquipmentComponent(template.StartingEquipment);
+      SetupGambitComponent(template.GambitProfile);
     }
 
     private void InitializeStats() {
@@ -108,10 +108,10 @@ namespace EchoesOfTheVoid.Core.Combat.Entities {
       }
     }
 
-    private void SetupSkillComponent(List<SkillScriptableObject> startingSkills) {
+    private void SetupSkillComponent(List<SkillSO> startingSkills) {
       SkillComponent skillComponent = GetComponent<SkillComponent>();
       if (skillComponent != null) {
-        foreach (SkillScriptableObject skill in startingSkills) {
+        foreach (SkillSO skill in startingSkills) {
           skillComponent.LearnSkill(skill);
         }
       }
@@ -261,14 +261,19 @@ namespace EchoesOfTheVoid.Core.Combat.Entities {
         return;
       }
 
-      int actualDamage = Math.Max(0, damage);
+      int incomingDamage = Math.Max(0, damage);
       int oldHealth = _currentStats.Health;
-      _currentStats.Health = Math.Max(0, _currentStats.Health - actualDamage);
+      int newHealth = Math.Max(0, _currentStats.Health - incomingDamage);
+      int actualDamage = oldHealth - newHealth;
 
-      OnDamaged?.Invoke(actualDamage);
-      OnStatChanged?.Invoke(StatType.Health, oldHealth, _currentStats.Health);
+      _currentStats.Health = newHealth;
 
-      if (_currentStats.Health == 0) {
+      if (actualDamage > 0) {
+        OnDamaged?.Invoke(actualDamage);
+        OnStatChanged?.Invoke(StatType.Health, oldHealth, _currentStats.Health);
+      }
+
+      if (_currentStats.Health == 0 && oldHealth > 0) {
         OnDefeated?.Invoke();
       }
     }
@@ -278,9 +283,13 @@ namespace EchoesOfTheVoid.Core.Combat.Entities {
         return;
       }
 
+      int incomingHealing = Math.Max(0, amount);
       int oldHealth = _currentStats.Health;
-      _currentStats.Health = Math.Min(_baseStats.Health, _currentStats.Health + amount);
-      int actualHealing = _currentStats.Health - oldHealth;
+      int maxHealth = GetMaxStat(StatType.Health);
+      int newHealth = Math.Min(maxHealth, _currentStats.Health + incomingHealing);
+      int actualHealing = newHealth - oldHealth;
+
+      _currentStats.Health = newHealth;
 
       if (actualHealing > 0) {
         OnHealed?.Invoke(actualHealing);

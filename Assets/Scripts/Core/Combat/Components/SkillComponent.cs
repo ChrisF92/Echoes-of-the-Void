@@ -27,7 +27,7 @@ namespace EchoesOfTheVoid.Core.Combat.Components {
       }
     }
 
-    public void LearnSkill(SkillScriptableObject skillData) {
+    public void LearnSkill(SkillSO skillData) {
       var skill = new CombatSkill(skillData);
       _skills[skillData.SkillId] = skill;
       _cooldowns[skillData.SkillId] = 0;

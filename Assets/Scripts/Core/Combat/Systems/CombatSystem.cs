@@ -1,18 +1,17 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 using EchoesOfTheVoid.Core.Combat.Actions;
-using EchoesOfTheVoid.Core.Combat.Components;
 using EchoesOfTheVoid.Core.Combat.Entities;
 using EchoesOfTheVoid.Core.Combat.Gambits;
 using EchoesOfTheVoid.Core.Combat.Managers;
 using EchoesOfTheVoid.Core.Combat.Results;
 using EchoesOfTheVoid.Core.Combat.Turn;
-using EchoesOfTheVoid.Core.Combat.Extensions;
+using UnityEngine;
 
 namespace EchoesOfTheVoid.Core.Combat.Systems {
+  /// <summary>
+  /// Core combat orchestrator. Delegates specific responsibilities to specialized systems.
+  /// </summary>
   public class CombatSystem : MonoBehaviour {
     public static CombatSystem Instance { get; private set; }
 
@@ -21,22 +20,30 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
     [SerializeField] private CombatActionTiming _defaultActionTiming = CombatActionTiming.Default;
     [SerializeField] private List<CombatActionTimingOverride> _actionTimingOverrides = new();
     [SerializeField, Min(0f)] private float _autoDecisionDelay = 0.3f;
-    private readonly List<ICombatant> _allCombatants = new();
-    private readonly System.Random _random = new();
+
+    // Core systems
+    private CombatStateManager _stateManager;
     private TurnOrderManager _turnOrderManager;
     private CombatantManager _combatantManager;
+    private ActionExecutor _actionExecutor;
+    private AIDecisionSystem _aiDecisionSystem;
+    private TargetResolver _targetResolver;
 
-    private readonly Queue<PendingAction> _actionQueue = new();
-    private Coroutine _actionQueueRoutine;
-    private bool _isProcessingAction;
-    private Coroutine _autoActionRoutine;
-    private ICombatant _autoActionTarget;
+    // State
+    private readonly List<ICombatant> _allCombatants = new();
+    private readonly List<ICombatant> _playerTeam = new();
+    private readonly List<ICombatant> _enemyTeam = new();
+    private readonly System.Random _random = new();
 
-    public CombatState CurrentState { get; private set; } = CombatState.Setup;
+    // Properties
+    public CombatState CurrentState => _stateManager?.CurrentState ?? CombatState.Setup;
     public ICombatant CurrentTurnCombatant => _turnOrderManager?.CurrentCombatant;
-    public List<ICombatant> PlayerTeam { get; } = new();
-    public List<ICombatant> EnemyTeam { get; } = new();
+    public IReadOnlyList<ICombatant> PlayerTeam => _playerTeam;
+    public IReadOnlyList<ICombatant> EnemyTeam => _enemyTeam;
+    public DamageCalculator DamageCalculator { get; private set; }
+    public StatusEffectManager StatusEffectManager { get; private set; }
 
+    // Events
     public event Action<CombatState> OnStateChanged;
     public event Action<ICombatant> OnTurnStart;
     public event Action<ICombatant> OnTurnEnd;
@@ -46,22 +53,49 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
     public event Action<GambitEvaluationLog> OnGambitEvaluated;
 
     private void Awake() {
-      if (Instance == null) {
-        Instance = this;
-        InitializeManagers();
-        EnsureTimingDefaults();
-      } else {
+      if (Instance != null) {
         Destroy(gameObject);
+        return;
       }
+
+      Instance = this;
+      InitializeSystems();
     }
 
-    private void InitializeManagers() {
+    private void InitializeSystems() {
+      EnsureTimingDefaults();
+
+      DamageCalculator = new DamageCalculator();
+      StatusEffectManager = new StatusEffectManager();
+      _stateManager = new CombatStateManager();
       _turnOrderManager = new TurnOrderManager();
       _combatantManager = new CombatantManager();
+      _targetResolver = new TargetResolver(_playerTeam, _enemyTeam, _allCombatants);
 
+      var timingProvider = new ActionTimingProvider(_defaultActionTiming, _actionTimingOverrides);
+      _actionExecutor = new ActionExecutor(
+        this,
+        _turnOrderManager,
+        DamageCalculator,
+        StatusEffectManager,
+        timingProvider
+      );
+
+      _aiDecisionSystem = new AIDecisionSystem(
+        this,
+        _targetResolver,
+        _autoDecisionDelay,
+        _random
+      );
+
+      // Wire up events
+      _stateManager.OnStateChanged += state => OnStateChanged?.Invoke(state);
       _turnOrderManager.OnTurnStart += HandleTurnStart;
       _turnOrderManager.OnTurnEnd += HandleTurnEnd;
       _combatantManager.OnCombatantDefeated += HandleCombatantDefeated;
+      _actionExecutor.OnActionExecuted += (actor, result) => OnActionExecuted?.Invoke(actor, result);
+      _actionExecutor.OnActionPhase += (actor, action, phase) => OnActionPhase?.Invoke(actor, action, phase);
+      _aiDecisionSystem.OnGambitEvaluated += log => OnGambitEvaluated?.Invoke(log);
     }
 
     private void EnsureTimingDefaults() {
@@ -77,28 +111,42 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
       }
 
       SetupCombat(players, enemies);
-      ChangeState(CombatState.InProgress);
+      _stateManager.ChangeState(CombatState.InProgress);
       _turnOrderManager.StartCombat(_allCombatants);
     }
 
     private void SetupCombat(List<ICombatant> players, List<ICombatant> enemies) {
-      PlayerTeam.Clear();
-      EnemyTeam.Clear();
+      _playerTeam.Clear();
+      _enemyTeam.Clear();
       _allCombatants.Clear();
 
       foreach (ICombatant player in players) {
         player.SetTeam(CombatTeam.Player);
-        PlayerTeam.Add(player);
+        _playerTeam.Add(player);
         _allCombatants.Add(player);
         _combatantManager.RegisterCombatant(player);
       }
 
       foreach (ICombatant enemy in enemies) {
         enemy.SetTeam(CombatTeam.Enemy);
-        EnemyTeam.Add(enemy);
+        _enemyTeam.Add(enemy);
         _allCombatants.Add(enemy);
         _combatantManager.RegisterCombatant(enemy);
       }
+    }
+
+    public bool ExecuteAction(ICombatant actor, CombatAction action) {
+      if (!_stateManager.CanExecuteActions()) {
+        Debug.LogWarning("Cannot execute action in current state");
+        return false;
+      }
+
+      if (actor != CurrentTurnCombatant) {
+        Debug.LogWarning($"It's not {actor?.Name ?? "<null>"}'s turn");
+        return false;
+      }
+
+      return _actionExecutor.QueueAction(actor, action);
     }
 
     public void SetAutoCombatEnabled(ICombatant combatant, bool enabled) {
@@ -106,22 +154,8 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
         return;
       }
 
-      if (combatant.IsAutoCombatEnabled == enabled) {
-        return;
-      }
-
       combatant.SetAutoCombatEnabled(enabled);
-
-      if (!enabled) {
-        if (_autoActionTarget == combatant) {
-          CancelAutoAction();
-        }
-        return;
-      }
-
-      if (combatant == CurrentTurnCombatant && ShouldAutoAct(combatant)) {
-        ScheduleAutoAction(combatant);
-      }
+      _aiDecisionSystem.OnAutoCombatChanged(combatant, enabled);
     }
 
     public void SetGambitProfile(ICombatant combatant, IGambitRuleSource profile) {
@@ -130,435 +164,74 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
       }
     }
 
-    public void SetGambitProfile(ICombatant combatant, GambitProfileData profile) {
-      SetGambitProfile(combatant, profile as IGambitRuleSource);
+    public List<ICombatant> GetValidTargets(ICombatant actor, TargetType targetType) {
+      return _targetResolver.GetValidTargets(actor, targetType);
     }
-
-    public bool ExecuteAction(ICombatant actor, CombatAction action) {
-      if (CurrentState != CombatState.InProgress) {
-        Debug.LogWarning("Cannot execute action outside of combat");
-        return false;
-      }
-
-      if (actor == null || actor != CurrentTurnCombatant) {
-        Debug.LogWarning($"It's not {actor?.Name ?? "<null>"}'s turn");
-        return false;
-      }
-
-      if (_isProcessingAction || _actionQueue.Count > 0) {
-        Debug.LogWarning("An action is already being processed.");
-        return false;
-      }
-
-      if (!CanQueueAction(actor, action)) {
-        return false;
-      }
-
-      EnqueueAction(actor, action);
-      return true;
-    }
-
-    private void EnqueueAction(ICombatant actor, CombatAction action) {
-      _actionQueue.Enqueue(new PendingAction(actor, action));
-
-      _actionQueueRoutine ??= StartCoroutine(ProcessActionQueue());
-    }
-
-    private IEnumerator ProcessActionQueue() {
-      _isProcessingAction = true;
-
-      while (_actionQueue.Count > 0) {
-        PendingAction pending = _actionQueue.Dequeue();
-        yield return ResolveActionRoutine(pending);
-      }
-
-      _isProcessingAction = false;
-      _actionQueueRoutine = null;
-    }
-
-    private IEnumerator ResolveActionRoutine(PendingAction pending) {
-      ICombatant actor = pending.Actor;
-      CombatAction action = pending.Action;
-
-      if (actor == null || action == null || !actor.IsAlive) {
-        _turnOrderManager.EndCurrentTurn();
-        yield break;
-      }
-
-      CombatActionTiming timing = GetTimingForAction(action.ActionType);
-
-      if (action.Target != null && !IsValidTarget(action.Target) && action.ActionType != CombatActionType.Defend) {
-        OnActionExecuted?.Invoke(actor, ActionResult.Failed("Target is no longer valid."));
-        _turnOrderManager.EndCurrentTurn();
-        yield break;
-      }
-
-      RaiseActionPhase(actor, action, CombatActionPhase.Windup);
-      if (timing.Windup > 0f) {
-        yield return new WaitForSeconds(timing.Windup);
-      }
-
-      RaiseActionPhase(actor, action, CombatActionPhase.Resolve);
-      ActionResult result = ProcessAction(actor, action);
-      OnActionExecuted?.Invoke(actor, result);
-
-      if (timing.Resolution > 0f) {
-        yield return new WaitForSeconds(timing.Resolution);
-      }
-
-      RaiseActionPhase(actor, action, CombatActionPhase.Recovery);
-      if (timing.Recovery > 0f) {
-        yield return new WaitForSeconds(timing.Recovery);
-      }
-
-      _turnOrderManager.EndCurrentTurn();
-    }
-
-    private void RaiseActionPhase(ICombatant actor, CombatAction action, CombatActionPhase phase) {
-      OnActionPhase?.Invoke(actor, action, phase);
-    }
-
-    private CombatActionTiming GetTimingForAction(CombatActionType actionType) {
-      foreach (CombatActionTimingOverride timingOverride in _actionTimingOverrides) {
-        if (timingOverride.ActionType == actionType && timingOverride.Timing.Total > 0f) {
-          return timingOverride.Timing;
-        }
-      }
-
-      return _defaultActionTiming.Total > 0f ? _defaultActionTiming : CombatActionTiming.Default;
-    }
-
-    private bool CanQueueAction(ICombatant actor, CombatAction action) {
-      if (actor == null) {
-        Debug.LogWarning("Actor is null.");
-        return false;
-      }
-
-      if (action == null) {
-        Debug.LogWarning("Action is null.");
-        return false;
-      }
-
-      if (!actor.IsAlive) {
-        Debug.LogWarning($"{actor.Name} cannot act while defeated.");
-        return false;
-      }
-
-      switch (action.ActionType) {
-        case CombatActionType.Attack:
-          if (!IsValidTarget(action.Target)) {
-            Debug.LogWarning("Attack action requires a living target.");
-            return false;
-          }
-          break;
-        case CombatActionType.Defend:
-          break;
-        case CombatActionType.Skill:
-          if (string.IsNullOrEmpty(action.SkillId)) {
-            Debug.LogWarning("Skill action is missing a skill id.");
-            return false;
-          }
-
-          SkillComponent skillComponent = actor.GetComponent<SkillComponent>();
-          if (skillComponent == null || !skillComponent.CanUseSkill(action.SkillId)) {
-            Debug.LogWarning($"{actor.Name} cannot use skill {action.SkillId} right now.");
-            return false;
-          }
-
-          if (action.Target != null && !IsValidTarget(action.Target)) {
-            Debug.LogWarning("Skill action has an invalid target.");
-            return false;
-          }
-          break;
-        case CombatActionType.Item:
-          if (action.ItemData == null) {
-            Debug.LogWarning("Item action is missing item data.");
-            return false;
-          }
-
-          InventoryComponent inventory = actor.GetComponent<InventoryComponent>();
-          if (inventory == null || !inventory.HasItem(action.ItemData.ItemId)) {
-            Debug.LogWarning($"{actor.Name} cannot use item {action.ItemData.ItemId}.");
-            return false;
-          }
-
-          if (action.Target != null && !IsValidTarget(action.Target)) {
-            Debug.LogWarning("Item action has an invalid target.");
-            return false;
-          }
-          break;
-        default:
-          Debug.LogWarning($"Unhandled action type {action.ActionType}.");
-          return false;
-      }
-
-      return action.Target == null || IsValidTarget(action.Target);
-    }
-
-    private static bool IsValidTarget(ICombatant target) {
-      return target != null && target.IsAlive;
-    }
-
-    private void ScheduleAutoAction(ICombatant combatant) {
-      CancelAutoAction();
-
-      if (!isActiveAndEnabled || _autoDecisionDelay <= 0f) {
-        TryExecuteAiTurn(combatant);
-        return;
-      }
-
-      _autoActionTarget = combatant;
-      _autoActionRoutine = StartCoroutine(AutoActionRoutine(combatant));
-    }
-
-    private void CancelAutoAction() {
-      if (_autoActionRoutine != null) {
-        StopCoroutine(_autoActionRoutine);
-        _autoActionRoutine = null;
-      }
-
-      _autoActionTarget = null;
-    }
-
-    private IEnumerator AutoActionRoutine(ICombatant combatant) {
-      if (_autoDecisionDelay > 0f) {
-        yield return new WaitForSeconds(_autoDecisionDelay);
-      }
-
-      _autoActionRoutine = null;
-      _autoActionTarget = null;
-
-      if (combatant != null && combatant == CurrentTurnCombatant && ShouldAutoAct(combatant)) {
-        TryExecuteAiTurn(combatant);
-      }
-    }
-
-
-    private ActionResult ProcessAction(ICombatant actor, CombatAction action) {
-      return action.ActionType switch {
-        CombatActionType.Attack => ProcessAttackAction(actor, action),
-        CombatActionType.Defend => ProcessDefendAction(actor, action),
-        CombatActionType.Skill => ProcessSkillAction(actor, action),
-        CombatActionType.Item => ProcessItemAction(actor, action),
-        _ => ActionResult.Failed("Unknown action type")
-      };
-    }
-
-    private ActionResult ProcessAttackAction(ICombatant actor, CombatAction action) {
-      if (action.Target == null || !action.Target.IsAlive) {
-        return ActionResult.Failed("Invalid target");
-      }
-
-      int damage = CalculateAttackDamage(actor, action.Target);
-      action.Target.TakeDamage(damage);
-
-      return ActionResult.Success($"{actor.Name} attacks {action.Target.Name} for {damage} damage!");
-    }
-
-    private ActionResult ProcessDefendAction(ICombatant actor, CombatAction action) {
-      actor.SetDefending(true);
-      return ActionResult.Success($"{actor.Name} takes a defensive stance!");
-    }
-
-    private ActionResult ProcessSkillAction(ICombatant actor, CombatAction action) {
-      SkillComponent skillComponent = actor.GetComponent<SkillComponent>();
-      return skillComponent == null
-        ? ActionResult.Failed("Actor has no skills")
-        : skillComponent.UseSkill(action.SkillId, action.Target).ToActionResult();
-    }
-
-    private ActionResult ProcessItemAction(ICombatant actor, CombatAction action) {
-      InventoryComponent inventoryComponent = actor.GetComponent<InventoryComponent>();
-      return inventoryComponent == null
-        ? ActionResult.Failed("Actor has no inventory")
-        : inventoryComponent.UseItem(action.ItemData, action.Target).ToActionResult();
-    }
-
-    private int CalculateAttackDamage(ICombatant attacker, ICombatant target) {
-      int baseDamage = attacker.GetStat(StatType.Attack);
-      int defense = target.GetStat(StatType.Defense);
-
-      if (target.IsDefending) {
-        defense = Mathf.RoundToInt(defense * 1.5f);
-      }
-
-      int finalDamage = Math.Max(1, baseDamage - defense);
-      float variance = UnityEngine.Random.Range(0.9f, 1.1f);
-      return Mathf.RoundToInt(finalDamage * variance);
-    }
-
 
     private void HandleTurnStart(ICombatant combatant) {
       combatant.SetDefending(false);
+      StatusEffectManager.ProcessTurnStart(combatant);
       combatant.UpdateComponents(Time.deltaTime);
 
       OnTurnStart?.Invoke(combatant);
 
       if (ShouldAutoAct(combatant)) {
-        ScheduleAutoAction(combatant);
-      } else {
-        CancelAutoAction();
+        _aiDecisionSystem.ScheduleAutoAction(combatant);
       }
-    }
-
-    private bool ShouldAutoAct(ICombatant combatant) {
-      return combatant == null || !combatant.IsAlive ? false : !combatant.IsPlayerControlled || combatant.IsAutoCombatEnabled;
-    }
-
-    private void TryExecuteAiTurn(ICombatant combatant) {
-      if (CurrentState != CombatState.InProgress || combatant != CurrentTurnCombatant) {
-        return;
-      }
-
-      CancelAutoAction();
-
-      if (_isProcessingAction || _actionQueue.Count > 0) {
-        return;
-      }
-
-      CombatAction selectedAction = null;
-      GambitEvaluationLog evaluationLog = null;
-
-      if (combatant is Combatant concreteCombatant) {
-        GambitComponent gambitComponent = concreteCombatant.GetComponent<GambitComponent>();
-        if (gambitComponent != null) {
-          GambitRuntimeContext context = BuildGambitContext(concreteCombatant);
-          if (!gambitComponent.TryBuildAction(context, out selectedAction, out evaluationLog)) {
-            evaluationLog ??= new GambitEvaluationLog(concreteCombatant, null);
-          }
-        } else {
-          evaluationLog = new GambitEvaluationLog(concreteCombatant, null);
-          evaluationLog.Records.Add(new GambitRuleEvaluationRecord(null) {
-            FailureReason = "No GambitComponent found on combatant"
-          });
-        }
-      } else {
-        Debug.LogWarning($"Gambit AI requires Combatant concrete type. Received: {combatant?.GetType().Name ?? "<null>"}");
-      }
-
-      selectedAction ??= BuildFallbackAction(combatant, evaluationLog);
-
-      PublishGambitLog(evaluationLog);
-
-      if (selectedAction == null) {
-        _turnOrderManager.EndCurrentTurn();
-        return;
-      }
-
-      if (!ExecuteAction(combatant, selectedAction)) {
-        _turnOrderManager.EndCurrentTurn();
-      }
-    }
-
-    private readonly struct PendingAction {
-      public PendingAction(ICombatant actor, CombatAction action) {
-        Actor = actor;
-        Action = action;
-      }
-
-      public ICombatant Actor { get; }
-      public CombatAction Action { get; }
-    }
-
-    private GambitRuntimeContext BuildGambitContext(Combatant actor) {
-      List<ICombatant> allies = GetAllyTargets(actor);
-      List<ICombatant> enemies = GetEnemyTargets(actor);
-      int turnNumber = _turnOrderManager?.CurrentRound ?? 1;
-      return new GambitRuntimeContext(actor, allies, enemies, turnNumber, this, _random);
-    }
-
-    private CombatAction BuildFallbackAction(ICombatant actor, GambitEvaluationLog log) {
-      List<ICombatant> enemies = GetEnemyTargets(actor);
-      if (enemies.Count == 0) {
-        log?.Records.Add(new GambitRuleEvaluationRecord(null) {
-          FailureReason = "Fallback failed: no valid enemy targets"
-        });
-        return null;
-      }
-
-      ICombatant target = enemies[_random.Next(enemies.Count)];
-      var fallbackAction = new CombatAction {
-        ActionType = CombatActionType.Attack,
-        Target = target
-      };
-
-      if (log != null) {
-        log.Records.Add(new GambitRuleEvaluationRecord(null) {
-          ActionBuilt = true,
-          Target = target,
-          FailureReason = "Fallback action executed"
-        });
-        log.SetResult(fallbackAction, target);
-      }
-
-      return fallbackAction;
-    }
-
-    private void PublishGambitLog(GambitEvaluationLog log) {
-      if (log == null) {
-        return;
-      }
-
-      OnGambitEvaluated?.Invoke(log);
     }
 
     private void HandleTurnEnd(ICombatant combatant) {
+      StatusEffectManager.ProcessTurnEnd(combatant);
       OnTurnEnd?.Invoke(combatant);
       CheckCombatEndConditions();
     }
 
     private void HandleCombatantDefeated(ICombatant combatant) {
       _turnOrderManager.RemoveCombatant(combatant);
+      StatusEffectManager.ClearEffects(combatant);
       CheckCombatEndConditions();
     }
 
+    private bool ShouldAutoAct(ICombatant combatant) {
+      return combatant != null &&
+             combatant.IsAlive &&
+             (!combatant.IsPlayerControlled || combatant.IsAutoCombatEnabled);
+    }
+
     private void CheckCombatEndConditions() {
-      int alivePlayerCount = PlayerTeam.Count(c => c.IsAlive);
-      int aliveEnemyCount = EnemyTeam.Count(c => c.IsAlive);
+      int alivePlayerCount = 0;
+      int aliveEnemyCount = 0;
+
+      foreach (ICombatant player in _playerTeam) {
+        if (player.IsAlive) {
+          alivePlayerCount++;
+        }
+      }
+
+      foreach (ICombatant enemy in _enemyTeam) {
+        if (enemy.IsAlive) {
+          aliveEnemyCount++;
+        }
+      }
 
       if (alivePlayerCount == 0) {
-        EndCombat(new CombatResult(CombatOutcome.Defeat, EnemyTeam.Where(e => e.IsAlive).ToList()));
+        EndCombat(CombatOutcome.Defeat);
       } else if (aliveEnemyCount == 0) {
-        EndCombat(new CombatResult(CombatOutcome.Victory, PlayerTeam.Where(p => p.IsAlive).ToList()));
+        EndCombat(CombatOutcome.Victory);
       }
     }
 
-    private void EndCombat(CombatResult result) {
-      ChangeState(CombatState.Ended);
+    private void EndCombat(CombatOutcome outcome) {
+      var survivors = new List<ICombatant>();
+      foreach (ICombatant combatant in _allCombatants) {
+        if (combatant.IsAlive) {
+          survivors.Add(combatant);
+        }
+      }
+
+      var result = new CombatResult(outcome, survivors);
+      _stateManager.ChangeState(CombatState.Ended);
       OnCombatEnd?.Invoke(result);
-    }
-
-    private void ChangeState(CombatState newState) {
-      CurrentState = newState;
-
-      if (newState != CombatState.InProgress) {
-        CancelAutoAction();
-      }
-
-      OnStateChanged?.Invoke(newState);
-    }
-
-    public List<ICombatant> GetValidTargets(ICombatant actor, TargetType targetType) {
-      return targetType switch {
-        TargetType.Single => GetEnemyTargets(actor),
-        TargetType.Self => new List<ICombatant> { actor },
-        TargetType.AllAllies => GetAllyTargets(actor),
-        TargetType.AllEnemies => GetEnemyTargets(actor),
-        TargetType.All => _allCombatants.Where(c => c.IsAlive).ToList(),
-        TargetType.Multiple => throw new NotImplementedException(),
-        _ => new List<ICombatant>()
-      };
-    }
-
-    private List<ICombatant> GetAllyTargets(ICombatant actor) {
-      List<ICombatant> team = actor.Team == CombatTeam.Player ? PlayerTeam : EnemyTeam;
-      return team.Where(c => c.IsAlive).ToList();
-    }
-
-    private List<ICombatant> GetEnemyTargets(ICombatant actor) {
-      List<ICombatant> enemyTeam = actor.Team == CombatTeam.Player ? EnemyTeam : PlayerTeam;
-      return enemyTeam.Where(c => c.IsAlive).ToList();
     }
   }
 }
-

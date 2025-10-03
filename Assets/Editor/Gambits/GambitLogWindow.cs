@@ -15,6 +15,7 @@ namespace EchoesOfTheVoid.Editor.Gambits {
     private string _actorFilter = string.Empty;
     private bool _showOnlySuccessful;
     private bool _isBound;
+    private bool _rebindScheduled;
 
     [MenuItem("Window/Echoes/Gambit Log")]
     public static void ShowWindow() {
@@ -44,16 +45,33 @@ namespace EchoesOfTheVoid.Editor.Gambits {
 
     private void TryBind() {
       if (_isBound || !EditorApplication.isPlaying) {
+        _rebindScheduled = false;
         return;
       }
 
       CombatSystem system = CombatSystem.Instance;
       if (system == null) {
+        ScheduleRebind();
         return;
       }
 
       system.OnGambitEvaluated += HandleGambitEvaluated;
       _isBound = true;
+      _rebindScheduled = false;
+    }
+
+    private void ScheduleRebind() {
+      if (_rebindScheduled) {
+        return;
+      }
+
+      _rebindScheduled = true;
+      EditorApplication.delayCall += OnDelayBind;
+    }
+
+    private void OnDelayBind() {
+      _rebindScheduled = false;
+      TryBind();
     }
 
     private void Unbind() {
@@ -67,6 +85,7 @@ namespace EchoesOfTheVoid.Editor.Gambits {
       }
 
       _isBound = false;
+      _rebindScheduled = false;
     }
 
     private void HandleGambitEvaluated(GambitEvaluationLog log) {

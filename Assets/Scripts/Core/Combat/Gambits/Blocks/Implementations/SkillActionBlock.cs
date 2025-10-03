@@ -7,7 +7,7 @@ using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
 namespace EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations {
   [Serializable]
   public class SkillActionBlock : GambitActionBlock {
-    public SkillScriptableObject skill;
+    public SkillSO skill;
     public bool requireCanUse = true;
 
     public override string Summary => skill != null ? $"Use Skill: {skill.DisplayName}" : "Use Skill";

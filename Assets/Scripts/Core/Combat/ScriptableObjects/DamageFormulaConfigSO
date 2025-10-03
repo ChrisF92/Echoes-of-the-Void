@@ -1,0 +1,54 @@
+namespace EchoesOfTheVoid.Core.Combat.ScriptableObjects {
+  /// <summary>
+  /// ScriptableObject wrapper for damage formula configuration.
+  /// Allows designers to tweak damage formulas without code changes.
+  /// </summary>
+  [CreateAssetMenu(fileName = "New Damage Formula Config", menuName = "Combat/Damage Formula Config")]
+  public class DamageFormulaConfigSO : ScriptableObject
+  {
+    [Header("Base Damage")]
+    [SerializeField, Min(1)] private readonly int minimumDamage = 1;
+    [SerializeField, Range(0f, 2f)] private readonly float damageVarianceMin = 0.9f;
+    [SerializeField, Range(0f, 2f)] private float damageVarianceMax = 1.1f;
+
+    [Header("Defense")]
+    [SerializeField, Range(1f, 3f)] private readonly float defenseStanceMultiplier = 1.5f;
+
+    [Header("Critical Hits")]
+    [SerializeField] private readonly bool enableCriticals = true;
+    [SerializeField, Range(0f, 1f)] private readonly float baseCriticalChance = 0.05f;
+    [SerializeField, Range(0f, 0.1f)] private readonly float luckCriticalBonus = 0.005f;
+    [SerializeField, Range(1f, 5f)] private readonly float criticalMultiplier = 1.5f;
+
+    [Header("Healing")]
+    [SerializeField] private readonly bool allowOverhealing = false;
+
+    /// <summary>
+    /// Convert ScriptableObject to runtime config.
+    /// </summary>
+    public DamageFormulaConfig ToConfig()
+    {
+      return new DamageFormulaConfig
+      {
+        MinimumDamage = minimumDamage,
+        DamageVarianceMin = damageVarianceMin,
+        DamageVarianceMax = damageVarianceMax,
+        DefenseStanceMultiplier = defenseStanceMultiplier,
+        EnableCriticals = enableCriticals,
+        BaseCriticalChance = baseCriticalChance,
+        LuckCriticalBonus = luckCriticalBonus,
+        CriticalMultiplier = criticalMultiplier,
+        AllowOverhealing = allowOverhealing
+      };
+    }
+
+    private void OnValidate()
+    {
+      // Ensure min is always less than or equal to max
+      if (damageVarianceMin > damageVarianceMax)
+      {
+        damageVarianceMax = damageVarianceMin;
+      }
+    }
+  }
+}
