@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
+  m_Name: enemy_stormcaller
+  m_EditorClassIdentifier: 
+  IsPlayerControlled: 0
+  CombatantId: stormcaller
+  DisplayName: Stormcaller
+  Portrait: {fileID: 0}
+  CombatPrefab: {fileID: 0}
+  BaseStats:
+    Health: 130
+    Mana: 110
+    Attack: 24
+    Defense: 14
+    Speed: 20
+    Luck: 10
+  StartingSkills:
+  - {fileID: 11400000, guid: a4c11bd04d5354d2a15f1b0e7500293e, type: 2}
+  - {fileID: 11400000, guid: e72a1d668af950949ae736498f649519, type: 2}
+  - {fileID: 11400000, guid: fb7ae807a52b59e4aa3fdedbe48ac617, type: 2}
+  StartingItems: []
+  StartingEquipment: []
+  GambitProfile: {fileID: 11400000, guid: 4712a3efebaf569c9d33c84dd28c7acd, type: 2}

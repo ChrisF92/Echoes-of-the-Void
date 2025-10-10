@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
+  m_Name: enemy_starbound_sentinel
+  m_EditorClassIdentifier: 
+  IsPlayerControlled: 0
+  CombatantId: starbound_sentinel
+  DisplayName: Starbound Sentinel
+  Portrait: {fileID: 0}
+  CombatPrefab: {fileID: 0}
+  BaseStats:
+    Health: 160
+    Mana: 80
+    Attack: 22
+    Defense: 24
+    Speed: 12
+    Luck: 8
+  StartingSkills:
+  - {fileID: 11400000, guid: 5a0a625d09a850e9b80244d98920ab23, type: 2}
+  - {fileID: 11400000, guid: a26821338e9a5c46b838a2a16fecf4d9, type: 2}
+  - {fileID: 11400000, guid: 5e310d06922055c5bcc508eb79f51c87, type: 2}
+  StartingItems: []
+  StartingEquipment: []
+  GambitProfile: {fileID: 11400000, guid: 167fcc056d9154a9be585b7a1658bd18, type: 2}

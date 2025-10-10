@@ -1,0 +1,1353 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b9a55f6563a45499148bd8a3e3edff, type: 3}
+  m_Name: combat_run_eternal_gauntlet
+  m_EditorClassIdentifier: 
+  _runId: combat_run_eternal_gauntlet
+  _displayName: Eternal Gauntlet
+  _description: A relentless ascent through one hundred increasingly perilous floors.
+  _icon: {fileID: 0}
+  _floors:
+  - _floorId: floor_001
+    _displayName: Floor 1
+    _floorNumber: 1
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    _rewards:
+      _experience: 145
+      _currency: 95
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_002
+    _displayName: Floor 2
+    _floorNumber: 2
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
+    _rewards:
+      _experience: 170
+      _currency: 110
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_003
+    _displayName: Floor 3
+    _floorNumber: 3
+    _enemyTemplates:
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    _rewards:
+      _experience: 195
+      _currency: 125
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_004
+    _displayName: Floor 4
+    _floorNumber: 4
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    _rewards:
+      _experience: 220
+      _currency: 140
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_005
+    _displayName: Floor 5
+    _floorNumber: 5
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
+    _rewards:
+      _experience: 245
+      _currency: 155
+      _items:
+      - Item: {fileID: 11400000, guid: b878fba557885b4cb132123d440a2603, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_006
+    _displayName: Floor 6
+    _floorNumber: 6
+    _enemyTemplates:
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    _rewards:
+      _experience: 270
+      _currency: 170
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_007
+    _displayName: Floor 7
+    _floorNumber: 7
+    _enemyTemplates:
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    _rewards:
+      _experience: 295
+      _currency: 185
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_008
+    _displayName: Floor 8
+    _floorNumber: 8
+    _enemyTemplates:
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
+    _rewards:
+      _experience: 320
+      _currency: 200
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_009
+    _displayName: Floor 9
+    _floorNumber: 9
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    _rewards:
+      _experience: 345
+      _currency: 215
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_010
+    _displayName: Floor 10
+    _floorNumber: 10
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    _rewards:
+      _experience: 370
+      _currency: 230
+      _items:
+      - Item: {fileID: 11400000, guid: 88c348c6f299566783d1544aea443773, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 1
+    _playerHealthRestoreRatio: 0.5
+  - _floorId: floor_011
+    _displayName: Floor 11
+    _floorNumber: 11
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
+    _rewards:
+      _experience: 395
+      _currency: 245
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_012
+    _displayName: Floor 12
+    _floorNumber: 12
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    _rewards:
+      _experience: 420
+      _currency: 260
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_013
+    _displayName: Floor 13
+    _floorNumber: 13
+    _enemyTemplates:
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    _rewards:
+      _experience: 445
+      _currency: 275
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_014
+    _displayName: Floor 14
+    _floorNumber: 14
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
+    _rewards:
+      _experience: 470
+      _currency: 290
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_015
+    _displayName: Floor 15
+    _floorNumber: 15
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    _rewards:
+      _experience: 495
+      _currency: 305
+      _items:
+      - Item: {fileID: 11400000, guid: b89379972b235c4994d519b0f17096e0, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_016
+    _displayName: Floor 16
+    _floorNumber: 16
+    _enemyTemplates:
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    _rewards:
+      _experience: 520
+      _currency: 320
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_017
+    _displayName: Floor 17
+    _floorNumber: 17
+    _enemyTemplates:
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
+    _rewards:
+      _experience: 545
+      _currency: 335
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_018
+    _displayName: Floor 18
+    _floorNumber: 18
+    _enemyTemplates:
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    _rewards:
+      _experience: 570
+      _currency: 350
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_019
+    _displayName: Floor 19
+    _floorNumber: 19
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    _rewards:
+      _experience: 595
+      _currency: 365
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_020
+    _displayName: Floor 20
+    _floorNumber: 20
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    _rewards:
+      _experience: 620
+      _currency: 380
+      _items:
+      - Item: {fileID: 11400000, guid: 6e4a8eaf4d685207b4b9cab42adc19ec, type: 2}
+        Quantity: 1
+      - Item: {fileID: 11400000, guid: 01c5e03129c75e28947344e0dd0422dc, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 1
+    _playerHealthRestoreRatio: 0.5
+  - _floorId: floor_021
+    _displayName: Floor 21
+    _floorNumber: 21
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    _rewards:
+      _experience: 645
+      _currency: 395
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_022
+    _displayName: Floor 22
+    _floorNumber: 22
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    _rewards:
+      _experience: 670
+      _currency: 410
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_023
+    _displayName: Floor 23
+    _floorNumber: 23
+    _enemyTemplates:
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    _rewards:
+      _experience: 695
+      _currency: 425
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_024
+    _displayName: Floor 24
+    _floorNumber: 24
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    _rewards:
+      _experience: 720
+      _currency: 440
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_025
+    _displayName: Floor 25
+    _floorNumber: 25
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    _rewards:
+      _experience: 745
+      _currency: 455
+      _items:
+      - Item: {fileID: 11400000, guid: 05048fbaf41957888fdb5afbc0d13522, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_026
+    _displayName: Floor 26
+    _floorNumber: 26
+    _enemyTemplates:
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    _rewards:
+      _experience: 770
+      _currency: 470
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_027
+    _displayName: Floor 27
+    _floorNumber: 27
+    _enemyTemplates:
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    _rewards:
+      _experience: 795
+      _currency: 485
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_028
+    _displayName: Floor 28
+    _floorNumber: 28
+    _enemyTemplates:
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    _rewards:
+      _experience: 820
+      _currency: 500
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_029
+    _displayName: Floor 29
+    _floorNumber: 29
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    _rewards:
+      _experience: 845
+      _currency: 515
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_030
+    _displayName: Floor 30
+    _floorNumber: 30
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    _rewards:
+      _experience: 870
+      _currency: 530
+      _items:
+      - Item: {fileID: 11400000, guid: f548126edff55c809c5b50878041cd3c, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 1
+    _playerHealthRestoreRatio: 0.5
+  - _floorId: floor_031
+    _displayName: Floor 31
+    _floorNumber: 31
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    _rewards:
+      _experience: 895
+      _currency: 545
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_032
+    _displayName: Floor 32
+    _floorNumber: 32
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
+    _rewards:
+      _experience: 920
+      _currency: 560
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_033
+    _displayName: Floor 33
+    _floorNumber: 33
+    _enemyTemplates:
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    _rewards:
+      _experience: 945
+      _currency: 575
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_034
+    _displayName: Floor 34
+    _floorNumber: 34
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    _rewards:
+      _experience: 970
+      _currency: 590
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_035
+    _displayName: Floor 35
+    _floorNumber: 35
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
+    _rewards:
+      _experience: 995
+      _currency: 605
+      _items:
+      - Item: {fileID: 11400000, guid: 01c5e03129c75e28947344e0dd0422dc, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_036
+    _displayName: Floor 36
+    _floorNumber: 36
+    _enemyTemplates:
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    _rewards:
+      _experience: 1020
+      _currency: 620
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_037
+    _displayName: Floor 37
+    _floorNumber: 37
+    _enemyTemplates:
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    _rewards:
+      _experience: 1045
+      _currency: 635
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_038
+    _displayName: Floor 38
+    _floorNumber: 38
+    _enemyTemplates:
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
+    _rewards:
+      _experience: 1070
+      _currency: 650
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_039
+    _displayName: Floor 39
+    _floorNumber: 39
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    _rewards:
+      _experience: 1095
+      _currency: 665
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_040
+    _displayName: Floor 40
+    _floorNumber: 40
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    _rewards:
+      _experience: 1120
+      _currency: 680
+      _items:
+      - Item: {fileID: 11400000, guid: 6e8ff656acfb5929865f926155ae4854, type: 2}
+        Quantity: 1
+      - Item: {fileID: 11400000, guid: 3c760c243a5251db97ba00aca3ea5587, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 1
+    _playerHealthRestoreRatio: 0.5
+  - _floorId: floor_041
+    _displayName: Floor 41
+    _floorNumber: 41
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    _rewards:
+      _experience: 1145
+      _currency: 695
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_042
+    _displayName: Floor 42
+    _floorNumber: 42
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    _rewards:
+      _experience: 1170
+      _currency: 710
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_043
+    _displayName: Floor 43
+    _floorNumber: 43
+    _enemyTemplates:
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    _rewards:
+      _experience: 1195
+      _currency: 725
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_044
+    _displayName: Floor 44
+    _floorNumber: 44
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    _rewards:
+      _experience: 1220
+      _currency: 740
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_045
+    _displayName: Floor 45
+    _floorNumber: 45
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    _rewards:
+      _experience: 1245
+      _currency: 755
+      _items:
+      - Item: {fileID: 11400000, guid: ddf67568956051a5bb7bb8a6126716c2, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_046
+    _displayName: Floor 46
+    _floorNumber: 46
+    _enemyTemplates:
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    _rewards:
+      _experience: 1270
+      _currency: 770
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_047
+    _displayName: Floor 47
+    _floorNumber: 47
+    _enemyTemplates:
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    _rewards:
+      _experience: 1295
+      _currency: 785
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_048
+    _displayName: Floor 48
+    _floorNumber: 48
+    _enemyTemplates:
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    _rewards:
+      _experience: 1320
+      _currency: 800
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_049
+    _displayName: Floor 49
+    _floorNumber: 49
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    _rewards:
+      _experience: 1345
+      _currency: 815
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_050
+    _displayName: Floor 50
+    _floorNumber: 50
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    _rewards:
+      _experience: 1370
+      _currency: 830
+      _items:
+      - Item: {fileID: 11400000, guid: 8e9e5fcc5676573e8817e371f6ba6816, type: 2}
+        Quantity: 2
+    _healPartyOnStart: 1
+    _playerHealthRestoreRatio: 0.5
+  - _floorId: floor_051
+    _displayName: Floor 51
+    _floorNumber: 51
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
+    _rewards:
+      _experience: 1395
+      _currency: 845
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_052
+    _displayName: Floor 52
+    _floorNumber: 52
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
+    _rewards:
+      _experience: 1420
+      _currency: 860
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_053
+    _displayName: Floor 53
+    _floorNumber: 53
+    _enemyTemplates:
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    _rewards:
+      _experience: 1445
+      _currency: 875
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_054
+    _displayName: Floor 54
+    _floorNumber: 54
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
+    _rewards:
+      _experience: 1470
+      _currency: 890
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_055
+    _displayName: Floor 55
+    _floorNumber: 55
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
+    _rewards:
+      _experience: 1495
+      _currency: 905
+      _items:
+      - Item: {fileID: 11400000, guid: 89be7dd56b285aad828315ba893b7f93, type: 2}
+        Quantity: 2
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_056
+    _displayName: Floor 56
+    _floorNumber: 56
+    _enemyTemplates:
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    _rewards:
+      _experience: 1520
+      _currency: 920
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_057
+    _displayName: Floor 57
+    _floorNumber: 57
+    _enemyTemplates:
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
+    _rewards:
+      _experience: 1545
+      _currency: 935
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_058
+    _displayName: Floor 58
+    _floorNumber: 58
+    _enemyTemplates:
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
+    _rewards:
+      _experience: 1570
+      _currency: 950
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_059
+    _displayName: Floor 59
+    _floorNumber: 59
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    _rewards:
+      _experience: 1595
+      _currency: 965
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_060
+    _displayName: Floor 60
+    _floorNumber: 60
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
+    _rewards:
+      _experience: 1620
+      _currency: 980
+      _items:
+      - Item: {fileID: 11400000, guid: 03a4804233c954e0bd7637916278e934, type: 2}
+        Quantity: 2
+      - Item: {fileID: 11400000, guid: a5d8a8fec15356b2870d781aeabc238e, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 1
+    _playerHealthRestoreRatio: 0.5
+  - _floorId: floor_061
+    _displayName: Floor 61
+    _floorNumber: 61
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
+    _rewards:
+      _experience: 1645
+      _currency: 995
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_062
+    _displayName: Floor 62
+    _floorNumber: 62
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    _rewards:
+      _experience: 1670
+      _currency: 1010
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_063
+    _displayName: Floor 63
+    _floorNumber: 63
+    _enemyTemplates:
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
+    _rewards:
+      _experience: 1695
+      _currency: 1025
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_064
+    _displayName: Floor 64
+    _floorNumber: 64
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
+    _rewards:
+      _experience: 1720
+      _currency: 1040
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_065
+    _displayName: Floor 65
+    _floorNumber: 65
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    _rewards:
+      _experience: 1745
+      _currency: 1055
+      _items:
+      - Item: {fileID: 11400000, guid: b878fba557885b4cb132123d440a2603, type: 2}
+        Quantity: 2
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_066
+    _displayName: Floor 66
+    _floorNumber: 66
+    _enemyTemplates:
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
+    _rewards:
+      _experience: 1770
+      _currency: 1070
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_067
+    _displayName: Floor 67
+    _floorNumber: 67
+    _enemyTemplates:
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
+    _rewards:
+      _experience: 1795
+      _currency: 1085
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_068
+    _displayName: Floor 68
+    _floorNumber: 68
+    _enemyTemplates:
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    _rewards:
+      _experience: 1820
+      _currency: 1100
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_069
+    _displayName: Floor 69
+    _floorNumber: 69
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    _rewards:
+      _experience: 1845
+      _currency: 1115
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_070
+    _displayName: Floor 70
+    _floorNumber: 70
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    _rewards:
+      _experience: 1870
+      _currency: 1130
+      _items:
+      - Item: {fileID: 11400000, guid: 88c348c6f299566783d1544aea443773, type: 2}
+        Quantity: 2
+    _healPartyOnStart: 1
+    _playerHealthRestoreRatio: 0.5
+  - _floorId: floor_071
+    _displayName: Floor 71
+    _floorNumber: 71
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    _rewards:
+      _experience: 1895
+      _currency: 1145
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_072
+    _displayName: Floor 72
+    _floorNumber: 72
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    _rewards:
+      _experience: 1920
+      _currency: 1160
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_073
+    _displayName: Floor 73
+    _floorNumber: 73
+    _enemyTemplates:
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    _rewards:
+      _experience: 1945
+      _currency: 1175
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_074
+    _displayName: Floor 74
+    _floorNumber: 74
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    _rewards:
+      _experience: 1970
+      _currency: 1190
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_075
+    _displayName: Floor 75
+    _floorNumber: 75
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    _rewards:
+      _experience: 1995
+      _currency: 1205
+      _items:
+      - Item: {fileID: 11400000, guid: b89379972b235c4994d519b0f17096e0, type: 2}
+        Quantity: 2
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_076
+    _displayName: Floor 76
+    _floorNumber: 76
+    _enemyTemplates:
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    _rewards:
+      _experience: 2020
+      _currency: 1220
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_077
+    _displayName: Floor 77
+    _floorNumber: 77
+    _enemyTemplates:
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    _rewards:
+      _experience: 2045
+      _currency: 1235
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_078
+    _displayName: Floor 78
+    _floorNumber: 78
+    _enemyTemplates:
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    _rewards:
+      _experience: 2070
+      _currency: 1250
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_079
+    _displayName: Floor 79
+    _floorNumber: 79
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    _rewards:
+      _experience: 2095
+      _currency: 1265
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_080
+    _displayName: Floor 80
+    _floorNumber: 80
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
+    _rewards:
+      _experience: 2120
+      _currency: 1280
+      _items:
+      - Item: {fileID: 11400000, guid: 6e4a8eaf4d685207b4b9cab42adc19ec, type: 2}
+        Quantity: 2
+      - Item: {fileID: 11400000, guid: 6e8ff656acfb5929865f926155ae4854, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 1
+    _playerHealthRestoreRatio: 0.5
+  - _floorId: floor_081
+    _displayName: Floor 81
+    _floorNumber: 81
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
+    _rewards:
+      _experience: 2145
+      _currency: 1295
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_082
+    _displayName: Floor 82
+    _floorNumber: 82
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    _rewards:
+      _experience: 2170
+      _currency: 1310
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_083
+    _displayName: Floor 83
+    _floorNumber: 83
+    _enemyTemplates:
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
+    _rewards:
+      _experience: 2195
+      _currency: 1325
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_084
+    _displayName: Floor 84
+    _floorNumber: 84
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
+    _rewards:
+      _experience: 2220
+      _currency: 1340
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_085
+    _displayName: Floor 85
+    _floorNumber: 85
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    _rewards:
+      _experience: 2245
+      _currency: 1355
+      _items:
+      - Item: {fileID: 11400000, guid: 05048fbaf41957888fdb5afbc0d13522, type: 2}
+        Quantity: 2
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_086
+    _displayName: Floor 86
+    _floorNumber: 86
+    _enemyTemplates:
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
+    _rewards:
+      _experience: 2270
+      _currency: 1370
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_087
+    _displayName: Floor 87
+    _floorNumber: 87
+    _enemyTemplates:
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
+    _rewards:
+      _experience: 2295
+      _currency: 1385
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_088
+    _displayName: Floor 88
+    _floorNumber: 88
+    _enemyTemplates:
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    _rewards:
+      _experience: 2320
+      _currency: 1400
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_089
+    _displayName: Floor 89
+    _floorNumber: 89
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    _rewards:
+      _experience: 2345
+      _currency: 1415
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_090
+    _displayName: Floor 90
+    _floorNumber: 90
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
+    _rewards:
+      _experience: 2370
+      _currency: 1430
+      _items:
+      - Item: {fileID: 11400000, guid: f548126edff55c809c5b50878041cd3c, type: 2}
+        Quantity: 2
+    _healPartyOnStart: 1
+    _playerHealthRestoreRatio: 0.5
+  - _floorId: floor_091
+    _displayName: Floor 91
+    _floorNumber: 91
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    _rewards:
+      _experience: 2395
+      _currency: 1445
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_092
+    _displayName: Floor 92
+    _floorNumber: 92
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
+    - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    _rewards:
+      _experience: 2420
+      _currency: 1460
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_093
+    _displayName: Floor 93
+    _floorNumber: 93
+    _enemyTemplates:
+    - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
+    - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
+    _rewards:
+      _experience: 2445
+      _currency: 1475
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_094
+    _displayName: Floor 94
+    _floorNumber: 94
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
+    - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    _rewards:
+      _experience: 2470
+      _currency: 1490
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_095
+    _displayName: Floor 95
+    _floorNumber: 95
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
+    - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    _rewards:
+      _experience: 2495
+      _currency: 1505
+      _items:
+      - Item: {fileID: 11400000, guid: 01c5e03129c75e28947344e0dd0422dc, type: 2}
+        Quantity: 2
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_096
+    _displayName: Floor 96
+    _floorNumber: 96
+    _enemyTemplates:
+    - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
+    - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
+    _rewards:
+      _experience: 2520
+      _currency: 1520
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_097
+    _displayName: Floor 97
+    _floorNumber: 97
+    _enemyTemplates:
+    - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
+    - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    _rewards:
+      _experience: 2545
+      _currency: 1535
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_098
+    _displayName: Floor 98
+    _floorNumber: 98
+    _enemyTemplates:
+    - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
+    - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    _rewards:
+      _experience: 2570
+      _currency: 1550
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_099
+    _displayName: Floor 99
+    _floorNumber: 99
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
+    - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    _rewards:
+      _experience: 2595
+      _currency: 1565
+      _items: []
+    _healPartyOnStart: 0
+    _playerHealthRestoreRatio: 0
+  - _floorId: floor_100
+    _displayName: Floor 100
+    _floorNumber: 100
+    _enemyTemplates:
+    - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
+    - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
+    - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
+    _rewards:
+      _experience: 2620
+      _currency: 1580
+      _items:
+      - Item: {fileID: 11400000, guid: 6e8ff656acfb5929865f926155ae4854, type: 2}
+        Quantity: 3
+      - Item: {fileID: 11400000, guid: 97bb497424a5528ca29f3ecac99742f7, type: 2}
+        Quantity: 1
+    _healPartyOnStart: 1
+    _playerHealthRestoreRatio: 0.5
+  _completionRewards:
+    _experience: 12000
+    _currency: 6000
+    _items:
+    - Item: {fileID: 11400000, guid: 6e24cb48750e558abd4496a9c5ca236e, type: 2}
+      Quantity: 1
+    - Item: {fileID: 11400000, guid: b5f155a9ccf353cc8f54919107713d69, type: 2}
+      Quantity: 1
+    - Item: {fileID: 11400000, guid: 8e9e5fcc5676573e8817e371f6ba6816, type: 2}
+      Quantity: 1

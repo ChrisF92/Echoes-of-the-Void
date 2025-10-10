@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
+  m_Name: enemy_thorn_matron
+  m_EditorClassIdentifier: 
+  IsPlayerControlled: 0
+  CombatantId: thorn_matron
+  DisplayName: Thorn Matron
+  Portrait: {fileID: 0}
+  CombatPrefab: {fileID: 0}
+  BaseStats:
+    Health: 170
+    Mana: 90
+    Attack: 24
+    Defense: 20
+    Speed: 16
+    Luck: 9
+  StartingSkills:
+  - {fileID: 11400000, guid: b1f8610daa29587ba320c8713880d318, type: 2}
+  - {fileID: 11400000, guid: 4bca582cdc1c56be94d7a84432538971, type: 2}
+  - {fileID: 11400000, guid: 936808c9c82a5293bb63f98fe668347e, type: 2}
+  StartingItems: []
+  StartingEquipment: []
+  GambitProfile: {fileID: 11400000, guid: 6b1a4c334d3650ef9ca430b35fc188ee, type: 2}

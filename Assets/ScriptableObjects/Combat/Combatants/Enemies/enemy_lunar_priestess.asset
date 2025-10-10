@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
+  m_Name: enemy_lunar_priestess
+  m_EditorClassIdentifier: 
+  IsPlayerControlled: 0
+  CombatantId: lunar_priestess
+  DisplayName: Lunar Priestess
+  Portrait: {fileID: 0}
+  CombatPrefab: {fileID: 0}
+  BaseStats:
+    Health: 95
+    Mana: 120
+    Attack: 14
+    Defense: 16
+    Speed: 14
+    Luck: 12
+  StartingSkills:
+  - {fileID: 11400000, guid: 697874c1c1635112b4e6a421117cd412, type: 2}
+  - {fileID: 11400000, guid: a1afb365d6c155d8861b482bf0fe1585, type: 2}
+  - {fileID: 11400000, guid: 230214aeedad5dc4a2ee99fbe8639123, type: 2}
+  StartingItems: []
+  StartingEquipment: []
+  GambitProfile: {fileID: 11400000, guid: 4275991b22f65229aceba145f3cddb69, type: 2}

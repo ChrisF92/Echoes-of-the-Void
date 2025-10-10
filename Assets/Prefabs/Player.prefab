@@ -1,0 +1,155 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5177319449053101017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8231142080485225035}
+  - component: {fileID: 1153393068777325576}
+  - component: {fileID: 3702461143210811846}
+  - component: {fileID: 1062772410654245563}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8231142080485225035
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5177319449053101017}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1153393068777325576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5177319449053101017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a910afa61864f1b478945e2b4ff7a6d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Inventory.Player.PlayerInventory
+  capacity: 30
+  startingItems:
+  - Item: {fileID: 11400000, guid: 11c8bbb5c8427634f94bb0661113c002, type: 2}
+    Quantity: 43
+  - Item: {fileID: 11400000, guid: d0783b2615f77ee46a60e00f801257a5, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: 8106fcb379b9ec2438c34c97ebc40e3f, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: e8c3a18429b2c6e4eb3434aa17d8b151, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: 589e2a6d1aa330e409aa73923a069dbe, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: 27c5bf308d111994994b81658fd88f3e, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: 80f076a477b0a3a4595dcf78f032c73e, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: 94a1d5b6bba268741abf51fa69e90811, type: 2}
+    Quantity: 1
+  equipment: {fileID: 3702461143210811846}
+--- !u!114 &3702461143210811846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5177319449053101017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fa2095a01ae15f4684337f900376837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Inventory.Player.PlayerEquipment
+  _inventory: {fileID: 1153393068777325576}
+  _slotLayout: 03000000040000000000000001000000020000000500000006000000
+  _startingEquipment: []
+--- !u!114 &1062772410654245563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5177319449053101017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4182268980d3ea24cba86b4f8dee4ef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.PlayerRosterService
+  _maxOwnedEchoes: 10
+  _maxPartySize: 1
+  _playerInventory: {fileID: 1153393068777325576}
+  _ownedEchoes:
+  - _instanceId: 17a46e0b03564db986ac4cde386d61b7
+    _template: {fileID: 11400000, guid: 4185e630906a4232a9a658eb0d418428, type: 2}
+    _customName: 
+    _level: 1
+    _equipmentLoadout: []
+    _legacyGambitProfile:
+      profileId: 
+      displayName: 
+      rules: []
+    _gambitProfiles:
+    - profileId: 
+      displayName: 
+      rules: []
+    - profileId: 
+      displayName: 
+      rules: []
+    - profileId: 
+      displayName: 
+      rules: []
+    _activeGambitSlot: 0
+    _preferredFormationSlot: {x: 0, y: 0}
+    _isLocked: 0
+  - _instanceId: 02c600ea6a29477fb5c6809d18df7459
+    _template: {fileID: 11400000, guid: b8e9c4ecf9394fdba56d1fa94447b8d1, type: 2}
+    _customName: 
+    _level: 1
+    _equipmentLoadout: []
+    _legacyGambitProfile:
+      profileId: 
+      displayName: 
+      rules: []
+    _gambitProfiles:
+    - profileId: 
+      displayName: 
+      rules: []
+    - profileId: 
+      displayName: 
+      rules: []
+    - profileId: 
+      displayName: 
+      rules: []
+    _activeGambitSlot: 0
+    _preferredFormationSlot: {x: 0, y: 0}
+    _isLocked: 0
+  _partyAssignments:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  references:
+    version: 2
+    RefIds: []

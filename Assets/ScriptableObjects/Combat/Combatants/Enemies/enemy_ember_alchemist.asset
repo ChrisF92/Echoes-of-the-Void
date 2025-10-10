@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
+  m_Name: enemy_ember_alchemist
+  m_EditorClassIdentifier: 
+  IsPlayerControlled: 0
+  CombatantId: ember_alchemist
+  DisplayName: Ember Alchemist
+  Portrait: {fileID: 0}
+  CombatPrefab: {fileID: 0}
+  BaseStats:
+    Health: 115
+    Mana: 110
+    Attack: 23
+    Defense: 14
+    Speed: 17
+    Luck: 12
+  StartingSkills:
+  - {fileID: 11400000, guid: fc700fd6ce3050d384bfaa9db0019776, type: 2}
+  - {fileID: 11400000, guid: b588b35d30b65077b159d1776d0555e0, type: 2}
+  - {fileID: 11400000, guid: 5f0f57ef41485bae8f82d7d478b835f9, type: 2}
+  StartingItems: []
+  StartingEquipment: []
+  GambitProfile: {fileID: 11400000, guid: 0c2665fc9cb95f78b7ec928248ed6338, type: 2}

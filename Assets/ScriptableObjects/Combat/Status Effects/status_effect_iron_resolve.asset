@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e6f655bf948d1e44ad064c5ff2a2a61, type: 3}
-  m_Name: Burn
+  m_Name: status_effect_iron_resolve
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Combat.ScriptableObjects.StatusEffectSO
-  _effectId: 
-  _displayName: 
-  _description: 
+  _effectId: status_effect_iron_resolve
+  _displayName: Iron Resolve
+  _description: Unbreakable conviction sharpens every strike.
   _icon: {fileID: 0}
-  _effectType: 0
-  _baseValue: 0
-  _targetStat: 0
-  _duration: 3
-  _triggerTiming: 1
+  _effectType: 2
+  _baseValue: 10
+  _targetStat: 2
+  _duration: 2
+  _triggerTiming: 0
   _stackBehavior: 0
   _maxStacks: 1
   _isDebuff: 0

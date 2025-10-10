@@ -32,6 +32,43 @@ namespace EchoesOfTheVoid.Core.Roster {
       return result;
     }
 
+    public static List<Combatant> BuildEnemyParty(IEnumerable<CombatantSO> templates, Transform parent = null) {
+      var result = new List<Combatant>();
+      if (templates == null) {
+        return result;
+      }
+
+      foreach (CombatantSO template in templates) {
+        Combatant combatant = CreateEnemyCombatantFromTemplate(template, parent);
+        if (combatant == null) {
+          continue;
+        }
+
+        result.Add(combatant);
+      }
+
+      return result;
+    }
+
+    public static Combatant CreateEnemyCombatantFromTemplate(CombatantSO template, Transform parent = null) {
+      if (template == null) {
+        return null;
+      }
+
+      var tempEcho = new PlayerEchoData(template.CombatantId, template);
+      tempEcho.SetEquipment(template.StartingEquipment);
+      tempEcho.SetGambitProfile(RosterCloneUtility.CloneGambitProfile(template.GambitProfile));
+
+      Combatant combatant = CreateCombatantForEcho(tempEcho, parent);
+      if (combatant == null) {
+        return null;
+      }
+
+      combatant.SetTeam(CombatTeam.Enemy);
+      combatant.SetAutoCombatEnabled(true);
+      return combatant;
+    }
+
     public static Combatant CreateCombatantForEcho(PlayerEchoData echo, Transform parent = null) {
       if (echo == null || echo.Template == null) {
         return null;

@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Screens/Combat/CombatSelectionScreen.uss?fileID=7433441132597879392&amp;guid=d15253ab3b8f2d34dbb6abc43c00a4eb&amp;type=3#CombatSelectionScreen" />
+    <ui:VisualElement class="combat-selection-screen">
+        <ui:VisualElement name="combat-selection-panel" class="combat-selection-panel">
+            <ui:Label text="Combat Runs" class="combat-selection-title" />
+            <ui:VisualElement class="combat-selection-body">
+                <ui:ListView name="combat-run-list" selection-type="Single" fixed-item-height="40" class="combat-run-list" />
+                <ui:VisualElement class="combat-run-details">
+                    <ui:Label name="combat-run-title" text="Select a run" class="combat-run-details-title" />
+                    <ui:Label name="combat-run-floors" class="combat-run-details-meta" />
+                    <ui:ScrollView mode="Vertical" class="combat-run-details-scroll">
+                        <ui:Label name="combat-run-description" class="combat-run-details-description" />
+                    </ui:ScrollView>
+                    <ui:Button name="combat-start-button" text="Start Run" class="combat-primary-button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="combat-run-panel" class="combat-run-panel">
+            <ui:VisualElement class="combat-run-header">
+                <ui:Label name="combat-current-run-title" text="Current Run" class="combat-run-header-title" />
+                <ui:Label name="combat-floors-remaining" class="combat-run-header-meta" />
+            </ui:VisualElement>
+            <ui:Label name="combat-current-floor" text="Floor" class="combat-run-floor-label" />
+            <ui:Label name="combat-run-status" text="Awaiting run start." class="combat-run-status-label" />
+            <ui:VisualElement class="combat-run-controls">
+                <ui:Button name="combat-next-floor-button" text="Next Floor" class="combat-primary-button" />
+                <ui:Button name="combat-quit-button" text="Quit Run" class="combat-secondary-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="combat-fade-overlay" class="combat-fade-overlay" />
+    </ui:VisualElement>
+</ui:UXML>

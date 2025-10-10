@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+  <ui:Style src="CombatRunResultsModal.uss" />
+  <ui:VisualElement class="combat-run-results">
+    <ui:Label name="results-title" class="results-title" text="Run Complete" />
+    <ui:Label name="results-summary" class="results-summary" text="" />
+    <ui:VisualElement class="results-stats">
+      <ui:Label name="results-exp" class="results-stat" text="EXP: 0" />
+      <ui:Label name="results-currency" class="results-stat" text="Echoes: 0" />
+    </ui:VisualElement>
+    <ui:Label class="results-section-title" text="Rewards" />
+    <ui:ListView name="results-item-list" class="results-list" selection-type="None" />
+    <ui:Label name="results-item-empty" class="results-empty" text="No item rewards." />
+    <ui:Label class="results-section-title" text="Floors" />
+    <ui:ListView name="results-floor-list" class="results-list" selection-type="None" />
+    <ui:Label name="results-floor-empty" class="results-empty" text="No floors completed." />
+    <ui:Button name="results-confirm-button" class="results-confirm-button" text="Continue" />
+  </ui:VisualElement>
+</ui:UXML>

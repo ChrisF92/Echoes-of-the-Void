@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfb06a7667131f429e53801a5615c83, type: 3}
+  m_Name: gambit_profile_enemy_arcane_duelist
+  m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Combat.Gambits.GambitProfile
+  rules:
+  - RuleName: Seraphic Dive
+    IsEnabled: 1
+    TargetCondition:
+      rid: 1
+    Action:
+      rid: 2
+  - RuleName: Void Pierce
+    IsEnabled: 1
+    TargetCondition:
+      rid: 3
+    Action:
+      rid: 4
+  - RuleName: Swift Cut
+    IsEnabled: 1
+    TargetCondition:
+      rid: 5
+    Action:
+      rid: 6
+  references:
+    version: 2
+    RefIds:
+    - rid: 1
+      type: {class: RandomEnemyTargetBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
+      data: 
+    - rid: 2
+      type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
+      data:
+      skill: {fileID: 11400000, guid: 0e30f59d76d651718e4dabd5bb5faa4b, type: 2}
+      requireCanUse: 1
+    - rid: 3
+      type: {class: RandomEnemyTargetBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
+      data: 
+    - rid: 4
+      type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
+      data:
+      skill: {fileID: 11400000, guid: 0c43562797635ed9b3cc93e73da692df, type: 2}
+      requireCanUse: 1
+    - rid: 5
+      type: {class: RandomEnemyTargetBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
+      data: 
+    - rid: 6
+      type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
+      data:
+      skill: {fileID: 11400000, guid: bd233565c20755968981610b4cc6d289, type: 2}
+      requireCanUse: 1

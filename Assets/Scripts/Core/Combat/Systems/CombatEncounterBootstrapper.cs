@@ -51,7 +51,7 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
       _spawnedPlayerCombatants.AddRange(playerCombatants);
 
       List<CombatantSO> enemyTemplateList = ResolveEnemyTemplates(enemyTemplates);
-      List<Combatant> enemyCombatants = BuildEnemyParty(enemyTemplateList, _enemyPartyParent);
+      List<Combatant> enemyCombatants = RosterCombatPartyBuilder.BuildEnemyParty(enemyTemplateList, _enemyPartyParent);
       _spawnedEnemyCombatants.AddRange(enemyCombatants);
 
       OnPartiesPrepared?.Invoke(playerCombatants, enemyCombatants);
@@ -61,33 +61,6 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
         var enemyInterfaces = enemyCombatants.Cast<ICombatant>().ToList();
         _combatSystem.StartCombat(playerInterfaces, enemyInterfaces);
       }
-    }
-
-    private List<Combatant> BuildEnemyParty(IEnumerable<CombatantSO> templates, Transform parent) {
-      var result = new List<Combatant>();
-      if (templates == null) {
-        return result;
-      }
-
-      foreach (CombatantSO template in templates) {
-        if (template == null) {
-          continue;
-        }
-
-        var tempEcho = new PlayerEchoData(template.CombatantId, template);
-        tempEcho.SetEquipment(template.StartingEquipment);
-        tempEcho.SetGambitProfile(RosterCloneUtility.CloneGambitProfile(template.GambitProfile));
-
-        Combatant combatant = RosterCombatPartyBuilder.CreateCombatantForEcho(tempEcho, parent);
-        if (combatant == null) {
-          continue;
-        }
-
-        combatant.SetTeam(CombatTeam.Enemy);
-        result.Add(combatant);
-      }
-
-      return result;
     }
 
     private List<CombatantSO> ResolveEnemyTemplates(IEnumerable<CombatantSO> enemyTemplates) {

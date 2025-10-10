@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
+  m_Name: enemy_chronicle_keeper
+  m_EditorClassIdentifier: 
+  IsPlayerControlled: 0
+  CombatantId: chronicle_keeper
+  DisplayName: Chronicle Keeper
+  Portrait: {fileID: 0}
+  CombatPrefab: {fileID: 0}
+  BaseStats:
+    Health: 120
+    Mana: 140
+    Attack: 16
+    Defense: 18
+    Speed: 14
+    Luck: 12
+  StartingSkills:
+  - {fileID: 11400000, guid: 77538f608f465db7a82e1a2dc4a84abf, type: 2}
+  - {fileID: 11400000, guid: e626de31bb315c38a94f05e41431c825, type: 2}
+  - {fileID: 11400000, guid: c5a73c759f105fec9fd3668995e9d879, type: 2}
+  StartingItems: []
+  StartingEquipment: []
+  GambitProfile: {fileID: 11400000, guid: e0566f1102ad5efe9eee2520627ccc27, type: 2}

@@ -1,0 +1,150 @@
+.combat-selection-screen {
+  flex-grow: 1;
+  flex-direction: column;
+  padding: 16px;
+  position: relative;
+}
+
+.combat-selection-panel {
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.combat-selection-title {
+  font-size: 20px;
+  -unity-font-style: bold;
+  margin-bottom: 12px;
+}
+
+.combat-selection-body {
+  flex-direction: row;
+}
+
+.combat-run-list {
+  flex-grow: 1;
+  min-width: 220px;
+  border-radius: 6px;
+  border-width: 1px;
+  border-color: #444444;
+  background-color: #191919;
+  margin-right: 12px;
+}
+
+#combat-run-list > .unity-list-view__item {
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.combat-run-details {
+  flex-grow: 1;
+  flex-direction: column;
+  padding: 12px;
+  border-radius: 6px;
+  border-width: 1px;
+  border-color: #444444;
+  background-color: #1f1f1f;
+  min-height: 200px;
+}
+
+.combat-run-details-title {
+  font-size: 18px;
+  -unity-font-style: bold;
+  margin-bottom: 8px;
+}
+
+.combat-run-details-meta {
+  color: #aaaaaa;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.combat-run-details-scroll {
+  flex-grow: 1;
+  margin-bottom: 8px;
+}
+
+.combat-run-details-description {
+  white-space: normal;
+  font-size: 13px;
+}
+
+.combat-primary-button {
+  -unity-font-style: bold;
+  background-color: #4c7cf0;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.combat-primary-button:disabled {
+  background-color: #3a4f80;
+}
+
+.combat-secondary-button {
+  -unity-font-style: normal;
+  background-color: #2b2b2b;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.combat-run-panel {
+  display: none;
+  flex-direction: column;
+  padding: 12px;
+  border-radius: 6px;
+  border-width: 1px;
+  border-color: #444444;
+  background-color: #1f1f1f;
+}
+
+.combat-run-header {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.combat-run-header-title {
+  font-size: 18px;
+  -unity-font-style: bold;
+}
+
+.combat-run-header-meta {
+  color: #aaaaaa;
+  font-size: 13px;
+}
+
+.combat-run-floor-label {
+  font-size: 16px;
+  -unity-font-style: bold;
+  margin-bottom: 8px;
+}
+
+.combat-run-status-label {
+  font-size: 13px;
+  color: #dddddd;
+  margin-bottom: 8px;
+}
+
+.combat-run-controls {
+  flex-direction: row;
+}
+
+#combat-next-floor-button {
+  display: none;
+}
+
+#combat-next-floor-button {
+  margin-right: 8px;
+}
+
+.combat-fade-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: none;
+}

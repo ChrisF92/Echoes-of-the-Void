@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6671d6f73ca30a646b59203412e78db0, type: 3}
+  m_Name: enemy_auric_savant
+  m_EditorClassIdentifier: 
+  IsPlayerControlled: 0
+  CombatantId: auric_savant
+  DisplayName: Auric Savant
+  Portrait: {fileID: 0}
+  CombatPrefab: {fileID: 0}
+  BaseStats:
+    Health: 105
+    Mana: 130
+    Attack: 18
+    Defense: 14
+    Speed: 16
+    Luck: 14
+  StartingSkills:
+  - {fileID: 11400000, guid: e626de31bb315c38a94f05e41431c825, type: 2}
+  - {fileID: 11400000, guid: a1afb365d6c155d8861b482bf0fe1585, type: 2}
+  - {fileID: 11400000, guid: 8949f38077a5578891e11ff0e970d224, type: 2}
+  StartingItems: []
+  StartingEquipment: []
+  GambitProfile: {fileID: 11400000, guid: f79c1812d41e5813b21022435783dfad, type: 2}
