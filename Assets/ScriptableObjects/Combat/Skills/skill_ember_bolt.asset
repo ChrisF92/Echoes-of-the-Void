@@ -26,7 +26,7 @@ MonoBehaviour:
   Effects:
   - EffectType: 0
     StatusEffect: {fileID: 0}
-    BaseValue: 20
+    BaseValue: 50
     StatScaling: 0.6
     ScalingStat: 1
     TargetSelf: 0

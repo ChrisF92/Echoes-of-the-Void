@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -16,9 +17,18 @@ public class HamburgerMenu : MonoBehaviour {
   private Button _combatButton;
   private Button _settingsButton;
 
+  private const string CombatSelectionScreenId = "CombatSelectionScreen";
+  private const string CombatScreenId = "CombatScreen";
+
   private void Start() {
     SetupUI();
     BindEvents();
+    SubscribeNavigation();
+    RefreshHamburgerVisibility();
+  }
+
+  private void OnDestroy() {
+    UnsubscribeNavigation();
   }
 
   private void SetupUI() {
@@ -121,7 +131,7 @@ public class HamburgerMenu : MonoBehaviour {
   }
 
   private void OnCombatClicked(ClickEvent evt) {
-    NavigationManager.Instance.NavigateToScreen("CombatScreen");
+    NavigationManager.Instance.NavigateToScreen(CombatSelectionScreenId);
     CloseMenu();
   }
 
@@ -151,5 +161,51 @@ public class HamburgerMenu : MonoBehaviour {
     } else {
       button.RemoveFromClassList("menu-item-button--active");
     }
+  }
+
+  private void SubscribeNavigation() {
+    if (NavigationManager.Instance == null) {
+      return;
+    }
+
+    NavigationManager.Instance.OnScreenChanged -= HandleScreenChanged;
+    NavigationManager.Instance.OnScreenChanged += HandleScreenChanged;
+  }
+
+  private void UnsubscribeNavigation() {
+    if (NavigationManager.Instance == null) {
+      return;
+    }
+
+    NavigationManager.Instance.OnScreenChanged -= HandleScreenChanged;
+  }
+
+  private void HandleScreenChanged(string screenId) {
+    bool hideHamburger = string.Equals(screenId, CombatScreenId, StringComparison.OrdinalIgnoreCase);
+    SetHamburgerVisible(!hideHamburger);
+  }
+
+  private void RefreshHamburgerVisibility() {
+    if (NavigationManager.Instance == null) {
+      SetHamburgerVisible(true);
+      return;
+    }
+
+    bool hideHamburger = NavigationManager.Instance.IsScreenActive(CombatScreenId);
+    SetHamburgerVisible(!hideHamburger);
+  }
+
+  private void SetHamburgerVisible(bool visible) {
+    if (_hamburgerContainer == null) {
+      return;
+    }
+
+    if (!visible) {
+      CloseMenu(false);
+      _hamburgerContainer.style.display = DisplayStyle.None;
+      return;
+    }
+
+    _hamburgerContainer.style.display = DisplayStyle.Flex;
   }
 }

@@ -154,8 +154,18 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
         return;
       }
 
+      bool wasEnabled = combatant.IsAutoCombatEnabled;
       combatant.SetAutoCombatEnabled(enabled);
       _aiDecisionSystem.OnAutoCombatChanged(combatant, enabled);
+
+      if (enabled &&
+          !wasEnabled &&
+          combatant == CurrentTurnCombatant &&
+          CurrentState == CombatState.InProgress &&
+          combatant.IsAlive &&
+          combatant.IsPlayerControlled) {
+        _aiDecisionSystem.ScheduleAutoAction(combatant);
+      }
     }
 
     public void SetGambitProfile(ICombatant combatant, IGambitRuleSource profile) {

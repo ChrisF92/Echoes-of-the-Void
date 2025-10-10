@@ -17,7 +17,7 @@ namespace EchoesOfTheVoid.Editor.Gambits {
     private bool _isBound;
     private bool _rebindScheduled;
 
-    [MenuItem("Window/Echoes/Gambit Log")]
+    [MenuItem("Echoes/Gambit Log")]
     public static void ShowWindow() {
       GambitLogWindow window = GetWindow<GambitLogWindow>();
       window.titleContent = new GUIContent("Gambit Log");

@@ -6,8 +6,12 @@ using EchoesOfTheVoid.Core.Combat.Data;
 using EchoesOfTheVoid.Core.Combat.Entities;
 using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
 using EchoesOfTheVoid.Core.Combat.Systems;
+using EchoesOfTheVoid.Core.Inventory.Player;
+using EchoesOfTheVoid.Core.Inventory.ScriptableObjects;
+using EchoesOfTheVoid.Core.Persistence;
 using EchoesOfTheVoid.Core.Roster;
 using EchoesOfTheVoid.Core.Roster.Data;
+using EchoesOfTheVoid.Core.Systems;
 using UnityEngine;
 
 namespace EchoesOfTheVoid.Core.Combat.Run {
@@ -18,6 +22,9 @@ namespace EchoesOfTheVoid.Core.Combat.Run {
     [SerializeField] private CombatSystem _combatSystem;
     [SerializeField] private Transform _playerPartyParent;
     [SerializeField] private Transform _enemyPartyParent;
+    [SerializeField] private PlayerProfileService _profileService;
+    [SerializeField] private PlayerInventory _playerInventory;
+    [SerializeField] private SaveManager _saveManager;
 
     [Header("Configuration")]
     [SerializeField] private CombatRunDefinition _defaultRun;
@@ -295,7 +302,46 @@ namespace EchoesOfTheVoid.Core.Combat.Run {
       }
 
       OnRunCompleted?.Invoke(_state);
+      ApplyRunRewards();
       CleanupActiveRun(resetState: false);
+    }
+
+    private void ApplyRunRewards() {
+      CombatRunRewards rewards = _state?.Rewards;
+      if (rewards == null || rewards.IsEmpty) {
+        return;
+      }
+
+      ResolveDependencies();
+
+      if (_profileService != null) {
+        if (rewards.Experience > 0) {
+          _profileService.AddExperience(rewards.Experience);
+        }
+
+        if (rewards.Currency > 0) {
+          _profileService.AddCurrency(rewards.Currency);
+        }
+      }
+
+      if (_playerInventory != null && rewards.ItemTotals.Count > 0) {
+        foreach (KeyValuePair<ItemScriptableObject, int> entry in rewards.ItemTotals) {
+          if (entry.Key == null || entry.Value <= 0) {
+            continue;
+          }
+
+          if (!_playerInventory.AddItem(entry.Key, entry.Value)) {
+            string itemName = !string.IsNullOrWhiteSpace(entry.Key.DisplayName) ? entry.Key.DisplayName : entry.Key.name;
+            Debug.LogWarning($"CombatRunController could not add {entry.Value}x {itemName} to inventory.", this);
+          }
+        }
+      }
+
+      if (_saveManager != null) {
+        _saveManager.SaveGame();
+      } else {
+        SaveManager.Instance?.SaveGame();
+      }
     }
 
     private void CleanupActiveRun(bool resetState = true) {
@@ -347,6 +393,18 @@ namespace EchoesOfTheVoid.Core.Combat.Run {
     private void ResolveDependencies() {
       if (_rosterService == null) {
         _rosterService = FindFirstObjectByType<PlayerRosterService>();
+      }
+
+      if (_profileService == null) {
+        _profileService = PlayerProfileService.Instance ?? FindFirstObjectByType<PlayerProfileService>();
+      }
+
+      if (_playerInventory == null) {
+        _playerInventory = FindFirstObjectByType<PlayerInventory>();
+      }
+
+      if (_saveManager == null) {
+        _saveManager = SaveManager.Instance ?? FindFirstObjectByType<SaveManager>();
       }
 
       if (_combatSystem == null) {

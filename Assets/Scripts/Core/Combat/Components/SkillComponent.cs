@@ -56,6 +56,10 @@ namespace EchoesOfTheVoid.Core.Combat.Components {
       return result;
     }
 
+    public IEnumerable<CombatSkill> GetAllSkills() {
+      return _skills.Values;
+    }
+
     public IEnumerable<CombatSkill> GetAvailableSkills() {
       return _skills.Values.Where(s => CanUseSkill(s.Data.SkillId));
     }

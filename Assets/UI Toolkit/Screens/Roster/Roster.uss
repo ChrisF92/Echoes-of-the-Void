@@ -170,7 +170,9 @@
 }
 
 .roster-owned-item__name {
-  font-size: 15px;
+  font-size: 18px;
+  -unity-font-style: bold;
+  color: rgba(244, 246, 255, 0.95);
 }
 
 .roster-owned-item__status {

@@ -10,16 +10,6 @@
       <ui:Button name="close-button" class="inventory-close-button" text="Close" />
     </ui:VisualElement>
     <ui:VisualElement name="inventory-body" class="inventory-body">
-      <ui:VisualElement name="team-panel" class="inventory-team-panel">
-        <ui:Label name="team-title" class="inventory-section-title" text="Team" />
-        <ui:ListView name="team-list" class="inventory-team-list inventory-list" selection-type="Single" />
-        <ui:Label name="team-empty" class="inventory-empty-message" text="No combatants available." />
-      </ui:VisualElement>
-      <ui:VisualElement name="loadout-panel" class="inventory-loadout-panel">
-        <ui:Label name="loadout-title" class="inventory-section-title" text="Loadout" />
-        <ui:ListView name="loadout-list" class="inventory-loadout-list inventory-list" selection-type="Single" />
-        <ui:Label name="loadout-empty" class="inventory-empty-message" text="No loadout slots available." />
-      </ui:VisualElement>
       <ui:VisualElement name="inventory-list-panel" class="inventory-list-panel">
         <ui:Label name="inventory-list-title" class="inventory-section-title" text="Inventory" />
         <ui:VisualElement name="inventory-tabs" class="inventory-tabs">
@@ -36,14 +26,9 @@
       <ui:VisualElement name="inventory-detail-panel" class="inventory-detail-panel">
         <ui:Label name="detail-title" class="inventory-detail-title" text="Select an item" />
         <ui:Label name="detail-quantity" class="inventory-detail-quantity" text="Quantity: 0" />
-        <ui:VisualElement name="detail-actions" class="inventory-detail-actions">
-          <ui:Button name="equip-button" class="inventory-action-button" text="Equip" />
-          <ui:Button name="unequip-button" class="inventory-action-button" text="Unequip" />
-        </ui:VisualElement>
         <ui:ScrollView name="detail-scroll" class="inventory-detail-scroll" mode="Vertical">
           <ui:Label name="detail-description" class="inventory-detail-description" text="" />
         </ui:ScrollView>
-        <ui:Label name="detail-compare" class="inventory-detail-compare" text="Comparison: Select equipment to view stat changes." />
       </ui:VisualElement>
     </ui:VisualElement>
   </ui:VisualElement>

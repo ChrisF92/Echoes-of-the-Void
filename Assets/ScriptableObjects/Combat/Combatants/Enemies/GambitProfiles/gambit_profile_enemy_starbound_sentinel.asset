@@ -25,12 +25,12 @@ MonoBehaviour:
       rid: 3
     Action:
       rid: 4
-  - RuleName: Hold the Line
+  - RuleName: Tempest Guard
     IsEnabled: 1
     TargetCondition:
-      rid: 5
+      rid: 2837685816414962482
     Action:
-      rid: 6
+      rid: 2837685816414962483
   references:
     version: 2
     RefIds:
@@ -40,19 +40,21 @@ MonoBehaviour:
     - rid: 2
       type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data:
-      skill: {fileID: 11400000, guid: 5a0a625d09a850e9b80244d98920ab23, type: 2}
-      requireCanUse: 1
+        skill: {fileID: 11400000, guid: 5a0a625d09a850e9b80244d98920ab23, type: 2}
+        requireCanUse: 1
     - rid: 3
       type: {class: SelfTargetBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data: 
     - rid: 4
       type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data:
-      skill: {fileID: 11400000, guid: 5e310d06922055c5bcc508eb79f51c87, type: 2}
-      requireCanUse: 1
-    - rid: 5
+        skill: {fileID: 11400000, guid: a26821338e9a5c46b838a2a16fecf4d9, type: 2}
+        requireCanUse: 1
+    - rid: 2837685816414962482
       type: {class: SelfTargetBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data: 
-    - rid: 6
-      type: {class: DefendActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
-      data: 
+    - rid: 2837685816414962483
+      type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
+      data:
+        skill: {fileID: 11400000, guid: 5e310d06922055c5bcc508eb79f51c87, type: 2}
+        requireCanUse: 1

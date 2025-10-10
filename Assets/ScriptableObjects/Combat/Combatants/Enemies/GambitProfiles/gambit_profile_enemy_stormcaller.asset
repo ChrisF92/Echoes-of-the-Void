@@ -40,21 +40,21 @@ MonoBehaviour:
     - rid: 2
       type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data:
-      skill: {fileID: 11400000, guid: e72a1d668af950949ae736498f649519, type: 2}
-      requireCanUse: 1
+        skill: {fileID: 11400000, guid: e72a1d668af950949ae736498f649519, type: 2}
+        requireCanUse: 1
     - rid: 3
       type: {class: RandomEnemyTargetBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data: 
     - rid: 4
       type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data:
-      skill: {fileID: 11400000, guid: a4c11bd04d5354d2a15f1b0e7500293e, type: 2}
-      requireCanUse: 1
+        skill: {fileID: 11400000, guid: a4c11bd04d5354d2a15f1b0e7500293e, type: 2}
+        requireCanUse: 1
     - rid: 5
       type: {class: RandomEnemyTargetBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data: 
     - rid: 6
       type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data:
-      skill: {fileID: 11400000, guid: fb7ae807a52b59e4aa3fdedbe48ac617, type: 2}
-      requireCanUse: 1
+        skill: {fileID: 11400000, guid: fb7ae807a52b59e4aa3fdedbe48ac617, type: 2}
+        requireCanUse: 1

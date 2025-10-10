@@ -161,11 +161,6 @@ namespace EchoesOfTheVoid.Core.Roster {
         return false;
       }
 
-      if (echo.IsLocked) {
-        errorMessage = "Echo is locked and cannot be assigned.";
-        return false;
-      }
-
       EnsurePartyAssignmentsCapacity();
 
       int currentSlot = FindSlotIndex(instanceId);
@@ -189,12 +184,16 @@ namespace EchoesOfTheVoid.Core.Roster {
       }
 
       _partyAssignments[slotIndex] = instanceId;
-      echo.SetPreferredFormationSlot(_defaultFormationSlots[slotIndex]);
+      if (echo.PreferredFormationSlot == _invalidSlot) {
+        echo.SetPreferredFormationSlot(_defaultFormationSlots[slotIndex]);
+      }
 
       if (canSwap) {
         // Swap the displaced echo into the original slot.
         _partyAssignments[currentSlot] = previousOccupantId;
-        previousOccupant.SetPreferredFormationSlot(_defaultFormationSlots[currentSlot]);
+        if (previousOccupant.PreferredFormationSlot == _invalidSlot) {
+          previousOccupant.SetPreferredFormationSlot(_defaultFormationSlots[currentSlot]);
+        }
       } else if (previousOccupant != null) {
         previousOccupant.SetPreferredFormationSlot(_invalidSlot);
       }

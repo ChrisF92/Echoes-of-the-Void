@@ -49,13 +49,13 @@ namespace EchoesOfTheVoid.UI.Modals {
     protected override void BindEvents() {
       base.BindEvents();
       if (_confirmButton != null) {
-        _confirmButton.clicked += HandleConfirmClicked;
+        _confirmButton.RegisterCallback<ClickEvent>(HandleConfirmClickedEvent);
       }
     }
 
     private void OnDisable() {
       if (_confirmButton != null) {
-        _confirmButton.clicked -= HandleConfirmClicked;
+        _confirmButton.UnregisterCallback<ClickEvent>(HandleConfirmClickedEvent);
       }
     }
 
@@ -193,6 +193,11 @@ namespace EchoesOfTheVoid.UI.Modals {
       if (_floorsEmptyLabel != null) {
         _floorsEmptyLabel.style.display = _floorRows.Count == 0 ? DisplayStyle.Flex : DisplayStyle.None;
       }
+    }
+
+    private void HandleConfirmClickedEvent(ClickEvent evt) {
+      HandleConfirmClicked();
+      evt?.StopPropagation();
     }
 
     private void HandleConfirmClicked() {

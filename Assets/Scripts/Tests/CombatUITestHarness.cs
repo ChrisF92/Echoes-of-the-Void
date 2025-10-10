@@ -11,7 +11,7 @@ namespace EchoesOfTheVoid.Tests {
   [DisallowMultipleComponent]
   public class CombatUITestHarness : MonoBehaviour {
     [Header("References")]
-    [SerializeField] private CombatViewController _combatViewController;
+    [SerializeField] private CombatScreen _combatViewController;
     [SerializeField] private CombatSystem _combatSystem;
 
     [Header("Templates")]
@@ -28,7 +28,7 @@ namespace EchoesOfTheVoid.Tests {
 
     private void Awake() {
       if (_combatViewController == null) {
-        _combatViewController = FindFirstObjectByType<CombatViewController>();
+        _combatViewController = FindFirstObjectByType<CombatScreen>();
       }
 
       if (_combatSystem == null) {
@@ -61,7 +61,7 @@ namespace EchoesOfTheVoid.Tests {
 
     public void InitializeHarness() {
       if (_combatViewController == null) {
-        Debug.LogWarning("CombatUITestHarness requires a CombatViewController reference.", this);
+        Debug.LogWarning("CombatUITestHarness requires a CombatScreen reference.", this);
         return;
       }
 

@@ -28,9 +28,9 @@ MonoBehaviour:
   - RuleName: Relentless Assault
     IsEnabled: 1
     TargetCondition:
-      rid: 5
+      rid: 2837685816414962476
     Action:
-      rid: 6
+      rid: 2837685816414962477
   references:
     version: 2
     RefIds:
@@ -40,19 +40,21 @@ MonoBehaviour:
     - rid: 2
       type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data:
-      skill: {fileID: 11400000, guid: 2e2e74238a45570fbd10d913e4e7a7b8, type: 2}
-      requireCanUse: 1
+        skill: {fileID: 11400000, guid: 2e2e74238a45570fbd10d913e4e7a7b8, type: 2}
+        requireCanUse: 1
     - rid: 3
       type: {class: RandomEnemyTargetBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data: 
     - rid: 4
       type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data:
-      skill: {fileID: 11400000, guid: 450db3057f55572c9c9c8409a85a0bf1, type: 2}
-      requireCanUse: 1
-    - rid: 5
+        skill: {fileID: 11400000, guid: 450db3057f55572c9c9c8409a85a0bf1, type: 2}
+        requireCanUse: 1
+    - rid: 2837685816414962476
       type: {class: RandomEnemyTargetBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
       data: 
-    - rid: 6
-      type: {class: AttackActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
-      data: 
+    - rid: 2837685816414962477
+      type: {class: SkillActionBlock, ns: EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations, asm: EchoesOfTheVoid.Core}
+      data:
+        skill: {fileID: 11400000, guid: 1038b916d5245d81894f0dbbe5b9dad5, type: 2}
+        requireCanUse: 1

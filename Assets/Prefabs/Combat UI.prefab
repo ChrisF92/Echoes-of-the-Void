@@ -67,7 +67,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 009d8665af952f24ea718aea85986245, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: EchoesOfTheVoid.UI::EchoesOfTheVoid.UI.Combat.CombatViewController
+  m_EditorClassIdentifier: EchoesOfTheVoid.UI::EchoesOfTheVoid.UI.Combat.CombatScreen
   _uiDocument: {fileID: 8555508429397145935}
   _combatSystem: {fileID: 0}
 --- !u!1 &6604076869525040814

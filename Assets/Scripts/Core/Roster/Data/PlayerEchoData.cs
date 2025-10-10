@@ -22,6 +22,10 @@ namespace EchoesOfTheVoid.Core.Roster.Data {
     [SerializeField] private Vector2Int _preferredFormationSlot = new(-1, -1);
     [SerializeField] private bool _isLocked;
 
+    public PlayerEchoData() {
+      EnsureGambitProfileSlots();
+    }
+
     public PlayerEchoData(string instanceId, CombatantSO template) {
       _instanceId = !string.IsNullOrWhiteSpace(instanceId)
         ? instanceId
@@ -34,6 +38,7 @@ namespace EchoesOfTheVoid.Core.Roster.Data {
     public string InstanceId => _instanceId;
     public CombatantSO Template => _template;
     public string TemplateId => _template != null ? _template.CombatantId : string.Empty;
+    public string CustomName => _customName;
     public string DisplayName => !string.IsNullOrWhiteSpace(_customName)
       ? _customName
       : _template != null ? _template.DisplayName : "Unnamed Echo";

@@ -10,6 +10,10 @@
                 <ui:Label class="info-label" text="Timer" />
                 <ui:Label name="battle-timer" class="info-value" binding-path="BattleTimer" />
             </ui:VisualElement>
+            <ui:VisualElement class="info-group">
+                <ui:Label class="info-label" text="Floor" />
+                <ui:Label name="current-floor" class="info-value" binding-path="CurrentFloorText" />
+            </ui:VisualElement>
             <ui:VisualElement class="info-group action-text">
                 <ui:Label class="info-label" text="Action" />
                 <ui:Label name="current-action" class="info-value" binding-path="CurrentActionText" />
@@ -25,6 +29,7 @@
                     <ui:VisualElement class="team-row">
                         <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-0">
                             <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:Button name="auto-toggle" class="auto-toggle-button" text="Manual" />
                             <ui:VisualElement class="portrait-frame">
                                 <ui:VisualElement class="portrait" name="player-portrait-0" />
                             </ui:VisualElement>
@@ -32,6 +37,7 @@
                         </ui:VisualElement>
                         <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-1">
                             <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:Button name="auto-toggle" class="auto-toggle-button" text="Manual" />
                             <ui:VisualElement class="portrait-frame">
                                 <ui:VisualElement class="portrait" name="player-portrait-1" />
                             </ui:VisualElement>
@@ -39,6 +45,7 @@
                         </ui:VisualElement>
                         <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-2">
                             <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:Button name="auto-toggle" class="auto-toggle-button" text="Manual" />
                             <ui:VisualElement class="portrait-frame">
                                 <ui:VisualElement class="portrait" name="player-portrait-2" />
                             </ui:VisualElement>
@@ -48,6 +55,7 @@
                     <ui:VisualElement class="team-row">
                         <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-3">
                             <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:Button name="auto-toggle" class="auto-toggle-button" text="Manual" />
                             <ui:VisualElement class="portrait-frame">
                                 <ui:VisualElement class="portrait" name="player-portrait-3" />
                             </ui:VisualElement>
@@ -55,6 +63,7 @@
                         </ui:VisualElement>
                         <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-4">
                             <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:Button name="auto-toggle" class="auto-toggle-button" text="Manual" />
                             <ui:VisualElement class="portrait-frame">
                                 <ui:VisualElement class="portrait" name="player-portrait-4" />
                             </ui:VisualElement>
@@ -62,6 +71,7 @@
                         </ui:VisualElement>
                         <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-5">
                             <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:Button name="auto-toggle" class="auto-toggle-button" text="Manual" />
                             <ui:VisualElement class="portrait-frame">
                                 <ui:VisualElement class="portrait" name="player-portrait-5" />
                             </ui:VisualElement>
@@ -71,6 +81,7 @@
                     <ui:VisualElement class="team-row">
                         <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-6">
                             <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:Button name="auto-toggle" class="auto-toggle-button" text="Manual" />
                             <ui:VisualElement class="portrait-frame">
                                 <ui:VisualElement class="portrait" name="player-portrait-6" />
                             </ui:VisualElement>
@@ -78,6 +89,7 @@
                         </ui:VisualElement>
                         <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-7">
                             <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:Button name="auto-toggle" class="auto-toggle-button" text="Manual" />
                             <ui:VisualElement class="portrait-frame">
                                 <ui:VisualElement class="portrait" name="player-portrait-7" />
                             </ui:VisualElement>
@@ -85,6 +97,7 @@
                         </ui:VisualElement>
                         <ui:VisualElement class="combatant-slot player-slot is-empty" name="player-slot-8">
                             <ui:Label class="combatant-name" binding-path="DisplayName" text="Player" />
+                            <ui:Button name="auto-toggle" class="auto-toggle-button" text="Manual" />
                             <ui:VisualElement class="portrait-frame">
                                 <ui:VisualElement class="portrait" name="player-portrait-8" />
                             </ui:VisualElement>
@@ -168,6 +181,7 @@
 
         <ui:VisualElement name="action-bar" class="action-bar">
             <ui:Label name="current-turn-character" class="current-turn" binding-path="CurrentTurnCharacter" />
+            <ui:Button name="auto-all-btn" class="action-button auto-all-button" text="AUTO ALL" />
             <ui:Button name="attack-btn" class="action-button attack-button" text="Attack" />
             <ui:Button name="defend-btn" class="action-button defend-button" text="Defend" />
             <ui:Button name="item-btn" class="action-button item-button" text="Item" />
@@ -178,6 +192,7 @@
             <ui:VisualElement class="modal-content item-modal">
                 <ui:Label class="modal-title" text="Items" />
                 <ui:ListView name="item-list" class="modal-list" selection-type="Single" />
+                <ui:Label name="item-empty-message" class="modal-empty-message is-hidden" text="No usable items available." />
                 <ui:Button name="item-close-btn" class="modal-close" text="Close" />
             </ui:VisualElement>
         </ui:VisualElement>

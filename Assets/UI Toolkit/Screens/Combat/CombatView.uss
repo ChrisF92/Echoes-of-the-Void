@@ -19,6 +19,9 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
     min-height: 100%;
     color: var(--color-text-primary);
     background-color: var(--color-bg-primary);
@@ -129,10 +132,10 @@
     min-width: 120px;
     min-height: 120px;
     border-radius: 12px;
-    padding: 8px 6px;
+    padding: 12px 6px 8px;
     margin: 0 4px;
     border-width: 2px;
-
+    position: relative;
     background-color: var(--color-bg-secondary);
 }
 
@@ -172,6 +175,7 @@
 
 .combatant-name {
     margin-top: 4px;
+    margin-right: 70px;
     font-size: 12px;
     -unity-font-style: bold;
     -unity-text-align: upper-center;
@@ -259,6 +263,11 @@
     opacity: 0.5;
 }
 
+.action-button.is-active {
+    background-color: #1f8f5b;
+    border-color: #2fb876;
+}
+
 .attack-button {
     background-color: #cc4125;
 }
@@ -289,6 +298,16 @@
 
 .skill-button:hover {
     background-color: #3a2247;
+}
+
+.action-button.is-enemy-turn {
+    background-color: #2a2a2a;
+    color: #888888;
+    border-color: #3a3a3a;
+}
+
+.action-button.is-enemy-turn:hover {
+    background-color: #2a2a2a;
 }
 
 .modal-overlay {
@@ -335,6 +354,19 @@
     margin-bottom: 12px;
 }
 
+#item-list > .unity-list-view__item,
+#skill-list > .unity-list-view__item {
+    padding: 12px 16px;
+    font-size: 16px;
+    color: var(--color-text-primary);
+}
+
+#item-list > .unity-list-view__item.unity-selected,
+#skill-list > .unity-list-view__item.unity-selected {
+    background-color: rgba(66, 139, 255, 0.18);
+    color: var(--color-accent-gold-strong);
+}
+
 .modal-close {
     align-self: flex-end;
     width: 100px;
@@ -352,8 +384,49 @@
     background-color: var(--color-accent-gold-strong);
 }
 
+.modal-empty-message {
+    margin-top: auto;
+    margin-bottom: auto;
+    color: var(--color-text-muted);
+    font-size: 13px;
+    -unity-text-align: middle-center;
+    padding: 12px;
+}
+
 .is-hidden {
     display: none;
+}
+
+.auto-toggle-button {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    min-width: 64px;
+    height: 22px;
+    padding: 0 8px;
+    font-size: 11px;
+    border-radius: 6px;
+    border-color: var(--color-panel-border);
+    border-width: 1px;
+    background-color: rgba(44, 86, 123, 0.6);
+    color: var(--color-text-primary);
+}
+
+.auto-toggle-button:hover {
+    background-color: rgba(62, 122, 173, 0.75);
+}
+
+.auto-toggle-button.is-active {
+    background-color: rgba(33, 138, 88, 0.85);
+    border-color: #1f8f5b;
+}
+
+.auto-toggle-button.unity-disabled {
+    opacity: 0.4;
+}
+
+.auto-all-button {
+    width: 94px;
 }
 
 

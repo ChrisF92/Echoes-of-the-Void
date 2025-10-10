@@ -19,7 +19,7 @@ namespace EchoesOfTheVoid.UI.Combat {
   public sealed class CombatSelectionScreen : UIScreen {
     [Header("References")]
     [SerializeField] private CombatRunController _runController;
-    [SerializeField] private CombatViewController _combatViewController;
+    [SerializeField] private CombatScreen _combatViewController;
     [SerializeField] private CombatRunResultsModal _resultsModal;
 
     [Header("Runs")]
@@ -28,6 +28,7 @@ namespace EchoesOfTheVoid.UI.Combat {
     [Header("Floor Transitions")]
     [SerializeField, Min(0f)] private float _transitionHoldSeconds = 0.2f;
     [SerializeField, Min(0f)] private float _transitionFadeSeconds = 0.35f;
+    [SerializeField, Min(0f)] private float _autoAdvanceNextFloorDelay = 0.5f;
 
     private VisualElement _selectionPanel;
     private ListView _runListView;
@@ -49,6 +50,7 @@ namespace EchoesOfTheVoid.UI.Combat {
     private int _selectedRunIndex = -1;
     private bool _awaitingNextFloor;
     private Coroutine _fadeRoutine;
+    private Coroutine _autoAdvanceRoutine;
 
     private CombatRunDefinition SelectedRun => _selectedRunIndex >= 0 && _selectedRunIndex < _runEntries.Count
       ? _runEntries[_selectedRunIndex].Definition
@@ -92,7 +94,7 @@ namespace EchoesOfTheVoid.UI.Combat {
       }
 
       _startButton?.RegisterCallback<ClickEvent>(_ => StartSelectedRun());
-      _nextFloorButton?.RegisterCallback<ClickEvent>(_ => RequestNextFloor());
+      _nextFloorButton?.RegisterCallback<ClickEvent>(_ => { RequestNextFloor(); });
       _quitRunButton?.RegisterCallback<ClickEvent>(_ => CancelActiveRun());
 
       if (_resultsModal != null) {
@@ -110,12 +112,13 @@ namespace EchoesOfTheVoid.UI.Combat {
 
     protected override void OnHide() {
       base.OnHide();
-      UnsubscribeRunController();
       StopFadeRoutine();
+      StopAutoAdvanceRoutine();
     }
 
     private void OnDisable() {
       UnsubscribeRunController();
+      StopAutoAdvanceRoutine();
 
       if (_runListView != null) {
         _runListView.selectionChanged -= HandleRunSelectionChanged;
@@ -132,7 +135,7 @@ namespace EchoesOfTheVoid.UI.Combat {
       }
 
       if (_combatViewController == null) {
-        _combatViewController = FindFirstObjectByType<CombatViewController>();
+        _combatViewController = FindFirstObjectByType<CombatScreen>();
       }
 
       if (_resultsModal == null) {
@@ -267,27 +270,46 @@ namespace EchoesOfTheVoid.UI.Combat {
         return;
       }
 
+      if (_runStatusLabel != null) {
+        _runStatusLabel.text = "Preparing first floor...";
+      }
+
+      StopAutoAdvanceRoutine();
+
       bool started = _runController.StartRun(selected);
       if (!started) {
         Debug.LogWarning("Unable to start combat run.", this);
-      } else if (_runStatusLabel != null) {
-        _runStatusLabel.text = "Preparing first floor...";
+        if (_runStatusLabel != null) {
+          _runStatusLabel.text = "Unable to start run.";
+        }
       }
     }
 
-    private void RequestNextFloor() {
+    private bool RequestNextFloor() {
       if (_runController == null || !_awaitingNextFloor) {
-        return;
+        return false;
+      }
+
+      StopAutoAdvanceRoutine();
+
+      if (!_runController.HasPendingNextFloor) {
+        ScheduleAutoAdvanceNextFloor();
+        return false;
       }
 
       bool moved = _runController.ProceedToNextFloor();
-      if (moved) {
-        _awaitingNextFloor = false;
-        ToggleNextFloorButton(false);
-        if (_runStatusLabel != null) {
-          _runStatusLabel.text = "Advancing to next floor...";
-        }
+      if (!moved) {
+        ScheduleAutoAdvanceNextFloor();
+        return false;
       }
+
+      _awaitingNextFloor = false;
+      ToggleNextFloorButton(false);
+      if (_runStatusLabel != null) {
+        _runStatusLabel.text = "Advancing to next floor...";
+      }
+
+      return true;
     }
 
     private void CancelActiveRun() {
@@ -295,6 +317,7 @@ namespace EchoesOfTheVoid.UI.Combat {
         return;
       }
 
+      StopAutoAdvanceRoutine();
       _runController.CancelRun();
     }
 
@@ -303,6 +326,7 @@ namespace EchoesOfTheVoid.UI.Combat {
         return;
       }
 
+      StopAutoAdvanceRoutine();
       _awaitingNextFloor = false;
       ToggleNextFloorButton(false);
 
@@ -323,6 +347,8 @@ namespace EchoesOfTheVoid.UI.Combat {
       IReadOnlyList<Combatant> playerParty,
       IReadOnlyList<Combatant> enemyParty) {
 
+      StopAutoAdvanceRoutine();
+
       if (floor != null && _currentFloorLabel != null) {
         _currentFloorLabel.text = $"{floor.DisplayName} (Floor {floorIndex + 1})";
       }
@@ -338,7 +364,9 @@ namespace EchoesOfTheVoid.UI.Combat {
       ToggleNextFloorButton(false);
 
       InitializeCombatView(playerParty, enemyParty);
-      PlayFloorTransition();
+      if (NavigationManager.Instance == null || NavigationManager.Instance.IsScreenActive(_screenId)) {
+        PlayFloorTransition();
+      }
     }
 
     private void HandleFloorCompleted(CombatRunFloorResult result) {
@@ -364,12 +392,24 @@ namespace EchoesOfTheVoid.UI.Combat {
 
       _awaitingNextFloor = result.Outcome == CombatOutcome.Victory && moreFloorsRemain;
       ToggleNextFloorButton(_awaitingNextFloor);
+
+      bool isSelectionVisible = NavigationManager.Instance != null
+        ? NavigationManager.Instance.IsScreenActive(_screenId)
+        : IsVisible;
+
+      if (_awaitingNextFloor && isSelectionVisible) {
+        ScheduleAutoAdvanceNextFloor();
+      } else {
+        StopAutoAdvanceRoutine();
+      }
     }
 
     private void HandleRunCompleted(CombatRunState state) {
+      StopAutoAdvanceRoutine();
       _awaitingNextFloor = false;
       ToggleNextFloorButton(false);
       UpdateRunControls();
+      HideCombatView();
 
       if (_resultsModal != null) {
         _resultsModal.ShowResults(state);
@@ -380,6 +420,7 @@ namespace EchoesOfTheVoid.UI.Combat {
     }
 
     private void HandleRunCancelled(CombatRunState state) {
+      StopAutoAdvanceRoutine();
       _awaitingNextFloor = false;
       ToggleNextFloorButton(false);
 
@@ -451,6 +492,8 @@ namespace EchoesOfTheVoid.UI.Combat {
         return;
       }
 
+      ShowCombatView();
+
       var players = playerParty != null
         ? new List<Combatant>(playerParty.Where(static c => c != null))
         : new List<Combatant>();
@@ -468,6 +511,7 @@ namespace EchoesOfTheVoid.UI.Combat {
       }
 
       _combatViewController.InitializeBattle(new List<Combatant>(), new List<Combatant>());
+      HideCombatView();
     }
 
     private void PlayFloorTransition() {
@@ -512,6 +556,39 @@ namespace EchoesOfTheVoid.UI.Combat {
       }
     }
 
+    private void ScheduleAutoAdvanceNextFloor() {
+      if (!_awaitingNextFloor) {
+        StopAutoAdvanceRoutine();
+        return;
+      }
+
+      StopAutoAdvanceRoutine();
+      _autoAdvanceRoutine = StartCoroutine(AutoAdvanceNextFloorRoutine());
+    }
+
+    private IEnumerator AutoAdvanceNextFloorRoutine() {
+      float elapsed = 0f;
+      while (_awaitingNextFloor && _runController != null) {
+        if (_runController.HasPendingNextFloor && elapsed >= _autoAdvanceNextFloorDelay) {
+          _autoAdvanceRoutine = null;
+          RequestNextFloor();
+          yield break;
+        }
+
+        elapsed += Time.deltaTime;
+        yield return null;
+      }
+
+      _autoAdvanceRoutine = null;
+    }
+
+    private void StopAutoAdvanceRoutine() {
+      if (_autoAdvanceRoutine != null) {
+        StopCoroutine(_autoAdvanceRoutine);
+        _autoAdvanceRoutine = null;
+      }
+    }
+
     private void ToggleNextFloorButton(bool enabled) {
       if (_nextFloorButton == null) {
         return;
@@ -533,6 +610,35 @@ namespace EchoesOfTheVoid.UI.Combat {
 
       currentFloor = Mathf.Clamp(currentFloor, 0, totalFloors);
       _floorsProgressLabel.text = $"{currentFloor}/{totalFloors} floors";
+    }
+
+    private void ShowCombatView() {
+      if (_combatViewController == null) {
+        return;
+      }
+
+      if (NavigationManager.Instance != null) {
+        string combatScreenId = _combatViewController.ScreenId;
+        if (!string.IsNullOrEmpty(combatScreenId) && !NavigationManager.Instance.IsScreenActive(combatScreenId)) {
+          NavigationManager.Instance.NavigateToScreen(combatScreenId);
+        }
+      } else if (!_combatViewController.IsVisible) {
+        _combatViewController.Show();
+      }
+    }
+
+    private void HideCombatView() {
+      if (_combatViewController == null) {
+        return;
+      }
+
+      if (NavigationManager.Instance != null) {
+        if (!string.IsNullOrEmpty(_screenId) && !NavigationManager.Instance.IsScreenActive(_screenId)) {
+          NavigationManager.Instance.NavigateToScreen(_screenId, addToHistory: false);
+        }
+      } else if (_combatViewController.IsVisible) {
+        _combatViewController.Hide();
+      }
     }
 
     private static string FormatDuration(float seconds) {
@@ -563,7 +669,7 @@ namespace EchoesOfTheVoid.UI.Combat {
 #if UNITY_EDITOR
     private void OnValidate() {
       if (string.IsNullOrEmpty(_screenId)) {
-        _screenId = "CombatScreen";
+        _screenId = "CombatSelectionScreen";
       }
 
       if (_screenTemplate == null) {

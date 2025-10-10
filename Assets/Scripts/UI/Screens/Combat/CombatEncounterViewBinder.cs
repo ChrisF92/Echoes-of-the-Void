@@ -8,7 +8,7 @@ namespace EchoesOfTheVoid.UI.Combat {
   [DisallowMultipleComponent]
   public class CombatEncounterViewBinder : MonoBehaviour {
     [SerializeField] private CombatEncounterBootstrapper _bootstrapper;
-    [SerializeField] private CombatViewController _viewController;
+    [SerializeField] private CombatScreen _viewController;
 
     private void Awake() {
       if (_bootstrapper == null) {
@@ -16,7 +16,7 @@ namespace EchoesOfTheVoid.UI.Combat {
       }
 
       if (_viewController == null) {
-        _viewController = FindFirstObjectByType<CombatViewController>();
+        _viewController = FindFirstObjectByType<CombatScreen>();
       }
     }
 

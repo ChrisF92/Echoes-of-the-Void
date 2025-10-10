@@ -18,9 +18,9 @@ MonoBehaviour:
   Portrait: {fileID: 0}
   CombatPrefab: {fileID: 0}
   BaseStats:
-    Health: 100
+    Health: 200
     Mana: 75
-    Attack: 5
+    Attack: 25
     Defense: 10
     Speed: 12
     Luck: 5
