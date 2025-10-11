@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2641c4575904ce4196a7dcebb3cc14c, type: 3}
-  m_Name: echo_progression_profile_aurora_knight
+  m_Name: progression_profile_aurora_knight
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.Progression.Definitions.EchoProgressionProfile
   _levelProgression: {fileID: 11400000, guid: cc65425793f02224b8f7af6a0994bdc2, type: 2}
   _skillTree: {fileID: 11400000, guid: 398b0e74b6645804aa58d4c394ac87e5, type: 2}
+  _statProgression: {fileID: 11400000, guid: fb912589ea810f44caf822240eaf34ec, type: 2}

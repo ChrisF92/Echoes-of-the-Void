@@ -409,18 +409,25 @@ namespace EchoesOfTheVoid.UI.Roster {
       _detailStatsRoot.Clear();
 
       CombatStats baseStats = echo.Template.BaseStats;
-      if (baseStats == null) {
+      CombatStats displayStats;
+      IStatProgression statProgression = echo.Template.ProgressionProfile?.StatProgression;
+
+      if (statProgression != null) {
+        displayStats = statProgression.BuildStatSnapshot(baseStats, echo.Level);
+      } else if (baseStats != null) {
+        displayStats = baseStats.Clone();
+      } else {
         return;
       }
 
       Dictionary<StatType, StatTotals> equipmentTotals = BuildEquipmentTotals(echo);
 
-      AddStatLabel("Health", ApplyEquipmentModifiers(baseStats.Health, equipmentTotals, StatType.Health).ToString());
-      AddStatLabel("Mana", ApplyEquipmentModifiers(baseStats.Mana, equipmentTotals, StatType.Mana).ToString());
-      AddStatLabel("Attack", ApplyEquipmentModifiers(baseStats.Attack, equipmentTotals, StatType.Attack).ToString());
-      AddStatLabel("Defense", ApplyEquipmentModifiers(baseStats.Defense, equipmentTotals, StatType.Defense).ToString());
-      AddStatLabel("Speed", ApplyEquipmentModifiers(baseStats.Speed, equipmentTotals, StatType.Speed).ToString());
-      AddStatLabel("Luck", ApplyEquipmentModifiers(baseStats.Luck, equipmentTotals, StatType.Luck).ToString());
+      AddStatLabel("Health", ApplyEquipmentModifiers(displayStats.Health, equipmentTotals, StatType.Health).ToString());
+      AddStatLabel("Mana", ApplyEquipmentModifiers(displayStats.Mana, equipmentTotals, StatType.Mana).ToString());
+      AddStatLabel("Attack", ApplyEquipmentModifiers(displayStats.Attack, equipmentTotals, StatType.Attack).ToString());
+      AddStatLabel("Defense", ApplyEquipmentModifiers(displayStats.Defense, equipmentTotals, StatType.Defense).ToString());
+      AddStatLabel("Speed", ApplyEquipmentModifiers(displayStats.Speed, equipmentTotals, StatType.Speed).ToString());
+      AddStatLabel("Luck", ApplyEquipmentModifiers(displayStats.Luck, equipmentTotals, StatType.Luck).ToString());
     }
 
     private static Dictionary<StatType, StatTotals> BuildEquipmentTotals(PlayerEchoData echo) {

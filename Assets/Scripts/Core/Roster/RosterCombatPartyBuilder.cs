@@ -3,11 +3,13 @@ using EchoesOfTheVoid.Core.Combat;
 using EchoesOfTheVoid.Core.Combat.Components;
 using EchoesOfTheVoid.Core.Combat.Entities;
 using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
+using EchoesOfTheVoid.Core.Combat.Data;
 using EchoesOfTheVoid.Core.Roster.Data;
 using EchoesOfTheVoid.Core.Roster.Progression.Contracts;
 using EchoesOfTheVoid.Core.Roster.Progression.Definitions;
 using EchoesOfTheVoid.Core.Roster.Progression.Payloads;
 using UnityEngine;
+using EchoesOfTheVoid.Core.Roster.Progression.Stats;
 
 namespace EchoesOfTheVoid.Core.Roster {
   public static class RosterCombatPartyBuilder {
@@ -95,6 +97,7 @@ namespace EchoesOfTheVoid.Core.Roster {
         return null;
       }
 
+      ApplyStatProgression(combatant, echo);
       ApplyRosterLoadout(combatant, echo);
       return combatant;
     }
@@ -123,6 +126,20 @@ namespace EchoesOfTheVoid.Core.Roster {
       return combatant;
     }
 
+    private static void ApplyStatProgression(Combatant combatant, PlayerEchoData echo) {
+      if (combatant == null || echo?.Template?.ProgressionProfile == null) {
+        return;
+      }
+
+      IStatProgression statProgression = echo.Template.ProgressionProfile.StatProgression;
+      if (statProgression == null) {
+        return;
+      }
+
+      CombatStats scaled = statProgression.BuildStatSnapshot(echo.Template.BaseStats, echo.Level);
+      combatant.OverrideBaseStats(scaled, true);
+    }
+
     private static void ApplyRosterLoadout(Combatant combatant, PlayerEchoData echo) {
       if (combatant == null || echo == null) {
         return;
@@ -144,6 +161,8 @@ namespace EchoesOfTheVoid.Core.Roster {
       if (skillTree == null) {
         return;
       }
+
+      combatant.ClearSkillTreeModifiers();
 
       IReadOnlyList<string> unlocked = echo.UnlockedSkillNodes;
       if (unlocked == null || unlocked.Count == 0) {

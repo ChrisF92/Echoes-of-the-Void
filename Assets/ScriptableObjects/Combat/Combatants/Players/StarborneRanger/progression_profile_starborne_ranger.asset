@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2641c4575904ce4196a7dcebb3cc14c, type: 3}
-  m_Name: echo_progression_profile_starborne_ranger
+  m_Name: progression_profile_starborne_ranger
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.Progression.Definitions.EchoProgressionProfile
-  _levelProgression: {fileID: 0}
-  _skillTree: {fileID: 0}
+  _levelProgression: {fileID: 11400000, guid: cc65425793f02224b8f7af6a0994bdc2, type: 2}
+  _skillTree: {fileID: 11400000, guid: 5f892bec7eb9b3e4e839bf394489da34, type: 2}
+  _statProgression: {fileID: 0}

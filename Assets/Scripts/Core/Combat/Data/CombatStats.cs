@@ -7,6 +7,16 @@ namespace EchoesOfTheVoid.Core.Combat.Data {
     public int Defense = 10;
     public int Speed = 12;
     public int Luck = 5;
+
+    public CombatStats Clone() {
+      return new CombatStats {
+        Health = Health,
+        Mana = Mana,
+        Attack = Attack,
+        Defense = Defense,
+        Speed = Speed,
+        Luck = Luck
+      };
+    }
   }
 }
-

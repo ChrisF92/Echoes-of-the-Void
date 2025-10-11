@@ -17,6 +17,7 @@ namespace EchoesOfTheVoid.Core.Combat.Entities {
 
     private readonly Dictionary<Type, CombatComponent> _components = new();
     private EquipmentComponent _equipmentComponent;
+    private readonly Dictionary<StatType, StatModifierValue> _skillTreeModifiers = new();
 
     [field: Header("Basic Info")]
     [field: SerializeField]
@@ -45,15 +46,7 @@ namespace EchoesOfTheVoid.Core.Combat.Entities {
     public void InitializeFromTemplate(CombatantSO template) {
       Name = template.DisplayName;
       IsPlayerControlled = template.IsPlayerControlled;
-      _baseStats = template.BaseStats;
-      _currentStats = new CombatStats {
-        Health = _baseStats.Health,
-        Mana = _baseStats.Mana,
-        Attack = _baseStats.Attack,
-        Defense = _baseStats.Defense,
-        Speed = _baseStats.Speed,
-        Luck = _baseStats.Luck
-      };
+      OverrideBaseStats(template.BaseStats, true);
 
       InitializeComponents();
       SetupSkillComponent(template.StartingSkills);
@@ -63,17 +56,29 @@ namespace EchoesOfTheVoid.Core.Combat.Entities {
     }
 
     private void InitializeStats() {
-      _baseStats ??= new CombatStats();
+      if (_baseStats == null) {
+        _baseStats = new CombatStats();
+      }
 
-      if (_currentStats == null || _currentStats.Health <= 0) {
-        _currentStats = new CombatStats {
-          Health = _baseStats.Health,
-          Mana = _baseStats.Mana,
-          Attack = _baseStats.Attack,
-          Defense = _baseStats.Defense,
-          Speed = _baseStats.Speed,
-          Luck = _baseStats.Luck
-        };
+      if (_currentStats == null) {
+        _currentStats = CloneStats(_baseStats);
+        return;
+      }
+
+      if (_currentStats.Health <= 0) {
+        CopyStats(_baseStats, _currentStats);
+      } else {
+        ClampCurrentToBase(_currentStats, _baseStats);
+      }
+    }
+
+    public void OverrideBaseStats(CombatStats baseStats, bool resetCurrentStats = true) {
+      _baseStats = CloneStats(baseStats);
+
+      if (_currentStats == null || resetCurrentStats) {
+        _currentStats = CloneStats(_baseStats);
+      } else {
+        ClampCurrentToBase(_currentStats, _baseStats);
       }
     }
 
@@ -218,10 +223,14 @@ namespace EchoesOfTheVoid.Core.Combat.Entities {
       EquipmentComponent equipment = _equipmentComponent ?? GetComponent<EquipmentComponent>();
       if (equipment != null) {
         EquipmentComponent.StatModifier modifier = equipment.GetModifier(statType);
-        value = (int)(value * (1f + modifier.Percent)) + modifier.Additive;
+        value = ApplyModifier(value, modifier.Additive, modifier.Percent);
       }
 
-      return value;
+      if (_skillTreeModifiers.TryGetValue(statType, out StatModifierValue skillTreeModifier)) {
+        value = ApplyModifier(value, skillTreeModifier.Additive, skillTreeModifier.Percent);
+      }
+
+      return Mathf.Max(0, value);
     }
 
     public int GetMaxStat(StatType statType) {
@@ -238,10 +247,14 @@ namespace EchoesOfTheVoid.Core.Combat.Entities {
       EquipmentComponent equipment = _equipmentComponent ?? GetComponent<EquipmentComponent>();
       if (equipment != null) {
         EquipmentComponent.StatModifier modifier = equipment.GetModifier(statType);
-        value = (int)(value * (1f + modifier.Percent)) + modifier.Additive;
+        value = ApplyModifier(value, modifier.Additive, modifier.Percent);
       }
 
-      return value;
+      if (_skillTreeModifiers.TryGetValue(statType, out StatModifierValue skillTreeModifier)) {
+        value = ApplyModifier(value, skillTreeModifier.Additive, skillTreeModifier.Percent);
+      }
+
+      return Mathf.Max(0, value);
     }
 
     public void SetTeam(CombatTeam team) {
@@ -320,6 +333,62 @@ namespace EchoesOfTheVoid.Core.Combat.Entities {
       foreach (CombatComponent component in _components.Values) {
         component.Update(deltaTime);
       }
+    }
+
+    private static CombatStats CloneStats(CombatStats source) {
+      return source != null ? source.Clone() : new CombatStats();
+    }
+
+    private static void CopyStats(CombatStats source, CombatStats destination) {
+      if (destination == null) {
+        return;
+      }
+
+      CombatStats baseline = CloneStats(source);
+      destination.Health = baseline.Health;
+      destination.Mana = baseline.Mana;
+      destination.Attack = baseline.Attack;
+      destination.Defense = baseline.Defense;
+      destination.Speed = baseline.Speed;
+      destination.Luck = baseline.Luck;
+    }
+
+    private static void ClampCurrentToBase(CombatStats current, CombatStats baseline) {
+      if (current == null || baseline == null) {
+        return;
+      }
+
+      current.Health = Mathf.Clamp(current.Health, 0, baseline.Health);
+      current.Mana = Mathf.Clamp(current.Mana, 0, baseline.Mana);
+      current.Attack = Mathf.Clamp(current.Attack, 0, baseline.Attack);
+      current.Defense = Mathf.Clamp(current.Defense, 0, baseline.Defense);
+      current.Speed = Mathf.Clamp(current.Speed, 0, baseline.Speed);
+      current.Luck = Mathf.Clamp(current.Luck, 0, baseline.Luck);
+    }
+
+    public void ClearSkillTreeModifiers() {
+      _skillTreeModifiers.Clear();
+    }
+
+    public void AddSkillTreeModifier(StatType statType, int additive, float percent) {
+      if (!_skillTreeModifiers.TryGetValue(statType, out StatModifierValue totals)) {
+        totals = default;
+      }
+
+      totals.Additive += additive;
+      totals.Percent += percent;
+      _skillTreeModifiers[statType] = totals;
+    }
+
+    public struct StatModifierValue {
+      public int Additive;
+      public float Percent;
+    }
+
+    private static int ApplyModifier(int baseValue, int additive, float percent) {
+      float scaled = baseValue * (1f + percent);
+      int adjusted = Mathf.RoundToInt(scaled);
+      return Mathf.Max(0, adjusted + additive);
     }
   }
 }

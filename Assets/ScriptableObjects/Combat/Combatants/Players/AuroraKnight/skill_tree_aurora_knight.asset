@@ -13,4 +13,212 @@ MonoBehaviour:
   m_Name: skill_tree_aurora_knight
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.Progression.Definitions.SkillTreeDefinition
   _treeId: skill-tree
-  _nodes: []
+  _nodes:
+  - _nodeId: aurora_root_dawn_guardian
+    _displayName: Dawn Guardian
+    _description: Foundational drills fortify vitality, resolve, and focus.
+    _isRoot: 1
+    _skillPointCost: 0
+    _prerequisiteNodeIds: []
+    _payload: {fileID: 11400000, guid: 23aa609541634583b0b6569cc2b34b12, type: 2}
+  - _nodeId: aurora_root_starlight_mending
+    _displayName: Starlight Mending
+    _description: Unlocks the Starlight Mending ability.
+    _isRoot: 1
+    _skillPointCost: 0
+    _prerequisiteNodeIds: []
+    _payload: {fileID: 11400000, guid: 403cecfe30664b8b89a2cc443bb666e2, type: 2}
+  - _nodeId: aurora_node_radiant_flow
+    _displayName: Radiant Flow
+    _description: Guide auroral energy to increase mana and clarity.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - aurora_root_dawn_guardian
+    _payload: {fileID: 11400000, guid: 26ea998577d142d2a7b6dff7bb676c87, type: 2}
+  - _nodeId: aurora_skill_aurora_mend
+    _displayName: Aurora Mend
+    _description: Unlocks the Aurora Mend ability.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - aurora_node_radiant_flow
+    _payload: {fileID: 11400000, guid: 787d419ed7414897b2c694a5f224f19d, type: 2}
+  - _nodeId: aurora_node_luminous_reservoir
+    _displayName: Luminous Reservoir
+    _description: Expand mana wells with starlit reserves.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - aurora_skill_aurora_mend
+    _payload: {fileID: 11400000, guid: 1a8c7c27c9af4b73bf5ca415a10e79f9, type: 2}
+  - _nodeId: aurora_skill_radiant_convergence
+    _displayName: Radiant Convergence
+    _description: Unlocks the Radiant Convergence ability.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - aurora_node_luminous_reservoir
+    _payload: {fileID: 11400000, guid: c394fe52d2324e6797571e28f019f5df, type: 2}
+  - _nodeId: aurora_node_chronicle_of_light
+    _displayName: Chronicle of Light
+    _description: Study luminous scriptures to reinforce stamina and quickness.
+    _isRoot: 0
+    _skillPointCost: 3
+    _prerequisiteNodeIds:
+    - aurora_skill_radiant_convergence
+    _payload: {fileID: 11400000, guid: 0591a884aa1642adb4ed238205c666c7, type: 2}
+  - _nodeId: aurora_skill_lunar_revival
+    _displayName: Lunar Revival
+    _description: Unlocks the Lunar Revival ability.
+    _isRoot: 0
+    _skillPointCost: 4
+    _prerequisiteNodeIds:
+    - aurora_node_chronicle_of_light
+    _payload: {fileID: 11400000, guid: 9f9d2d52e9c04de9b26567f75dff48e8, type: 2}
+  - _nodeId: aurora_node_warden_drill
+    _displayName: Warden Drill
+    _description: Defensive drills that harden armor and resolve.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - aurora_root_dawn_guardian
+    _payload: {fileID: 11400000, guid: ffe924d1936b44c5b257425a7af5da86, type: 2}
+  - _nodeId: aurora_skill_guardian_oath
+    _displayName: Guardian Oath
+    _description: Unlocks the Guardian Oath ability.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - aurora_node_warden_drill
+    _payload: {fileID: 11400000, guid: a09494c115b64a66b66a37441657541a, type: 2}
+  - _nodeId: aurora_node_resolute_core
+    _displayName: Resolute Core
+    _description: Temper armor to withstand crushing blows.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - aurora_skill_guardian_oath
+    _payload: {fileID: 11400000, guid: d013b619b59048008c82200a3c552352, type: 2}
+  - _nodeId: aurora_skill_resolute_guard
+    _displayName: Resolute Guard
+    _description: Unlocks the Resolute Guard ability.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - aurora_node_resolute_core
+    _payload: {fileID: 11400000, guid: 4823a40d4688431193165331a4484a71, type: 2}
+  - _nodeId: aurora_node_shield_of_dawn
+    _displayName: Shield of Dawn
+    _description: Grow a radiant bulwark protecting the front line.
+    _isRoot: 0
+    _skillPointCost: 3
+    _prerequisiteNodeIds:
+    - aurora_skill_resolute_guard
+    _payload: {fileID: 11400000, guid: 4b8ad7d924324113b7832981f2007ad1, type: 2}
+  - _nodeId: aurora_skill_starlit_barrier
+    _displayName: Starlit Barrier
+    _description: Unlocks the Starlit Barrier ability.
+    _isRoot: 0
+    _skillPointCost: 3
+    _prerequisiteNodeIds:
+    - aurora_node_shield_of_dawn
+    _payload: {fileID: 11400000, guid: f04e3a994542441f947a980ea8294704, type: 2}
+  - _nodeId: aurora_node_tempest_aegis
+    _displayName: Tempest Aegis
+    _description: Balance storm wards with iron discipline to weather any strike.
+    _isRoot: 0
+    _skillPointCost: 4
+    _prerequisiteNodeIds:
+    - aurora_skill_starlit_barrier
+    _payload: {fileID: 11400000, guid: 9caac5cef5d44055870ef1d08bbb019f, type: 2}
+  - _nodeId: aurora_skill_tempest_guard
+    _displayName: Tempest Guard
+    _description: Unlocks the Tempest Guard ability.
+    _isRoot: 0
+    _skillPointCost: 4
+    _prerequisiteNodeIds:
+    - aurora_node_tempest_aegis
+    _payload: {fileID: 11400000, guid: 04d1adc4c5734bd2969a7b79d7e98ebd, type: 2}
+  - _nodeId: aurora_node_song_of_morn
+    _displayName: Song of Morn
+    _description: Practice resonant chants that uplift morale and fortune.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - aurora_root_dawn_guardian
+    _payload: {fileID: 11400000, guid: fd27ef06d3c3498da5dbd519c78e2c09, type: 2}
+  - _nodeId: aurora_skill_gale_hymn
+    _displayName: Gale Hymn
+    _description: Unlocks the Gale Hymn ability.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - aurora_node_song_of_morn
+    _payload: {fileID: 11400000, guid: 9f0153aef7694378b9820f57661cbb50, type: 2}
+  - _nodeId: aurora_node_battle_rhythm
+    _displayName: Battle Rhythm
+    _description: Commit to martial cadences that sharpen allied momentum.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - aurora_skill_gale_hymn
+    _payload: {fileID: 11400000, guid: 2b1c14799623475aaa473ec038082090, type: 2}
+  - _nodeId: aurora_skill_battle_anthem
+    _displayName: Battle Anthem
+    _description: Unlocks the Battle Anthem ability.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - aurora_node_battle_rhythm
+    _payload: {fileID: 11400000, guid: 9d87f4103896465bbbd0434d339ec48f, type: 2}
+  - _nodeId: aurora_node_serene_cadence
+    _displayName: Serene Cadence
+    _description: Deepen restorative tempos and the flow of mana.
+    _isRoot: 0
+    _skillPointCost: 3
+    _prerequisiteNodeIds:
+    - aurora_skill_battle_anthem
+    _payload: {fileID: 11400000, guid: cfe4ec05645749298c2ce33e3530613e, type: 2}
+  - _nodeId: aurora_skill_harmonic_salve
+    _displayName: Harmonic Salve
+    _description: Unlocks the Harmonic Salve ability.
+    _isRoot: 0
+    _skillPointCost: 3
+    _prerequisiteNodeIds:
+    - aurora_node_serene_cadence
+    _payload: {fileID: 11400000, guid: 3f7c9398498e4b63b9719ca79bda13eb, type: 2}
+  - _nodeId: aurora_node_phoenix_spirit
+    _displayName: Phoenix Spirit
+    _description: Ignite an inner flame that sustains hope and vigor.
+    _isRoot: 0
+    _skillPointCost: 4
+    _prerequisiteNodeIds:
+    - aurora_skill_harmonic_salve
+    _payload: {fileID: 11400000, guid: 0df478706922478a8f71402975ec65f8, type: 2}
+  - _nodeId: aurora_skill_phoenix_rally
+    _displayName: Phoenix Rally
+    _description: Unlocks the Phoenix Rally ability.
+    _isRoot: 0
+    _skillPointCost: 4
+    _prerequisiteNodeIds:
+    - aurora_node_phoenix_spirit
+    _payload: {fileID: 11400000, guid: 8e4f137763d74578a28061b40baf5657, type: 2}
+  - _nodeId: aurora_node_auroral_domain
+    _displayName: Auroral Domain
+    _description: Unify every doctrine to project an unbreakable field.
+    _isRoot: 0
+    _skillPointCost: 5
+    _prerequisiteNodeIds:
+    - aurora_skill_lunar_revival
+    - aurora_skill_tempest_guard
+    - aurora_skill_phoenix_rally
+    _payload: {fileID: 11400000, guid: b5d3b64999df4c2bb702587767d0ccbf, type: 2}
+  - _nodeId: aurora_skill_solar_inflection
+    _displayName: Solar Inflection
+    _description: Unlocks the Solar Inflection ability.
+    _isRoot: 0
+    _skillPointCost: 5
+    _prerequisiteNodeIds:
+    - aurora_node_auroral_domain
+    _payload: {fileID: 11400000, guid: 6bf6d4785c7f4338aee3f2c5945f97e1, type: 2}

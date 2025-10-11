@@ -13,4 +13,204 @@ MonoBehaviour:
   m_Name: skill_tree_starborne_ranger
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.Progression.Definitions.SkillTreeDefinition
   _treeId: skill-tree
-  _nodes: []
+  _nodes:
+  - _nodeId: starborne_root_cosmic_scout
+    _displayName: Cosmic Scout
+    _description: Baseline training increases vitality, striking power, and agility.
+    _isRoot: 1
+    _skillPointCost: 0
+    _prerequisiteNodeIds: []
+    _payload: {fileID: 11400000, guid: 10eb899d46b84463aa9a0c3131fe5e4f, type: 2}
+  - _nodeId: starborne_root_ember_bolt
+    _displayName: Ember Bolt
+    _description: Unlocks the Ember Bolt ability.
+    _isRoot: 1
+    _skillPointCost: 0
+    _prerequisiteNodeIds: []
+    _payload: {fileID: 11400000, guid: bb3df8c1a45242779629a961f860b83f, type: 2}
+  - _nodeId: starborne_node_solar_alignment
+    _displayName: Solar Alignment
+    _description: Align your focus with stellar currents to boost firepower and mana reserves.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - starborne_root_cosmic_scout
+    _payload: {fileID: 11400000, guid: 7bec7d037f6d431886220d853cc9e14c, type: 2}
+  - _nodeId: starborne_skill_astral_javelin
+    _displayName: Astral Javelin
+    _description: Unlocks the Astral Javelin ability.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - starborne_node_solar_alignment
+    _payload: {fileID: 11400000, guid: 69b5322394ca43d191d1b1af91c79797, type: 2}
+  - _nodeId: starborne_node_plasma_vector
+    _displayName: Plasma Vector
+    _description: Channel volatile plasma to further amplify ranged assaults.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - starborne_skill_astral_javelin
+    _payload: {fileID: 11400000, guid: b3583d3fa88f4a44988cdb246ca862b0, type: 2}
+  - _nodeId: starborne_skill_searing_comet
+    _displayName: Searing Comet
+    _description: Unlocks the Searing Comet ability.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - starborne_node_plasma_vector
+    _payload: {fileID: 11400000, guid: 4a14d1c44dac428992a1ab9b7e21ab50, type: 2}
+  - _nodeId: starborne_node_stellar_battery
+    _displayName: Stellar Battery
+    _description: Expand void-charged reserves to sustain relentless bombardments.
+    _isRoot: 0
+    _skillPointCost: 3
+    _prerequisiteNodeIds:
+    - starborne_skill_searing_comet
+    _payload: {fileID: 11400000, guid: 1082335bec604acfafd9f8a7d8ee6f3b, type: 2}
+  - _nodeId: starborne_skill_starfall_barrage
+    _displayName: Starfall Barrage
+    _description: Unlocks the Starfall Barrage ability.
+    _isRoot: 0
+    _skillPointCost: 3
+    _prerequisiteNodeIds:
+    - starborne_node_stellar_battery
+    _payload: {fileID: 11400000, guid: f4689e16a128472981824301a7ca993d, type: 2}
+  - _nodeId: starborne_skill_meteor_crash
+    _displayName: Meteor Crash
+    _description: Unlocks the Meteor Crash ability.
+    _isRoot: 0
+    _skillPointCost: 4
+    _prerequisiteNodeIds:
+    - starborne_skill_starfall_barrage
+    _payload: {fileID: 11400000, guid: 7544b4d3ac1244e6979887a364d109a0, type: 2}
+  - _nodeId: starborne_node_tempest_tactics
+    _displayName: Tempest Tactics
+    _description: Sharpen maneuver drills to elevate speed and precision.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - starborne_root_cosmic_scout
+    _payload: {fileID: 11400000, guid: 390f745b8de942f98d37d4146fbafa01, type: 2}
+  - _nodeId: starborne_skill_galeforce_blades
+    _displayName: Galeforce Blades
+    _description: Unlocks the Galeforce Blades ability.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - starborne_node_tempest_tactics
+    _payload: {fileID: 11400000, guid: cde9ea74da9f4fab81fc987d024ff917, type: 2}
+  - _nodeId: starborne_node_cutting_winds
+    _displayName: Cutting Winds
+    _description: Stack aerodynamic tricks to strike faster and harder.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - starborne_skill_galeforce_blades
+    _payload: {fileID: 11400000, guid: 6ea1e7b2ac2640698d0cfbcdfba02de3, type: 2}
+  - _nodeId: starborne_skill_zephyr_blade
+    _displayName: Zephyr Blade
+    _description: Unlocks the Zephyr Blade ability.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - starborne_node_cutting_winds
+    _payload: {fileID: 11400000, guid: 59042b8a6f5c4e898f33d9fad68ff63a, type: 2}
+  - _nodeId: starborne_node_gravitic_calm
+    _displayName: Gravitic Calm
+    _description: Leverage microgravity stances to steady defenses under pressure.
+    _isRoot: 0
+    _skillPointCost: 3
+    _prerequisiteNodeIds:
+    - starborne_skill_zephyr_blade
+    _payload: {fileID: 11400000, guid: b0dbe4c7fa3e45ea91a57f73320eef19, type: 2}
+  - _nodeId: starborne_skill_gravity_well
+    _displayName: Gravity Well
+    _description: Unlocks the Gravity Well ability.
+    _isRoot: 0
+    _skillPointCost: 3
+    _prerequisiteNodeIds:
+    - starborne_node_gravitic_calm
+    _payload: {fileID: 11400000, guid: 46f6edf29826423c9fae3345c1dc91b0, type: 2}
+  - _nodeId: starborne_node_event_horizon
+    _displayName: Event Horizon
+    _description: Reinforce armor with the pressure of a collapsing star.
+    _isRoot: 0
+    _skillPointCost: 4
+    _prerequisiteNodeIds:
+    - starborne_skill_gravity_well
+    _payload: {fileID: 11400000, guid: c61cca58c17b4be4a3cf30d1ff04aa14, type: 2}
+  - _nodeId: starborne_node_resonant_depths
+    _displayName: Resonant Depths
+    _description: Train in void resonance to deepen mana wells and sharpen intuition.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - starborne_root_cosmic_scout
+    _payload: {fileID: 11400000, guid: a021354ef7ba423886c8623c75746fd4, type: 2}
+  - _nodeId: starborne_skill_void_lance
+    _displayName: Void Lance
+    _description: Unlocks the Void Lance ability.
+    _isRoot: 0
+    _skillPointCost: 1
+    _prerequisiteNodeIds:
+    - starborne_node_resonant_depths
+    _payload: {fileID: 11400000, guid: eb83870378d742b58911c43e7585768d, type: 2}
+  - _nodeId: starborne_node_null_focusing
+    _displayName: Null Focusing
+    _description: Condense null energy to amplify channeling efficiency.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - starborne_skill_void_lance
+    _payload: {fileID: 11400000, guid: 8ac7431eff4544b09788b2c4a53ce66c, type: 2}
+  - _nodeId: starborne_skill_echo_overdrive
+    _displayName: Echo Overdrive
+    _description: Unlocks the Echo Overdrive ability.
+    _isRoot: 0
+    _skillPointCost: 2
+    _prerequisiteNodeIds:
+    - starborne_node_null_focusing
+    _payload: {fileID: 11400000, guid: 36d00f2b5d8141afba4704986b4545db, type: 2}
+  - _nodeId: starborne_node_warp_rhythm
+    _displayName: Warp Rhythm
+    _description: Sync movements with dimensional warps for sustained tempo.
+    _isRoot: 0
+    _skillPointCost: 3
+    _prerequisiteNodeIds:
+    - starborne_skill_echo_overdrive
+    _payload: {fileID: 11400000, guid: b2a92b59a76e4cfaa0778a0daea60010, type: 2}
+  - _nodeId: starborne_skill_rift_rend
+    _displayName: Rift Rend
+    _description: Unlocks the Rift Rend ability.
+    _isRoot: 0
+    _skillPointCost: 3
+    _prerequisiteNodeIds:
+    - starborne_node_warp_rhythm
+    _payload: {fileID: 11400000, guid: 82cb4aafe4744395b6dfe0495249f990, type: 2}
+  - _nodeId: starborne_skill_voidflare_burst
+    _displayName: Voidflare Burst
+    _description: Unlocks the Voidflare Burst ability.
+    _isRoot: 0
+    _skillPointCost: 4
+    _prerequisiteNodeIds:
+    - starborne_skill_rift_rend
+    _payload: {fileID: 11400000, guid: 4b30eef317f742c3bef1774de87c2989, type: 2}
+  - _nodeId: starborne_node_dual_convergence
+    _displayName: Dual Convergence
+    _description: Fuse solar, tempest, and void doctrines for overwhelming power.
+    _isRoot: 0
+    _skillPointCost: 5
+    _prerequisiteNodeIds:
+    - starborne_skill_meteor_crash
+    - starborne_node_event_horizon
+    - starborne_skill_voidflare_burst
+    _payload: {fileID: 11400000, guid: 50300db0d31b4fd59bad1d6bef212f9e, type: 2}
+  - _nodeId: starborne_skill_entropy_wave
+    _displayName: Entropy Wave
+    _description: Unlocks the Entropy Wave ultimate.
+    _isRoot: 0
+    _skillPointCost: 6
+    _prerequisiteNodeIds:
+    - starborne_node_dual_convergence
+    _payload: {fileID: 11400000, guid: c62128fb3acc47c68b6980b18973eab3, type: 2}
