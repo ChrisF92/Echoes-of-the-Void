@@ -4,6 +4,9 @@ using EchoesOfTheVoid.Core.Combat.Components;
 using EchoesOfTheVoid.Core.Combat.Entities;
 using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
 using EchoesOfTheVoid.Core.Roster.Data;
+using EchoesOfTheVoid.Core.Roster.Progression.Contracts;
+using EchoesOfTheVoid.Core.Roster.Progression.Definitions;
+using EchoesOfTheVoid.Core.Roster.Progression.Payloads;
 using UnityEngine;
 
 namespace EchoesOfTheVoid.Core.Roster {
@@ -58,6 +61,19 @@ namespace EchoesOfTheVoid.Core.Roster {
       var tempEcho = new PlayerEchoData(template.CombatantId, template);
       tempEcho.SetEquipment(template.StartingEquipment);
       tempEcho.SetGambitProfile(RosterCloneUtility.CloneGambitProfile(template.GambitProfile));
+      if (template.ProgressionProfile?.SkillTree != null) {
+        IReadOnlyList<SkillTreeNodeDefinition> roots = template.ProgressionProfile.SkillTree.RootNodes;
+        if (roots != null) {
+          for (int i = 0; i < roots.Count; i++) {
+            SkillTreeNodeDefinition root = roots[i];
+            if (root == null) {
+              continue;
+            }
+
+            _ = tempEcho.AddUnlockedSkillNode(root.NodeId);
+          }
+        }
+      }
 
       Combatant combatant = CreateCombatantForEcho(tempEcho, parent);
       if (combatant == null) {
@@ -116,6 +132,32 @@ namespace EchoesOfTheVoid.Core.Roster {
       equipment?.LoadFromSnapshot(echo.EquipmentLoadout, suppressNotifications: true);
 
       combatant.ApplyGambitProfile(echo.GambitProfile);
+      ApplySkillTreeLoadout(combatant, echo);
+    }
+
+    private static void ApplySkillTreeLoadout(Combatant combatant, PlayerEchoData echo) {
+      if (combatant == null || echo?.Template?.ProgressionProfile == null) {
+        return;
+      }
+
+      IEchoSkillTreeDefinition skillTree = echo.Template.ProgressionProfile.SkillTree;
+      if (skillTree == null) {
+        return;
+      }
+
+      IReadOnlyList<string> unlocked = echo.UnlockedSkillNodes;
+      if (unlocked == null || unlocked.Count == 0) {
+        return;
+      }
+
+      for (int i = 0; i < unlocked.Count; i++) {
+        string nodeId = unlocked[i];
+        if (!skillTree.TryGetNode(nodeId, out SkillTreeNodeDefinition node) || node?.Payload == null) {
+          continue;
+        }
+
+        node.Payload.Apply(echo, combatant);
+      }
     }
   }
 }

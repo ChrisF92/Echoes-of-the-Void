@@ -17,8 +17,11 @@ namespace EchoesOfTheVoid.Core.Persistence {
     public string TemplateId = string.Empty;
     public string CustomName = string.Empty;
     public int Level = 1;
+    public int Experience;
+    public int UnspentSkillPoints;
     public bool IsLocked;
     public Vector2Int PreferredFormationSlot = new(-1, -1);
+    public List<string> UnlockedSkillNodes = new();
     public List<EquipmentAssignmentData> Equipment = new();
     public List<GambitProfileData> GambitSlots = new();
     public int ActiveGambitIndex;

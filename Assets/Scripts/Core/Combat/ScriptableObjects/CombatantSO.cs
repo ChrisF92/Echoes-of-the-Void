@@ -6,6 +6,7 @@ using EchoesOfTheVoid.Core.Combat.Gambits.Blocks.Implementations;
 using EchoesOfTheVoid.Core.Inventory.Data;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using EchoesOfTheVoid.Core.Roster.Progression.Definitions;
 
 namespace EchoesOfTheVoid.Core.Combat.ScriptableObjects {
   [CreateAssetMenu(fileName = "New Combatant Template", menuName = "Combat/Combatant Template")]
@@ -23,6 +24,11 @@ namespace EchoesOfTheVoid.Core.Combat.ScriptableObjects {
     [Header("Base Stats")]
     public CombatStats BaseStats;
 
+    [ShowIf(nameof(IsPlayerControlled))]
+    [Header("Progression")]
+    public EchoProgressionProfile ProgressionProfile;
+
+    [HideIf(nameof(IsPlayerControlled))]
     [Header("Starting Skills")]
     public List<SkillSO> StartingSkills = new();
 

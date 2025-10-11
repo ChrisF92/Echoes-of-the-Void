@@ -7,6 +7,9 @@ using EchoesOfTheVoid.Core.Inventory.Data;
 using EchoesOfTheVoid.Core.Inventory.Player;
 using EchoesOfTheVoid.Core.Inventory.ScriptableObjects;
 using EchoesOfTheVoid.Core.Roster.Data;
+using EchoesOfTheVoid.Core.Roster.Progression.Contracts;
+using EchoesOfTheVoid.Core.Roster.Progression.Results;
+using EchoesOfTheVoid.Core.Roster.Progression.Services;
 using UnityEngine;
 
 namespace EchoesOfTheVoid.Core.Roster {
@@ -52,6 +55,7 @@ namespace EchoesOfTheVoid.Core.Roster {
     [SerializeField] private List<PlayerEchoData> _ownedEchoes = new();
     [SerializeField] private List<string> _partyAssignments = new(_formationSlotCount);
 
+    private IEchoProgressionService _progressionService = new EchoProgressionService();
     private readonly Dictionary<string, PlayerEchoData> _echoLookup = new(StringComparer.Ordinal);
     private readonly List<PartySlotInfo> _partySlotCache = new(_formationSlotCount);
     private readonly List<PartyMemberSnapshot> _partySnapshotCache = new(_formationSlotCount);
@@ -79,6 +83,76 @@ namespace EchoesOfTheVoid.Core.Roster {
 
         return _partySlotCache;
       }
+    }
+
+    public void SetProgressionService(IEchoProgressionService service) {
+      _progressionService = service ?? new EchoProgressionService();
+    }
+
+    public bool TryGrantExperience(string instanceId, int experience, out EchoExperienceGainResult result, out string errorMessage) {
+      result = new EchoExperienceGainResult(0, 0, Array.Empty<int>(), 0);
+      errorMessage = string.Empty;
+
+      if (!TryGetEcho(instanceId, out PlayerEchoData echo)) {
+        errorMessage = "Echo not found.";
+        return false;
+      }
+
+      CombatantSO template = echo.Template;
+      ILevelProgression levelProgression = template?.ProgressionProfile?.LevelProgression;
+      if (levelProgression == null) {
+        errorMessage = "Level progression not configured.";
+        return false;
+      }
+
+      if (experience <= 0) {
+        return true;
+      }
+
+      IEchoProgressionService service = ResolveProgressionService();
+      result = service.GrantExperience(echo, levelProgression, experience);
+
+      if (result.ExperienceGained > 0) {
+        OnEchoUpdated?.Invoke(echo);
+        OnRosterChanged?.Invoke();
+      }
+
+      return true;
+    }
+
+    public bool TryUnlockSkillNode(string instanceId, string nodeId, out SkillUnlockResult result, out string errorMessage) {
+      result = new SkillUnlockResult(false, null, 0, "Skill tree not configured.");
+      errorMessage = string.Empty;
+
+      if (!TryGetEcho(instanceId, out PlayerEchoData echo)) {
+        errorMessage = "Echo not found.";
+        return false;
+      }
+
+      CombatantSO template = echo.Template;
+      IEchoSkillTreeDefinition skillTree = template?.ProgressionProfile?.SkillTree;
+      if (skillTree == null) {
+        errorMessage = "Skill tree not configured.";
+        return false;
+      }
+
+      IEchoProgressionService service = ResolveProgressionService();
+      result = service.TryUnlockNode(echo, skillTree, nodeId);
+      if (!result.Success) {
+        errorMessage = string.IsNullOrWhiteSpace(result.ErrorMessage)
+          ? "Could not unlock skill node."
+          : result.ErrorMessage;
+        return false;
+      }
+
+      OnEchoUpdated?.Invoke(echo);
+      OnRosterChanged?.Invoke();
+      return true;
+    }
+
+    private IEchoProgressionService ResolveProgressionService() {
+      _progressionService ??= new EchoProgressionService();
+      return _progressionService;
     }
 
     private void Awake() {
@@ -256,6 +330,7 @@ namespace EchoesOfTheVoid.Core.Roster {
       echo.EnsureIdentity();
       echo.SetGambitProfile(CloneGambitProfile(template.GambitProfile));
       echo.SetEquipment(template.StartingEquipment);
+      InitializeProgressionForEcho(echo);
       _ownedEchoes.Add(echo);
       _echoLookup[echo.InstanceId] = echo;
 
@@ -405,6 +480,40 @@ namespace EchoesOfTheVoid.Core.Roster {
       OnEchoUpdated?.Invoke(echo);
       OnRosterChanged?.Invoke();
       return true;
+    }
+
+    private void InitializeProgressionForEcho(PlayerEchoData echo) {
+      if (echo == null) {
+        return;
+      }
+
+      CombatantSO template = echo.Template;
+      if (template?.ProgressionProfile == null) {
+        return;
+      }
+
+      IEchoProgressionService service = ResolveProgressionService();
+      IEchoSkillTreeDefinition skillTree = template.ProgressionProfile.SkillTree;
+      if (skillTree != null) {
+        service.InitializeEcho(echo, skillTree);
+      }
+
+      ILevelProgression levelProgression = template.ProgressionProfile.LevelProgression;
+      if (levelProgression == null) {
+        return;
+      }
+
+      int sanitizedLevel = Mathf.Max(1, echo.Level);
+      echo.SetLevel(sanitizedLevel);
+
+      int totalSkillPoints = 0;
+      for (int level = 2; level <= sanitizedLevel; level++) {
+        totalSkillPoints += Mathf.Max(0, levelProgression.GetSkillPointsGrantedAtLevel(level));
+      }
+
+      if (totalSkillPoints > 0) {
+        echo.GrantSkillPoints(totalSkillPoints);
+      }
     }
     private void EnsureStateContainers() {
       _ownedEchoes ??= new List<PlayerEchoData>();

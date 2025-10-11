@@ -10,6 +10,7 @@ using EchoesOfTheVoid.Core.Inventory.Player;
 using EchoesOfTheVoid.Core.Inventory.ScriptableObjects;
 using EchoesOfTheVoid.Core.Roster;
 using EchoesOfTheVoid.Core.Roster.Data;
+using EchoesOfTheVoid.Core.Roster.Progression.Definitions;
 using EchoesOfTheVoid.Core.Systems;
 using UnityEngine;
 
@@ -161,10 +162,22 @@ namespace EchoesOfTheVoid.Core.Persistence {
           TemplateId = echo.TemplateId,
           CustomName = echo.CustomName,
           Level = echo.Level,
+          Experience = echo.CurrentExperience,
+          UnspentSkillPoints = echo.UnspentSkillPoints,
           IsLocked = echo.IsLocked,
           PreferredFormationSlot = echo.PreferredFormationSlot,
           ActiveGambitIndex = echo.ActiveGambitSlot
         };
+
+        IReadOnlyList<string> unlockedNodes = echo.UnlockedSkillNodes;
+        for (int j = 0; j < unlockedNodes.Count; j++) {
+          string nodeId = unlockedNodes[j];
+          if (string.IsNullOrWhiteSpace(nodeId)) {
+            continue;
+          }
+
+          saveEcho.UnlockedSkillNodes.Add(nodeId);
+        }
 
         IReadOnlyList<EquippedItemData> loadout = echo.EquipmentLoadout;
         for (int j = 0; j < loadout.Count; j++) {
@@ -264,6 +277,23 @@ namespace EchoesOfTheVoid.Core.Persistence {
       echo.SetLevel(Mathf.Max(1, data.Level));
       echo.SetLocked(data.IsLocked);
       echo.SetPreferredFormationSlot(data.PreferredFormationSlot);
+      echo.SetExperience(Mathf.Max(0, data.Experience));
+      echo.SetSkillPoints(Mathf.Max(0, data.UnspentSkillPoints));
+      echo.SetUnlockedSkillNodes(data.UnlockedSkillNodes);
+
+      if (echo.UnlockedSkillNodes.Count == 0 && template.ProgressionProfile?.SkillTree != null) {
+        IReadOnlyList<SkillTreeNodeDefinition> roots = template.ProgressionProfile.SkillTree.RootNodes;
+        if (roots != null) {
+          for (int i = 0; i < roots.Count; i++) {
+            SkillTreeNodeDefinition root = roots[i];
+            if (root == null) {
+              continue;
+            }
+
+            _ = echo.AddUnlockedSkillNode(root.NodeId);
+          }
+        }
+      }
 
       ApplyEchoEquipment(echo, data.Equipment);
       ApplyEchoGambits(echo, data.GambitSlots, data.ActiveGambitIndex);

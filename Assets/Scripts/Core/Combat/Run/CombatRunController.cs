@@ -301,6 +301,13 @@ namespace EchoesOfTheVoid.Core.Combat.Run {
         return;
       }
 
+      if (_state.Definition != null && _state.HasClearedAllFloors) {
+        CombatRunRewardBundle completionRewards = _state.Definition.CompletionRewards;
+        if (completionRewards != null && !completionRewards.IsEmpty) {
+          _state.Rewards.Add(completionRewards);
+        }
+      }
+
       OnRunCompleted?.Invoke(_state);
       ApplyRunRewards();
       CleanupActiveRun(resetState: false);
@@ -335,6 +342,10 @@ namespace EchoesOfTheVoid.Core.Combat.Run {
             Debug.LogWarning($"CombatRunController could not add {entry.Value}x {itemName} to inventory.", this);
           }
         }
+      }
+
+      if (rewards.EchoExperience > 0) {
+        DistributeEchoExperience(rewards.EchoExperience);
       }
 
       if (_saveManager != null) {
@@ -451,6 +462,64 @@ namespace EchoesOfTheVoid.Core.Combat.Run {
       public int SlotIndex { get; }
       public PlayerEchoData Echo { get; }
       public Combatant Combatant { get; }
+    }
+
+    private void DistributeEchoExperience(int totalExperience) {
+      if (totalExperience <= 0) {
+        return;
+      }
+
+      if (_rosterService == null) {
+        Debug.LogWarning("CombatRunController requires a PlayerRosterService to grant echo experience rewards.", this);
+        return;
+      }
+
+      var uniqueParticipants = new List<PlayerParticipant>(_playerParticipants.Count);
+      var seenInstanceIds = new HashSet<string>(StringComparer.Ordinal);
+      for (int i = 0; i < _playerParticipants.Count; i++) {
+        PlayerParticipant participant = _playerParticipants[i];
+        string instanceId = participant.Echo?.InstanceId;
+        if (string.IsNullOrWhiteSpace(instanceId) || !seenInstanceIds.Add(instanceId)) {
+          continue;
+        }
+
+        uniqueParticipants.Add(participant);
+      }
+
+      if (uniqueParticipants.Count == 0) {
+        return;
+      }
+
+      uniqueParticipants.Sort(static (lhs, rhs) => lhs.SlotIndex.CompareTo(rhs.SlotIndex));
+
+      int baseShare = totalExperience / uniqueParticipants.Count;
+      int remainder = totalExperience % uniqueParticipants.Count;
+
+      for (int i = 0; i < uniqueParticipants.Count; i++) {
+        PlayerParticipant participant = uniqueParticipants[i];
+        string instanceId = participant.Echo?.InstanceId;
+        if (string.IsNullOrWhiteSpace(instanceId)) {
+          continue;
+        }
+
+        int share = baseShare;
+        if (remainder > 0) {
+          share++;
+          remainder--;
+        }
+
+        if (share <= 0) {
+          continue;
+        }
+
+        if (!_rosterService.TryGrantExperience(instanceId, share, out _, out string errorMessage)) {
+          if (!string.IsNullOrWhiteSpace(errorMessage)) {
+            Debug.LogWarning($"CombatRunController could not grant echo experience to '{instanceId}': {errorMessage}", this);
+          } else {
+            Debug.LogWarning($"CombatRunController could not grant echo experience to '{instanceId}'.", this);
+          }
+        }
+      }
     }
   }
 }

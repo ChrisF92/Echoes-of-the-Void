@@ -30,6 +30,10 @@
       <ui:VisualElement name="detail-panel" class="roster-detail-panel">
         <ui:Label name="detail-name" class="roster-detail-name" text="Select an echo" />
         <ui:Label name="detail-slot" class="roster-detail-slot" text="" />
+        <ui:VisualElement name="detail-progress" class="roster-detail-progress">
+          <ui:Label name="detail-level" class="roster-detail-level" text="Level 1" />
+          <ui:ProgressBar name="detail-experience-bar" class="roster-detail-experience" value="0" />
+        </ui:VisualElement>
         <ui:ScrollView name="detail-scroll" class="roster-detail-scroll" mode="Vertical">
           <ui:VisualElement name="detail-stats" class="roster-detail-stats" />
         </ui:ScrollView>

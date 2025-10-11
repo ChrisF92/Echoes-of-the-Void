@@ -4,7 +4,8 @@
     <ui:Label name="results-title" class="results-title" text="Run Complete" />
     <ui:Label name="results-summary" class="results-summary" text="" />
     <ui:VisualElement class="results-stats">
-      <ui:Label name="results-exp" class="results-stat" text="EXP: 0" />
+      <ui:Label name="results-exp" class="results-stat" text="Profile EXP: 0" />
+      <ui:Label name="results-echo-exp" class="results-stat" text="Echo XP: 0" />
       <ui:Label name="results-currency" class="results-stat" text="Echoes: 0" />
     </ui:VisualElement>
     <ui:Label class="results-section-title" text="Rewards" />

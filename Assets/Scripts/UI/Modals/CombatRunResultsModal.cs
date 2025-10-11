@@ -16,6 +16,7 @@ namespace EchoesOfTheVoid.UI.Modals {
     private Label _titleLabel;
     private Label _summaryLabel;
     private Label _experienceLabel;
+    private Label _echoExperienceLabel;
     private Label _currencyLabel;
     private ListView _itemListView;
     private Label _itemsEmptyLabel;
@@ -34,6 +35,7 @@ namespace EchoesOfTheVoid.UI.Modals {
       _titleLabel = FindLabel("results-title");
       _summaryLabel = FindLabel("results-summary");
       _experienceLabel = FindLabel("results-exp");
+      _echoExperienceLabel = FindLabel("results-echo-exp");
       _currencyLabel = FindLabel("results-currency");
       _itemListView = FindElement<ListView>("results-item-list");
       _itemsEmptyLabel = FindLabel("results-item-empty");
@@ -83,7 +85,14 @@ namespace EchoesOfTheVoid.UI.Modals {
 
       _summaryLabel.text = $"{clearedFloors}/{totalFloors} floors cleared";
 
-      _experienceLabel.text = $"EXP: {Mathf.Max(0, state.Rewards?.Experience ?? 0)}";
+      if (_experienceLabel != null) {
+        _experienceLabel.text = $"Profile EXP: {Mathf.Max(0, state.Rewards?.Experience ?? 0)}";
+      }
+
+      if (_echoExperienceLabel != null) {
+        _echoExperienceLabel.text = $"Echo XP: {Mathf.Max(0, state.Rewards?.EchoExperience ?? 0)}";
+      }
+
       _currencyLabel.text = $"Echoes: {Mathf.Max(0, state.Rewards?.Currency ?? 0)}";
     }
 

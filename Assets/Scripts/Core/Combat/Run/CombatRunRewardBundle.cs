@@ -10,16 +10,18 @@ namespace EchoesOfTheVoid.Core.Combat.Run {
   [Serializable]
   public class CombatRunRewardBundle {
     [SerializeField, Min(0)] private int _experience;
+    [SerializeField, Min(0)] private int _echoExperience;
     [SerializeField, Min(0)] private int _currency;
     [SerializeField] private List<ItemStackData> _items = new();
 
     public int Experience => Mathf.Max(0, _experience);
+    public int EchoExperience => Mathf.Max(0, _echoExperience);
     public int Currency => Mathf.Max(0, _currency);
     public IReadOnlyList<ItemStackData> Items => _items != null ? _items : Array.Empty<ItemStackData>();
 
     public bool IsEmpty {
       get {
-        if (Experience > 0 || Currency > 0) {
+        if (Experience > 0 || EchoExperience > 0 || Currency > 0) {
           return false;
         }
 

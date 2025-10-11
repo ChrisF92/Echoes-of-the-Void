@@ -11,6 +11,7 @@ using EchoesOfTheVoid.Core.Inventory.Player;
 using EchoesOfTheVoid.Core.Inventory.ScriptableObjects;
 using EchoesOfTheVoid.Core.Roster;
 using EchoesOfTheVoid.Core.Roster.Data;
+using EchoesOfTheVoid.Core.Roster.Progression.Contracts;
 using EchoesOfTheVoid.UI.Modals;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -35,6 +36,9 @@ namespace EchoesOfTheVoid.UI.Roster {
     private Button _closeButton;
     private Label _detailNameLabel;
     private Label _detailSlotLabel;
+    private VisualElement _detailProgressRoot;
+    private Label _detailLevelLabel;
+    private ProgressBar _detailExperienceBar;
     private VisualElement _detailStatsRoot;
 
     private readonly List<OwnedEchoViewModel> _ownedEchoItems = new();
@@ -75,7 +79,18 @@ namespace EchoesOfTheVoid.UI.Roster {
       _closeButton = FindButton("close-button");
       _detailNameLabel = FindLabel("detail-name");
       _detailSlotLabel = FindLabel("detail-slot");
+      _detailProgressRoot = FindElement<VisualElement>("detail-progress");
+      _detailLevelLabel = FindLabel("detail-level");
+      _detailExperienceBar = FindElement<ProgressBar>("detail-experience-bar");
       _detailStatsRoot = FindElement<VisualElement>("detail-stats");
+
+      if (_detailProgressRoot != null) {
+        _detailProgressRoot.style.display = DisplayStyle.None;
+      }
+
+      if (_detailExperienceBar != null) {
+        _detailExperienceBar.style.display = DisplayStyle.None;
+      }
 
       ConfigureOwnedList();
       ConfigurePartyGrid();
@@ -372,6 +387,7 @@ namespace EchoesOfTheVoid.UI.Roster {
       if (string.IsNullOrEmpty(_selectedEchoId) || _rosterService == null || !_rosterService.TryGetEcho(_selectedEchoId, out PlayerEchoData echo)) {
         _detailNameLabel.text = "Select an echo";
         _detailSlotLabel.text = string.Empty;
+        UpdateDetailProgress(null);
         _detailStatsRoot?.Clear();
         return;
       }
@@ -380,6 +396,7 @@ namespace EchoesOfTheVoid.UI.Roster {
       _detailSlotLabel.text = _selectedPartySlotIndex >= 0
         ? $"Assigned Slot: {_selectedPartySlotIndex + 1}"
         : "Currently Benched";
+      UpdateDetailProgress(echo);
 
       PopulateStatBlock(echo);
     }
@@ -398,7 +415,6 @@ namespace EchoesOfTheVoid.UI.Roster {
 
       Dictionary<StatType, StatTotals> equipmentTotals = BuildEquipmentTotals(echo);
 
-      AddStatLabel("Level", echo.Level.ToString());
       AddStatLabel("Health", ApplyEquipmentModifiers(baseStats.Health, equipmentTotals, StatType.Health).ToString());
       AddStatLabel("Mana", ApplyEquipmentModifiers(baseStats.Mana, equipmentTotals, StatType.Mana).ToString());
       AddStatLabel("Attack", ApplyEquipmentModifiers(baseStats.Attack, equipmentTotals, StatType.Attack).ToString());
@@ -466,6 +482,58 @@ namespace EchoesOfTheVoid.UI.Roster {
       _detailStatsRoot.Add(row);
     }
 
+    private void ClearSelectionState() {
+      _selectedEchoId = string.Empty;
+      _selectedPartySlotIndex = -1;
+      if (_ownedListView != null) {
+        _ownedListView.selectedIndex = -1;
+      }
+    }
+
+    private void UpdateDetailProgress(PlayerEchoData echo) {
+      if (_detailProgressRoot == null || _detailLevelLabel == null || _detailExperienceBar == null) {
+        return;
+      }
+
+      if (echo == null) {
+        _detailProgressRoot.style.display = DisplayStyle.None;
+        _detailExperienceBar.style.display = DisplayStyle.None;
+        _detailExperienceBar.title = string.Empty;
+        return;
+      }
+
+      _detailProgressRoot.style.display = DisplayStyle.Flex;
+      _detailLevelLabel.text = $"Level {echo.Level}";
+
+      ILevelProgression progression = echo.Template?.ProgressionProfile?.LevelProgression;
+      if (progression == null) {
+        _detailExperienceBar.style.display = DisplayStyle.None;
+        _detailExperienceBar.title = string.Empty;
+        return;
+      }
+
+      _detailExperienceBar.style.display = DisplayStyle.Flex;
+
+      if (progression.IsMaxLevel(echo.Level)) {
+        _detailExperienceBar.lowValue = 0f;
+        _detailExperienceBar.highValue = 1f;
+        _detailExperienceBar.value = 1f;
+        _detailExperienceBar.title = "Max Level";
+        return;
+      }
+
+      int required = progression.GetExperienceRequiredForLevel(echo.Level);
+      if (required <= 0) {
+        required = 1;
+      }
+
+      int current = Mathf.Clamp(echo.CurrentExperience, 0, required);
+      _detailExperienceBar.lowValue = 0f;
+      _detailExperienceBar.highValue = required;
+      _detailExperienceBar.value = current;
+      _detailExperienceBar.title = $"{current} / {required} XP";
+    }
+
     private void OnOwnedSelectionChanged(IEnumerable<object> _) {
       _selectedPartySlotIndex = -1;
       if (_ownedListView == null || _ownedListView.selectedIndex < 0 || _ownedListView.selectedIndex >= _ownedEchoItems.Count) {
@@ -491,9 +559,11 @@ namespace EchoesOfTheVoid.UI.Roster {
 
       if (!string.IsNullOrEmpty(_selectedEchoId)) {
         if (_rosterService.TryAssignToSlot(_selectedEchoId, slotIndex, out string errorMessage)) {
-          _selectedPartySlotIndex = slotIndex;
+          ClearSelectionState();
           RefreshPartyGrid();
           RefreshOwnedList();
+          RefreshDetailPanel();
+          HighlightSelectedSlot();
           UpdateActionButtons();
         } else if (!string.IsNullOrEmpty(errorMessage)) {
           Debug.LogWarning(errorMessage, this);
@@ -530,9 +600,11 @@ namespace EchoesOfTheVoid.UI.Roster {
       }
 
       if (_rosterService.TryAssignToSlot(_selectedEchoId, targetSlot, out string errorMessage)) {
-        _selectedPartySlotIndex = targetSlot;
+        ClearSelectionState();
         RefreshPartyGrid();
         RefreshOwnedList();
+        RefreshDetailPanel();
+        HighlightSelectedSlot();
         UpdateActionButtons();
       } else if (!string.IsNullOrEmpty(errorMessage)) {
         Debug.LogWarning(errorMessage, this);
