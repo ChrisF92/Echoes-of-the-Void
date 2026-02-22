@@ -1,0 +1,179 @@
+.skill-node-modal {
+  width: 86%;
+  max-width: 540px;
+  min-width: 300px;
+  height: auto;
+  max-height: 80%;
+  margin: 16px;
+  padding: 20px 22px;
+  flex-direction: column;
+  background-color: rgba(10, 14, 28, 0.98);
+  border-radius: 14px;
+  border-width: 1px;
+  border-color: rgba(109, 162, 255, 0.35);
+  color: #f4f6ff;
+  box-shadow: 0 16px 44px rgba(6, 10, 20, 0.75);
+}
+
+.skill-node-modal__header {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.skill-node-modal__title {
+  font-size: 20px;
+  -unity-font-style: bold;
+  color: rgba(244, 246, 255, 0.95);
+  flex-grow: 1;
+}
+
+.skill-node-modal__state {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  border-width: 1px;
+  border-color: rgba(109, 162, 255, 0.25);
+}
+
+.skill-node-modal__state--locked {
+  background-color: rgba(18, 20, 30, 0.8);
+  color: rgba(244, 246, 255, 0.55);
+}
+
+.skill-node-modal__state--unlockable {
+  background-color: rgba(255, 212, 96, 0.18);
+  border-color: rgba(255, 212, 96, 0.6);
+  color: rgba(255, 220, 128, 0.95);
+}
+
+.skill-node-modal__state--unlocked {
+  background-color: rgba(92, 226, 175, 0.18);
+  border-color: rgba(92, 226, 175, 0.6);
+  color: rgba(204, 255, 233, 0.95);
+}
+
+.skill-node-modal__close {
+  min-width: 76px;
+}
+
+.skill-node-modal__scroll {
+  flex-grow: 1;
+  min-height: 0;
+  padding-right: 4px;
+}
+
+.skill-node-modal__description {
+  font-size: 14px;
+  color: rgba(244, 246, 255, 0.8);
+  margin-bottom: 14px;
+  white-space: normal;
+}
+
+.skill-node-modal__row {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.skill-node-modal__row-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: rgba(244, 246, 255, 0.55);
+}
+
+.skill-node-modal__row-value {
+  font-size: 14px;
+  color: rgba(244, 246, 255, 0.85);
+}
+
+.skill-node-modal__section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top-width: 1px;
+  border-top-color: rgba(109, 162, 255, 0.18);
+}
+
+.skill-node-modal__section-title {
+  font-size: 13px;
+  -unity-font-style: bold;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(244, 246, 255, 0.75);
+  margin-bottom: 8px;
+}
+
+.skill-node-modal__prerequisites {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skill-node-modal__prerequisite {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border-width: 1px;
+  border-color: rgba(109, 162, 255, 0.15);
+  background-color: rgba(12, 16, 28, 0.75);
+}
+
+.skill-node-modal__prerequisite--met {
+  border-color: rgba(92, 226, 175, 0.35);
+}
+
+.skill-node-modal__prerequisite--locked {
+  border-color: rgba(255, 138, 122, 0.35);
+}
+
+.skill-node-modal__prerequisite-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(92, 226, 175, 0.7);
+}
+
+.skill-node-modal__prerequisite--locked .skill-node-modal__prerequisite-indicator {
+  background-color: rgba(255, 138, 122, 0.7);
+}
+
+.skill-node-modal__prerequisite-label {
+  font-size: 14px;
+  color: rgba(244, 246, 255, 0.85);
+}
+
+.skill-node-modal__feedback {
+  min-height: 20px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: rgba(255, 214, 134, 0.9);
+}
+
+.skill-node-modal__unlock {
+  margin-top: 12px;
+  min-height: 36px;
+  background-color: rgba(255, 212, 96, 0.95);
+  color: #231200;
+  font-size: 14px;
+  -unity-font-style: bold;
+}
+
+.skill-node-modal__unlock:disabled {
+  background-color: rgba(255, 212, 96, 0.35);
+  color: rgba(35, 18, 0, 0.5);
+}
+
+@media screen and (max-width: 600px) {
+  .skill-node-modal {
+    width: 92%;
+    max-width: none;
+    margin: 8px;
+  }
+}

@@ -13,6 +13,9 @@ using EchoesOfTheVoid.Core.Inventory.ScriptableObjects;
 using EchoesOfTheVoid.Core.Inventory.Systems;
 using EchoesOfTheVoid.Core.Roster;
 using EchoesOfTheVoid.Core.Roster.Data;
+using EchoesOfTheVoid.Core.Roster.Progression.Contracts;
+using EchoesOfTheVoid.Core.Roster.Progression.Definitions;
+using EchoesOfTheVoid.Core.Roster.Progression.Payloads;
 
 namespace EchoesOfTheVoid.UI.Modals {
   public class EchoGambitModal : UIModal {
@@ -532,6 +535,7 @@ namespace EchoesOfTheVoid.UI.Modals {
       menu.AddItem("Basic/Defend", false, () => SetRuleAction(new DefendActionBlock()));
 
       var skills = EnumerateAvailableSkills().ToList();
+      Debug.Log(skills.Count);
       if (skills.Count > 0) {
         foreach (SkillSO skill in skills) {
           SkillSO capturedSkill = skill;
@@ -595,17 +599,68 @@ namespace EchoesOfTheVoid.UI.Modals {
     }
 
     private IEnumerable<SkillSO> EnumerateAvailableSkills() {
-      if (_currentEcho?.Template?.StartingSkills == null) {
-        yield break;
-      }
-
       var seen = new HashSet<SkillSO>();
-      foreach (SkillSO skill in _currentEcho.Template.StartingSkills) {
+      foreach (SkillSO skill in EnumerateTemplateSkills()) {
         if (skill == null || !seen.Add(skill)) {
           continue;
         }
 
         yield return skill;
+      }
+
+      foreach (SkillSO skill in EnumerateUnlockedSkillTreeSkills()) {
+        if (skill == null || !seen.Add(skill)) {
+          continue;
+        }
+
+        yield return skill;
+      }
+    }
+
+    private IEnumerable<SkillSO> EnumerateTemplateSkills() {
+      IReadOnlyList<SkillSO> startingSkills = _currentEcho?.Template?.StartingSkills;
+      if (startingSkills == null) {
+        yield break;
+      }
+
+      for (int i = 0; i < startingSkills.Count; i++) {
+        SkillSO skill = startingSkills[i];
+        if (skill == null) {
+          continue;
+        }
+
+        yield return skill;
+      }
+    }
+
+    private IEnumerable<SkillSO> EnumerateUnlockedSkillTreeSkills() {
+      PlayerEchoData echo = _currentEcho;
+      IEchoSkillTreeDefinition skillTree = echo?.Template?.ProgressionProfile?.SkillTree;
+      if (skillTree == null) {
+        yield break;
+      }
+
+      IReadOnlyList<string> unlockedNodes = echo.UnlockedSkillNodes;
+      if (unlockedNodes == null || unlockedNodes.Count == 0) {
+        yield break;
+      }
+
+      for (int i = 0; i < unlockedNodes.Count; i++) {
+        string nodeId = unlockedNodes[i];
+        if (string.IsNullOrWhiteSpace(nodeId)) {
+          continue;
+        }
+
+        if (!skillTree.TryGetNode(nodeId, out SkillTreeNodeDefinition node)) {
+          continue;
+        }
+
+        if (node?.Payload is GrantSkillNodePayload grantPayload) {
+          SkillSO grantedSkill = grantPayload.Skill;
+          if (grantedSkill != null) {
+            yield return grantedSkill;
+          }
+        }
       }
     }
 

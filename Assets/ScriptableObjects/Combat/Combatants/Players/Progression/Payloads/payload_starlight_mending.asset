@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaeeebb57b70dc447b3590c54558a669, type: 3}
   m_Name: payload_starlight_mending
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.Progression.Payloads.GrantSkillNodePayload
-  _skill: {fileID: 0}
+  _skill: {fileID: 11400000, guid: 64d36f4f3d33d184aaf8f87b619662d6, type: 2}

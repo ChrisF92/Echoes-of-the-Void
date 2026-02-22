@@ -12,4 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6, type: 3}
   m_Name: stat_progression_starborne_ranger
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.Progression.Stats.StatProgressionDefinition
-  _statGrowth: []
+  _statGrowth:
+  - _stat: 0
+    _formula:
+      _formulaType: 2
+      _constant: 0
+      _linear: 5
+      _quadratic: 0
+      _exponentialMultiplier: 0
+      _exponentialRate: 0
+      _includeLevelOneStep: 0
+    _combinationMode: 0
+    _minimumValue: 0
+  - _stat: 4
+    _formula:
+      _formulaType: 2
+      _constant: 0
+      _linear: 1
+      _quadratic: 0
+      _exponentialMultiplier: 0.0001
+      _exponentialRate: 0
+      _includeLevelOneStep: 0
+    _combinationMode: 0
+    _minimumValue: 0
+  - _stat: 2
+    _formula:
+      _formulaType: 2
+      _constant: 0
+      _linear: 10
+      _quadratic: 0
+      _exponentialMultiplier: 0
+      _exponentialRate: 0
+      _includeLevelOneStep: 0
+    _combinationMode: 0
+    _minimumValue: 0

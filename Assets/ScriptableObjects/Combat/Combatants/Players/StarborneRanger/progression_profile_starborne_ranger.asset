@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.Progression.Definitions.EchoProgressionProfile
   _levelProgression: {fileID: 11400000, guid: cc65425793f02224b8f7af6a0994bdc2, type: 2}
   _skillTree: {fileID: 11400000, guid: 5f892bec7eb9b3e4e839bf394489da34, type: 2}
-  _statProgression: {fileID: 0}
+  _statProgression: {fileID: 11400000, guid: b084396c73349564ba5712218ffb4929, type: 2}

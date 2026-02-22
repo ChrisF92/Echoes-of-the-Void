@@ -11,8 +11,10 @@ public abstract class UIModal : MonoBehaviour {
   protected VisualElement _modalContainer;
   protected VisualElement _backdrop;
 
+  private bool _isVisible;
+
   public string ModalId => _modalId;
-  public bool IsVisible => _modalContainer?.style.display == DisplayStyle.Flex;
+  public bool IsVisible => _isVisible;
 
   public event Action<UIModal> OnModalShown;
   public event Action<UIModal> OnModalHidden;
@@ -60,6 +62,7 @@ public abstract class UIModal : MonoBehaviour {
     _modalContainer.style.top = StyleKeyword.Undefined;
     _modalContainer.style.right = StyleKeyword.Undefined;
     _modalContainer.style.bottom = StyleKeyword.Undefined;
+    _modalContainer.style.display = DisplayStyle.Flex;
 
     _backdrop.Add(_modalContainer);
     _rootElement.Add(_backdrop);
@@ -67,8 +70,14 @@ public abstract class UIModal : MonoBehaviour {
 
   public virtual void Show() {
     if (_backdrop != null) {
+      _backdrop.BringToFront();
       _backdrop.style.display = DisplayStyle.Flex;
+      if (_modalContainer != null) {
+        _modalContainer.BringToFront();
+        _modalContainer.style.display = DisplayStyle.Flex;
+      }
       _backdrop.Focus(); // Ensure modal has focus to block input
+      _isVisible = true;
       OnShow();
       OnModalShown?.Invoke(this);
     }
@@ -77,6 +86,10 @@ public abstract class UIModal : MonoBehaviour {
   public virtual void Hide() {
     if (_backdrop != null) {
       _backdrop.style.display = DisplayStyle.None;
+      if (_modalContainer != null) {
+        _modalContainer.style.display = DisplayStyle.None;
+      }
+      _isVisible = false;
       OnHide();
       OnModalHidden?.Invoke(this);
     }
@@ -89,8 +102,9 @@ public abstract class UIModal : MonoBehaviour {
   }
 
   private void ConsumeEvent<T>(T evt) where T : EventBase<T>, new() {
-    // Consume the event to prevent it from reaching elements behind the modal
-    evt.StopPropagation();
+    if (evt.target == _backdrop) {
+      evt.StopPropagation();
+    }
   }
 
   protected virtual void SetupUI() {

@@ -41,6 +41,7 @@
           <ui:Button name="assign-button" class="roster-action-button" text="Assign to Slot" />
           <ui:Button name="remove-button" class="roster-action-button" text="Remove from Party" />
           <ui:Button name="equipment-button" class="roster-action-button" text="Edit Equipment" />
+          <ui:Button name="skill-tree-button" class="roster-action-button" text="View Skill Tree" />
           <ui:Button name="gambit-button" class="roster-action-button" text="Edit Gambits" />
         </ui:VisualElement>
         <ui:Button name="confirm-button" class="roster-confirm-button" text="Confirm Party" />

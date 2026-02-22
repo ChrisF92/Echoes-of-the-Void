@@ -23,6 +23,8 @@ namespace EchoesOfTheVoid.UI.Roster {
     [SerializeField] private CombatEncounterBootstrapper _encounterBootstrapper;
     [SerializeField] private EchoEquipmentModal _equipmentModal;
     [SerializeField] private EchoGambitModal _gambitModal;
+    [SerializeField] private EchoSkillTreeModal _skillTreeModal;
+    [SerializeField] private EchoSkillNodeDetailModal _skillNodeModal;
     [SerializeField] private PlayerInventory _playerInventory;
 
     private Label _summaryLabel;
@@ -31,6 +33,7 @@ namespace EchoesOfTheVoid.UI.Roster {
     private Button _assignButton;
     private Button _removeButton;
     private Button _equipmentButton;
+    private Button _skillTreeButton;
     private Button _gambitButton;
     private Button _confirmButton;
     private Button _closeButton;
@@ -74,6 +77,7 @@ namespace EchoesOfTheVoid.UI.Roster {
       _assignButton = FindButton("assign-button");
       _removeButton = FindButton("remove-button");
       _equipmentButton = FindButton("equipment-button");
+      _skillTreeButton = FindButton("skill-tree-button");
       _gambitButton = FindButton("gambit-button");
       _confirmButton = FindButton("confirm-button");
       _closeButton = FindButton("close-button");
@@ -105,6 +109,15 @@ namespace EchoesOfTheVoid.UI.Roster {
         _gambitModal.OnGambitApplied += HandleGambitApplied;
       }
 
+      if (_skillTreeModal != null) {
+        _skillTreeModal.OnNodeSelected += HandleSkillTreeNodeSelected;
+      }
+
+      if (_skillNodeModal != null) {
+        _skillNodeModal.ConfigureServices(_rosterService);
+        _skillNodeModal.OnNodeUnlockSucceeded += HandleSkillNodeUnlocked;
+      }
+
       UpdateActionButtons();
       RefreshAll();
     }
@@ -124,6 +137,10 @@ namespace EchoesOfTheVoid.UI.Roster {
 
       if (_equipmentButton != null) {
         _equipmentButton.clicked += OnEquipmentClicked;
+      }
+
+      if (_skillTreeButton != null) {
+        _skillTreeButton.clicked += OnSkillTreeClicked;
       }
 
       if (_gambitButton != null) {
@@ -154,6 +171,10 @@ namespace EchoesOfTheVoid.UI.Roster {
         _gambitModal.ConfigureServices(_rosterService, ResolvePlayerInventory());
       }
 
+      if (_skillNodeModal != null) {
+        _skillNodeModal.ConfigureServices(_rosterService);
+      }
+
       RefreshAll();
     }
 
@@ -175,6 +196,14 @@ namespace EchoesOfTheVoid.UI.Roster {
 
       if (_gambitModal != null) {
         _gambitModal.OnGambitApplied -= HandleGambitApplied;
+      }
+
+      if (_skillTreeModal != null) {
+        _skillTreeModal.OnNodeSelected -= HandleSkillTreeNodeSelected;
+      }
+
+      if (_skillNodeModal != null) {
+        _skillNodeModal.OnNodeUnlockSucceeded -= HandleSkillNodeUnlocked;
       }
     }
 
@@ -292,6 +321,17 @@ namespace EchoesOfTheVoid.UI.Roster {
       }
 
       if (echo.InstanceId == _selectedEchoId) {
+        if (_skillTreeModal != null && _skillTreeModal.IsVisible) {
+          _skillTreeModal.RefreshState(echo);
+        }
+
+        if (_skillNodeModal != null && _skillNodeModal.IsVisible && _skillTreeModal != null) {
+          string currentNodeId = _skillNodeModal.CurrentNodeId;
+          if (!string.IsNullOrEmpty(currentNodeId) && _skillTreeModal.TryGetNode(currentNodeId, out EchoSkillTreeModal.NodeViewModel updatedViewModel)) {
+            _skillNodeModal.RefreshWithViewModel(echo, updatedViewModel);
+          }
+        }
+
         RefreshDetailPanel();
       }
     }
@@ -495,6 +535,9 @@ namespace EchoesOfTheVoid.UI.Roster {
       if (_ownedListView != null) {
         _ownedListView.selectedIndex = -1;
       }
+
+      _skillTreeModal?.Hide();
+      _skillNodeModal?.Hide();
     }
 
     private void UpdateDetailProgress(PlayerEchoData echo) {
@@ -549,6 +592,21 @@ namespace EchoesOfTheVoid.UI.Roster {
         OwnedEchoViewModel viewModel = _ownedEchoItems[_ownedListView.selectedIndex];
         _selectedEchoId = viewModel.InstanceId;
         _selectedPartySlotIndex = viewModel.PartySlotIndex;
+      }
+
+      if (_skillTreeModal != null && _skillTreeModal.IsVisible) {
+        if (TryGetSelectedEcho(out PlayerEchoData selectedEcho)) {
+          IEchoSkillTreeDefinition skillTree = ResolveSkillTree(selectedEcho);
+          if (skillTree != null) {
+            _skillTreeModal.ShowForEcho(selectedEcho, skillTree);
+          } else {
+            _skillTreeModal.Hide();
+          }
+        } else {
+          _skillTreeModal.Hide();
+        }
+
+        _skillNodeModal?.Hide();
       }
 
       RefreshDetailPanel();
@@ -644,6 +702,24 @@ namespace EchoesOfTheVoid.UI.Roster {
       OnEquipmentRequested?.Invoke(echo);
     }
 
+    private void OnSkillTreeClicked() {
+      if (!TryGetSelectedEcho(out PlayerEchoData echo)) {
+        return;
+      }
+
+      IEchoSkillTreeDefinition skillTree = ResolveSkillTree(echo);
+      if (skillTree == null) {
+        Debug.LogWarning($"Skill tree not configured for '{echo.DisplayName}'.", this);
+        return;
+      }
+
+      if (_skillNodeModal != null && _skillNodeModal.IsVisible) {
+        _skillNodeModal.Hide();
+      }
+
+      _skillTreeModal?.ShowForEcho(echo, skillTree);
+    }
+
     private void OnGambitClicked() {
       if (string.IsNullOrEmpty(_selectedEchoId) || _rosterService == null || !_rosterService.TryGetEcho(_selectedEchoId, out PlayerEchoData echo)) {
         return;
@@ -655,6 +731,38 @@ namespace EchoesOfTheVoid.UI.Roster {
       }
 
       OnGambitEditRequested?.Invoke(echo);
+    }
+
+    private void HandleSkillTreeNodeSelected(EchoSkillTreeModal.NodeViewModel viewModel) {
+      if (!TryGetSelectedEcho(out PlayerEchoData echo)) {
+        return;
+      }
+
+      IEchoSkillTreeDefinition skillTree = ResolveSkillTree(echo);
+      if (skillTree == null || _skillNodeModal == null) {
+        return;
+      }
+
+      _skillNodeModal.PresentNode(echo, skillTree, viewModel);
+    }
+
+    private void HandleSkillNodeUnlocked(string nodeId) {
+      if (!TryGetSelectedEcho(out PlayerEchoData echo)) {
+        return;
+      }
+
+      IEchoSkillTreeDefinition skillTree = ResolveSkillTree(echo);
+      if (skillTree == null) {
+        return;
+      }
+
+      _skillTreeModal?.RefreshState(echo);
+
+      if (_skillTreeModal != null && _skillNodeModal != null && !string.IsNullOrEmpty(nodeId) && _skillTreeModal.TryGetNode(nodeId, out EchoSkillTreeModal.NodeViewModel updatedViewModel)) {
+        _skillNodeModal.RefreshWithViewModel(echo, updatedViewModel);
+      }
+
+      UpdateActionButtons();
     }
 
     private void OnConfirmParty() {
@@ -682,6 +790,19 @@ namespace EchoesOfTheVoid.UI.Roster {
       }
 
       return -1;
+    }
+
+    private bool TryGetSelectedEcho(out PlayerEchoData echo) {
+      echo = null;
+      if (string.IsNullOrEmpty(_selectedEchoId) || _rosterService == null) {
+        return false;
+      }
+
+      return _rosterService.TryGetEcho(_selectedEchoId, out echo);
+    }
+
+    private static IEchoSkillTreeDefinition ResolveSkillTree(PlayerEchoData echo) {
+      return echo?.Template?.ProgressionProfile?.SkillTree;
     }
 
     private int FindFirstAvailableSlot() {
@@ -716,13 +837,17 @@ namespace EchoesOfTheVoid.UI.Roster {
 
     private void UpdateActionButtons() {
       bool hasSelection = !string.IsNullOrEmpty(_selectedEchoId);
-      bool isInParty = hasSelection && _selectedPartySlotIndex >= 0;
-      bool canAssign = hasSelection && !isInParty;
+      PlayerEchoData selectedEcho = null;
+      bool hasEcho = hasSelection && TryGetSelectedEcho(out selectedEcho);
+      bool isInParty = hasEcho && _selectedPartySlotIndex >= 0;
+      bool canAssign = hasEcho && !isInParty;
+      bool canOpenSkillTree = hasEcho && ResolveSkillTree(selectedEcho) != null;
 
       _assignButton?.SetEnabled(canAssign);
       _removeButton?.SetEnabled(isInParty);
-      _equipmentButton?.SetEnabled(hasSelection);
-      _gambitButton?.SetEnabled(hasSelection);
+      _equipmentButton?.SetEnabled(hasEcho);
+      _gambitButton?.SetEnabled(hasEcho);
+      _skillTreeButton?.SetEnabled(canOpenSkillTree);
     }
 
     private readonly struct OwnedEchoViewModel {

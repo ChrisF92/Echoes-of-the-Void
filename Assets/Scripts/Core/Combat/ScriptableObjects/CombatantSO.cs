@@ -28,6 +28,7 @@ namespace EchoesOfTheVoid.Core.Combat.ScriptableObjects {
     [Header("Progression")]
     public EchoProgressionProfile ProgressionProfile;
 
+    //TODO: Change name; enemy skills?
     [HideIf(nameof(IsPlayerControlled))]
     [Header("Starting Skills")]
     public List<SkillSO> StartingSkills = new();

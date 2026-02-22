@@ -461,6 +461,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &110725068
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 110725070}
+  - component: {fileID: 110725069}
+  m_Layer: 0
+  m_Name: Echo Skill Node Detail Modal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &110725069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110725068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8525903b45f90b44b9947e8a77ad0083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EchoesOfTheVoid.UI::EchoesOfTheVoid.UI.Modals.EchoSkillNodeDetailModal
+  _modalId: EchoSkillNodeDetailModal
+  _modalTemplate: {fileID: 9197481963319205126, guid: b6358b024c65e7a46b862235c93815b8, type: 3}
+  _closeOnBackgroundClick: 1
+  _rosterService: {fileID: 1062772410171963980}
+--- !u!4 &110725070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110725068}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &167191189
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,9 +721,9 @@ MonoBehaviour:
   _combatSystem: {fileID: 664168255}
   _playerPartyParent: {fileID: 811302470}
   _enemyPartyParent: {fileID: 1256627092}
-  _profileService: {fileID: 0}
-  _playerInventory: {fileID: 0}
-  _saveManager: {fileID: 0}
+  _profileService: {fileID: 610291948}
+  _playerInventory: {fileID: 1153393069091831039}
+  _saveManager: {fileID: 555401602}
   _defaultRun: {fileID: 11400000, guid: 1f778414c79b58ee9cd3408e59d60694, type: 2}
 --- !u!114 &664168258
 MonoBehaviour:
@@ -774,6 +822,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 411dca9c1a2ab8344825a594362e5e53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EchoesOfTheVoid.UI::EchoesOfTheVoid.UI.Roster.RosterScreen
+--- !u!1 &803895942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 803895944}
+  - component: {fileID: 803895943}
+  m_Layer: 0
+  m_Name: Echo Skill Tree Modal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &803895943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803895942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ac67d453029bf247b41dd264e741836, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EchoesOfTheVoid.UI::EchoesOfTheVoid.UI.Modals.EchoSkillTreeModal
+  _modalId: EchoSkillTreeModal
+  _modalTemplate: {fileID: 9197481963319205126, guid: 75d96ba680c0984428f3769337a448f7, type: 3}
+  _closeOnBackgroundClick: 1
+--- !u!4 &803895944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803895942}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &811302469
 GameObject:
   m_ObjectHideFlags: 0
@@ -1341,6 +1436,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1626437636}
     - target: {fileID: 7869382105380674792, guid: e38018eff2c631240a930ddbc63da712, type: 3}
+      propertyPath: _screenTemplate
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 4f5383dfd7e27a24b928786555dd0b55, type: 3}
+    - target: {fileID: 7869382105380674792, guid: e38018eff2c631240a930ddbc63da712, type: 3}
+      propertyPath: _skillNodeModal
+      value: 
+      objectReference: {fileID: 110725069}
+    - target: {fileID: 7869382105380674792, guid: e38018eff2c631240a930ddbc63da712, type: 3}
+      propertyPath: _skillTreeModal
+      value: 
+      objectReference: {fileID: 803895943}
+    - target: {fileID: 7869382105380674792, guid: e38018eff2c631240a930ddbc63da712, type: 3}
       propertyPath: _playerInventory
       value: 
       objectReference: {fileID: 1153393069091831039}
@@ -1434,11 +1541,10 @@ MonoBehaviour:
     _template: {fileID: 11400000, guid: 4185e630906a4232a9a658eb0d418428, type: 2}
     _customName: 
     _level: 1
+    _currentExperience: 0
+    _unspentSkillPoints: 0
+    _unlockedSkillNodeIds: []
     _equipmentLoadout: []
-    _legacyGambitProfile:
-      profileId: 
-      displayName: 
-      rules: []
     _gambitProfiles:
     - profileId: 
       displayName: 
@@ -1456,11 +1562,10 @@ MonoBehaviour:
     _template: {fileID: 11400000, guid: b8e9c4ecf9394fdba56d1fa94447b8d1, type: 2}
     _customName: 
     _level: 1
+    _currentExperience: 0
+    _unspentSkillPoints: 0
+    _unlockedSkillNodeIds: []
     _equipmentLoadout: []
-    _legacyGambitProfile:
-      profileId: 
-      displayName: 
-      rules: []
     _gambitProfiles:
     - profileId: 
       displayName: 
@@ -1649,9 +1754,11 @@ SceneRoots:
   - {fileID: 1140914771}
   - {fileID: 1376393828}
   - {fileID: 2050972841}
+  - {fileID: 1966843102}
   - {fileID: 1579090781}
   - {fileID: 1862488288}
-  - {fileID: 1966843102}
+  - {fileID: 803895944}
+  - {fileID: 110725070}
   - {fileID: 56169270}
   - {fileID: 7817894498619331781}
   - {fileID: 25354332}

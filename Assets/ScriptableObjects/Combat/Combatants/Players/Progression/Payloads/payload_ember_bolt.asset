@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaeeebb57b70dc447b3590c54558a669, type: 3}
   m_Name: payload_ember_bolt
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.Progression.Payloads.GrantSkillNodePayload
-  _skill: {fileID: 0}
+  _skill: {fileID: 11400000, guid: 71225a0ba9a550343a34777ef68d5890, type: 2}

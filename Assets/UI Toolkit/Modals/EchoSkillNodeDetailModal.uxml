@@ -1,0 +1,27 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+  <ui:Style src="EchoSkillNodeDetailModal.uss" />
+  <ui:VisualElement name="skill-node-modal-root" class="skill-node-modal">
+    <ui:VisualElement name="skill-node-header" class="skill-node-modal__header">
+      <ui:Label name="node-title" class="skill-node-modal__title" text="Skill Node" />
+      <ui:Label name="node-state" class="skill-node-modal__state skill-node-modal__state--locked" text="Locked" />
+      <ui:Button name="close-button" class="skill-node-modal__close" text="Close" />
+    </ui:VisualElement>
+    <ui:ScrollView name="node-scroll" class="skill-node-modal__scroll" mode="Vertical">
+      <ui:Label name="node-description" class="skill-node-modal__description" text="" />
+      <ui:VisualElement name="node-cost-row" class="skill-node-modal__row">
+        <ui:Label class="skill-node-modal__row-label" text="Cost" />
+        <ui:Label name="node-cost" class="skill-node-modal__row-value" text="0 SP" />
+      </ui:VisualElement>
+      <ui:VisualElement name="node-available-row" class="skill-node-modal__row">
+        <ui:Label class="skill-node-modal__row-label" text="Available" />
+        <ui:Label name="node-available" class="skill-node-modal__row-value" text="0 SP" />
+      </ui:VisualElement>
+      <ui:VisualElement name="node-prereq-section" class="skill-node-modal__section">
+        <ui:Label class="skill-node-modal__section-title" text="Prerequisites" />
+        <ui:VisualElement name="node-prerequisites" class="skill-node-modal__prerequisites" />
+      </ui:VisualElement>
+    </ui:ScrollView>
+    <ui:Label name="node-feedback" class="skill-node-modal__feedback" text="" />
+    <ui:Button name="unlock-button" class="skill-node-modal__unlock" text="Unlock" />
+  </ui:VisualElement>
+</ui:UXML>

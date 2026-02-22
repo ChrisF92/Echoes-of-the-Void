@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+  <ui:Style src="EchoSkillTreeModal.uss" />
+  <ui:VisualElement name="skill-tree-modal-root" class="skill-tree-modal">
+    <ui:VisualElement name="skill-tree-modal-header" class="skill-tree-modal__header">
+      <ui:Label name="title-label" class="skill-tree-modal__title" text="Skill Tree" />
+      <ui:Label name="points-label" class="skill-tree-modal__points" text="0 SP" />
+      <ui:Button name="close-button" class="skill-tree-modal__close" text="Close" />
+    </ui:VisualElement>
+    <ui:VisualElement name="skill-tree-modal-body" class="skill-tree-modal__body">
+      <ui:ScrollView name="tree-scroll" class="skill-tree-modal__scroll" mode="Horizontal">
+        <ui:VisualElement name="tier-container" class="skill-tree-modal__tiers" />
+      </ui:ScrollView>
+      <ui:Label name="empty-label" class="skill-tree-modal__empty" text="No skills defined for this echo yet." />
+    </ui:VisualElement>
+  </ui:VisualElement>
+</ui:UXML>

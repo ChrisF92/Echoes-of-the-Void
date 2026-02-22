@@ -13,30 +13,10 @@ MonoBehaviour:
   m_Name: level_progression_base_echo_test
   m_EditorClassIdentifier: EchoesOfTheVoid.Core::EchoesOfTheVoid.Core.Roster.Progression.Definitions.LevelProgressionDefinition
   _maxLevel: 50
-  _fallbackExperiencePerLevel: 100
-  _experienceCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  _baseExperience: 100
+  _linearGrowth: 15
+  _quadraticGrowth: 1.25
+  _growthFactor: 1.07
   _defaultSkillPointsPerLevel: 1
   _skillPointOverrides: []
+  _previewLevel: 1

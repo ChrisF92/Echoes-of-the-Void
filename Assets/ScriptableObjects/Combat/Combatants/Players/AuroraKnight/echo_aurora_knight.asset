@@ -24,8 +24,8 @@ MonoBehaviour:
     Defense: 10
     Speed: 12
     Luck: 5
-  StartingSkills:
-  - {fileID: 11400000, guid: 64d36f4f3d33d184aaf8f87b619662d6, type: 2}
+  ProgressionProfile: {fileID: 11400000, guid: c214314298887e1469e14d0437c369aa, type: 2}
+  StartingSkills: []
   StartingItems: []
   StartingEquipment: []
   GambitProfile: {fileID: 0}

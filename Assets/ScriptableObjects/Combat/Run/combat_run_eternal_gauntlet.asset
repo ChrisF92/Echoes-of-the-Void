@@ -24,18 +24,20 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
     _rewards:
       _experience: 145
+      _echoExperience: 1000
       _currency: 95
       _items: []
     _healPartyOnStart: 0
     _playerHealthRestoreRatio: 0
   - _floorId: floor_002
     _displayName: Floor 2
-    _floorNumber: 2
+    _floorNumber: 1000
     _enemyTemplates:
     - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
     - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
     _rewards:
       _experience: 170
+      _echoExperience: 0
       _currency: 110
       _items: []
     _healPartyOnStart: 0
@@ -49,6 +51,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
     _rewards:
       _experience: 195
+      _echoExperience: 0
       _currency: 125
       _items: []
     _healPartyOnStart: 0
@@ -60,6 +63,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
     _rewards:
       _experience: 220
+      _echoExperience: 0
       _currency: 140
       _items: []
     _healPartyOnStart: 0
@@ -72,6 +76,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
     _rewards:
       _experience: 245
+      _echoExperience: 0
       _currency: 155
       _items:
       - Item: {fileID: 11400000, guid: b878fba557885b4cb132123d440a2603, type: 2}
@@ -87,6 +92,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
     _rewards:
       _experience: 270
+      _echoExperience: 0
       _currency: 170
       _items: []
     _healPartyOnStart: 0
@@ -98,6 +104,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
     _rewards:
       _experience: 295
+      _echoExperience: 0
       _currency: 185
       _items: []
     _healPartyOnStart: 0
@@ -110,6 +117,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
     _rewards:
       _experience: 320
+      _echoExperience: 0
       _currency: 200
       _items: []
     _healPartyOnStart: 0
@@ -123,6 +131,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
     _rewards:
       _experience: 345
+      _echoExperience: 0
       _currency: 215
       _items: []
     _healPartyOnStart: 0
@@ -134,6 +143,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
     _rewards:
       _experience: 370
+      _echoExperience: 0
       _currency: 230
       _items:
       - Item: {fileID: 11400000, guid: 88c348c6f299566783d1544aea443773, type: 2}
@@ -148,6 +158,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
     _rewards:
       _experience: 395
+      _echoExperience: 0
       _currency: 245
       _items: []
     _healPartyOnStart: 0
@@ -161,6 +172,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
     _rewards:
       _experience: 420
+      _echoExperience: 0
       _currency: 260
       _items: []
     _healPartyOnStart: 0
@@ -172,6 +184,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
     _rewards:
       _experience: 445
+      _echoExperience: 0
       _currency: 275
       _items: []
     _healPartyOnStart: 0
@@ -184,6 +197,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
     _rewards:
       _experience: 470
+      _echoExperience: 0
       _currency: 290
       _items: []
     _healPartyOnStart: 0
@@ -197,6 +211,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
     _rewards:
       _experience: 495
+      _echoExperience: 0
       _currency: 305
       _items:
       - Item: {fileID: 11400000, guid: b89379972b235c4994d519b0f17096e0, type: 2}
@@ -210,6 +225,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
     _rewards:
       _experience: 520
+      _echoExperience: 0
       _currency: 320
       _items: []
     _healPartyOnStart: 0
@@ -222,6 +238,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
     _rewards:
       _experience: 545
+      _echoExperience: 0
       _currency: 335
       _items: []
     _healPartyOnStart: 0
@@ -235,6 +252,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
     _rewards:
       _experience: 570
+      _echoExperience: 0
       _currency: 350
       _items: []
     _healPartyOnStart: 0
@@ -246,6 +264,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
     _rewards:
       _experience: 595
+      _echoExperience: 0
       _currency: 365
       _items: []
     _healPartyOnStart: 0
@@ -258,6 +277,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
     _rewards:
       _experience: 620
+      _echoExperience: 0
       _currency: 380
       _items:
       - Item: {fileID: 11400000, guid: 6e4a8eaf4d685207b4b9cab42adc19ec, type: 2}
@@ -275,6 +295,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
     _rewards:
       _experience: 645
+      _echoExperience: 0
       _currency: 395
       _items: []
     _healPartyOnStart: 0
@@ -286,6 +307,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
     _rewards:
       _experience: 670
+      _echoExperience: 0
       _currency: 410
       _items: []
     _healPartyOnStart: 0
@@ -298,6 +320,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
     _rewards:
       _experience: 695
+      _echoExperience: 0
       _currency: 425
       _items: []
     _healPartyOnStart: 0
@@ -311,6 +334,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
     _rewards:
       _experience: 720
+      _echoExperience: 0
       _currency: 440
       _items: []
     _healPartyOnStart: 0
@@ -322,6 +346,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
     _rewards:
       _experience: 745
+      _echoExperience: 0
       _currency: 455
       _items:
       - Item: {fileID: 11400000, guid: 05048fbaf41957888fdb5afbc0d13522, type: 2}
@@ -336,6 +361,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
     _rewards:
       _experience: 770
+      _echoExperience: 0
       _currency: 470
       _items: []
     _healPartyOnStart: 0
@@ -349,6 +375,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
     _rewards:
       _experience: 795
+      _echoExperience: 0
       _currency: 485
       _items: []
     _healPartyOnStart: 0
@@ -360,6 +387,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
     _rewards:
       _experience: 820
+      _echoExperience: 0
       _currency: 500
       _items: []
     _healPartyOnStart: 0
@@ -372,6 +400,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
     _rewards:
       _experience: 845
+      _echoExperience: 0
       _currency: 515
       _items: []
     _healPartyOnStart: 0
@@ -385,6 +414,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
     _rewards:
       _experience: 870
+      _echoExperience: 0
       _currency: 530
       _items:
       - Item: {fileID: 11400000, guid: f548126edff55c809c5b50878041cd3c, type: 2}
@@ -398,6 +428,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
     _rewards:
       _experience: 895
+      _echoExperience: 0
       _currency: 545
       _items: []
     _healPartyOnStart: 0
@@ -410,6 +441,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
     _rewards:
       _experience: 920
+      _echoExperience: 0
       _currency: 560
       _items: []
     _healPartyOnStart: 0
@@ -423,6 +455,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
     _rewards:
       _experience: 945
+      _echoExperience: 0
       _currency: 575
       _items: []
     _healPartyOnStart: 0
@@ -434,6 +467,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
     _rewards:
       _experience: 970
+      _echoExperience: 0
       _currency: 590
       _items: []
     _healPartyOnStart: 0
@@ -446,6 +480,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
     _rewards:
       _experience: 995
+      _echoExperience: 0
       _currency: 605
       _items:
       - Item: {fileID: 11400000, guid: 01c5e03129c75e28947344e0dd0422dc, type: 2}
@@ -461,6 +496,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
     _rewards:
       _experience: 1020
+      _echoExperience: 0
       _currency: 620
       _items: []
     _healPartyOnStart: 0
@@ -472,6 +508,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
     _rewards:
       _experience: 1045
+      _echoExperience: 0
       _currency: 635
       _items: []
     _healPartyOnStart: 0
@@ -484,6 +521,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
     _rewards:
       _experience: 1070
+      _echoExperience: 0
       _currency: 650
       _items: []
     _healPartyOnStart: 0
@@ -497,6 +535,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
     _rewards:
       _experience: 1095
+      _echoExperience: 0
       _currency: 665
       _items: []
     _healPartyOnStart: 0
@@ -509,6 +548,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
     _rewards:
       _experience: 1120
+      _echoExperience: 0
       _currency: 680
       _items:
       - Item: {fileID: 11400000, guid: 6e8ff656acfb5929865f926155ae4854, type: 2}
@@ -526,6 +566,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
     _rewards:
       _experience: 1145
+      _echoExperience: 0
       _currency: 695
       _items: []
     _healPartyOnStart: 0
@@ -540,6 +581,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
     _rewards:
       _experience: 1170
+      _echoExperience: 0
       _currency: 710
       _items: []
     _healPartyOnStart: 0
@@ -552,6 +594,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
     _rewards:
       _experience: 1195
+      _echoExperience: 0
       _currency: 725
       _items: []
     _healPartyOnStart: 0
@@ -565,6 +608,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
     _rewards:
       _experience: 1220
+      _echoExperience: 0
       _currency: 740
       _items: []
     _healPartyOnStart: 0
@@ -579,6 +623,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
     _rewards:
       _experience: 1245
+      _echoExperience: 0
       _currency: 755
       _items:
       - Item: {fileID: 11400000, guid: ddf67568956051a5bb7bb8a6126716c2, type: 2}
@@ -593,6 +638,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
     _rewards:
       _experience: 1270
+      _echoExperience: 0
       _currency: 770
       _items: []
     _healPartyOnStart: 0
@@ -606,6 +652,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
     _rewards:
       _experience: 1295
+      _echoExperience: 0
       _currency: 785
       _items: []
     _healPartyOnStart: 0
@@ -620,6 +667,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
     _rewards:
       _experience: 1320
+      _echoExperience: 0
       _currency: 800
       _items: []
     _healPartyOnStart: 0
@@ -632,6 +680,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
     _rewards:
       _experience: 1345
+      _echoExperience: 0
       _currency: 815
       _items: []
     _healPartyOnStart: 0
@@ -645,6 +694,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
     _rewards:
       _experience: 1370
+      _echoExperience: 0
       _currency: 830
       _items:
       - Item: {fileID: 11400000, guid: 8e9e5fcc5676573e8817e371f6ba6816, type: 2}
@@ -661,6 +711,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
     _rewards:
       _experience: 1395
+      _echoExperience: 0
       _currency: 845
       _items: []
     _healPartyOnStart: 0
@@ -673,6 +724,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
     _rewards:
       _experience: 1420
+      _echoExperience: 0
       _currency: 860
       _items: []
     _healPartyOnStart: 0
@@ -686,6 +738,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 5c430c9e55b15f1ba546399dabf9a1fe, type: 2}
     _rewards:
       _experience: 1445
+      _echoExperience: 0
       _currency: 875
       _items: []
     _healPartyOnStart: 0
@@ -700,6 +753,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
     _rewards:
       _experience: 1470
+      _echoExperience: 0
       _currency: 890
       _items: []
     _healPartyOnStart: 0
@@ -712,6 +766,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
     _rewards:
       _experience: 1495
+      _echoExperience: 0
       _currency: 905
       _items:
       - Item: {fileID: 11400000, guid: 89be7dd56b285aad828315ba893b7f93, type: 2}
@@ -727,6 +782,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: eda50516c14e57589c00b8667d1ae77a, type: 2}
     _rewards:
       _experience: 1520
+      _echoExperience: 0
       _currency: 920
       _items: []
     _healPartyOnStart: 0
@@ -741,6 +797,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
     _rewards:
       _experience: 1545
+      _echoExperience: 0
       _currency: 935
       _items: []
     _healPartyOnStart: 0
@@ -753,6 +810,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
     _rewards:
       _experience: 1570
+      _echoExperience: 0
       _currency: 950
       _items: []
     _healPartyOnStart: 0
@@ -766,6 +824,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 011a5210690256ea8bd84395df0c6a13, type: 2}
     _rewards:
       _experience: 1595
+      _echoExperience: 0
       _currency: 965
       _items: []
     _healPartyOnStart: 0
@@ -780,6 +839,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
     _rewards:
       _experience: 1620
+      _echoExperience: 0
       _currency: 980
       _items:
       - Item: {fileID: 11400000, guid: 03a4804233c954e0bd7637916278e934, type: 2}
@@ -796,6 +856,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
     _rewards:
       _experience: 1645
+      _echoExperience: 0
       _currency: 995
       _items: []
     _healPartyOnStart: 0
@@ -809,6 +870,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
     _rewards:
       _experience: 1670
+      _echoExperience: 0
       _currency: 1010
       _items: []
     _healPartyOnStart: 0
@@ -823,6 +885,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
     _rewards:
       _experience: 1695
+      _echoExperience: 0
       _currency: 1025
       _items: []
     _healPartyOnStart: 0
@@ -835,6 +898,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
     _rewards:
       _experience: 1720
+      _echoExperience: 0
       _currency: 1040
       _items: []
     _healPartyOnStart: 0
@@ -848,6 +912,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
     _rewards:
       _experience: 1745
+      _echoExperience: 0
       _currency: 1055
       _items:
       - Item: {fileID: 11400000, guid: b878fba557885b4cb132123d440a2603, type: 2}
@@ -864,6 +929,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
     _rewards:
       _experience: 1770
+      _echoExperience: 0
       _currency: 1070
       _items: []
     _healPartyOnStart: 0
@@ -876,6 +942,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
     _rewards:
       _experience: 1795
+      _echoExperience: 0
       _currency: 1085
       _items: []
     _healPartyOnStart: 0
@@ -889,6 +956,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
     _rewards:
       _experience: 1820
+      _echoExperience: 0
       _currency: 1100
       _items: []
     _healPartyOnStart: 0
@@ -903,6 +971,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
     _rewards:
       _experience: 1845
+      _echoExperience: 0
       _currency: 1115
       _items: []
     _healPartyOnStart: 0
@@ -915,6 +984,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
     _rewards:
       _experience: 1870
+      _echoExperience: 0
       _currency: 1130
       _items:
       - Item: {fileID: 11400000, guid: 88c348c6f299566783d1544aea443773, type: 2}
@@ -930,6 +1000,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
     _rewards:
       _experience: 1895
+      _echoExperience: 0
       _currency: 1145
       _items: []
     _healPartyOnStart: 0
@@ -944,6 +1015,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
     _rewards:
       _experience: 1920
+      _echoExperience: 0
       _currency: 1160
       _items: []
     _healPartyOnStart: 0
@@ -956,6 +1028,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
     _rewards:
       _experience: 1945
+      _echoExperience: 0
       _currency: 1175
       _items: []
     _healPartyOnStart: 0
@@ -969,6 +1042,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
     _rewards:
       _experience: 1970
+      _echoExperience: 0
       _currency: 1190
       _items: []
     _healPartyOnStart: 0
@@ -983,6 +1057,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
     _rewards:
       _experience: 1995
+      _echoExperience: 0
       _currency: 1205
       _items:
       - Item: {fileID: 11400000, guid: b89379972b235c4994d519b0f17096e0, type: 2}
@@ -997,6 +1072,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
     _rewards:
       _experience: 2020
+      _echoExperience: 0
       _currency: 1220
       _items: []
     _healPartyOnStart: 0
@@ -1010,6 +1086,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
     _rewards:
       _experience: 2045
+      _echoExperience: 0
       _currency: 1235
       _items: []
     _healPartyOnStart: 0
@@ -1024,6 +1101,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
     _rewards:
       _experience: 2070
+      _echoExperience: 0
       _currency: 1250
       _items: []
     _healPartyOnStart: 0
@@ -1036,6 +1114,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
     _rewards:
       _experience: 2095
+      _echoExperience: 0
       _currency: 1265
       _items: []
     _healPartyOnStart: 0
@@ -1050,6 +1129,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
     _rewards:
       _experience: 2120
+      _echoExperience: 0
       _currency: 1280
       _items:
       - Item: {fileID: 11400000, guid: 6e4a8eaf4d685207b4b9cab42adc19ec, type: 2}
@@ -1068,6 +1148,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 19a1b4f2b25757bf8758de63bc902d6f, type: 2}
     _rewards:
       _experience: 2145
+      _echoExperience: 0
       _currency: 1295
       _items: []
     _healPartyOnStart: 0
@@ -1081,6 +1162,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d80bebfab155598c9430c9f0a44a7dd2, type: 2}
     _rewards:
       _experience: 2170
+      _echoExperience: 0
       _currency: 1310
       _items: []
     _healPartyOnStart: 0
@@ -1095,6 +1177,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
     _rewards:
       _experience: 2195
+      _echoExperience: 0
       _currency: 1325
       _items: []
     _healPartyOnStart: 0
@@ -1109,6 +1192,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d3efe87ad1775fce80bdadd58f42e33e, type: 2}
     _rewards:
       _experience: 2220
+      _echoExperience: 0
       _currency: 1340
       _items: []
     _healPartyOnStart: 0
@@ -1122,6 +1206,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: ed40dce9af21559a85b2389d78a49b6b, type: 2}
     _rewards:
       _experience: 2245
+      _echoExperience: 0
       _currency: 1355
       _items:
       - Item: {fileID: 11400000, guid: 05048fbaf41957888fdb5afbc0d13522, type: 2}
@@ -1138,6 +1223,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
     _rewards:
       _experience: 2270
+      _echoExperience: 0
       _currency: 1370
       _items: []
     _healPartyOnStart: 0
@@ -1152,6 +1238,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 07c26f562ab65f37829d9b92b840adbc, type: 2}
     _rewards:
       _experience: 2295
+      _echoExperience: 0
       _currency: 1385
       _items: []
     _healPartyOnStart: 0
@@ -1165,6 +1252,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8b0566691c2a505495e1cda2299e06b6, type: 2}
     _rewards:
       _experience: 2320
+      _echoExperience: 0
       _currency: 1400
       _items: []
     _healPartyOnStart: 0
@@ -1179,6 +1267,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
     _rewards:
       _experience: 2345
+      _echoExperience: 0
       _currency: 1415
       _items: []
     _healPartyOnStart: 0
@@ -1193,6 +1282,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dfc18ec7a11b535882bfa9ef643633f1, type: 2}
     _rewards:
       _experience: 2370
+      _echoExperience: 0
       _currency: 1430
       _items:
       - Item: {fileID: 11400000, guid: f548126edff55c809c5b50878041cd3c, type: 2}
@@ -1208,6 +1298,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3ee8926384fd5c369a58cd699404e21c, type: 2}
     _rewards:
       _experience: 2395
+      _echoExperience: 0
       _currency: 1445
       _items: []
     _healPartyOnStart: 0
@@ -1222,6 +1313,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f5cff70a77d954929d7ddf80079fe780, type: 2}
     _rewards:
       _experience: 2420
+      _echoExperience: 0
       _currency: 1460
       _items: []
     _healPartyOnStart: 0
@@ -1236,6 +1328,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: cf6abf068dfb5b01b2ca385907658e84, type: 2}
     _rewards:
       _experience: 2445
+      _echoExperience: 0
       _currency: 1475
       _items: []
     _healPartyOnStart: 0
@@ -1249,6 +1342,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 9e02d434a2005c1a80e0abfffcc98836, type: 2}
     _rewards:
       _experience: 2470
+      _echoExperience: 0
       _currency: 1490
       _items: []
     _healPartyOnStart: 0
@@ -1263,6 +1357,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 151ba3a837155f0a9752b1911fcee544, type: 2}
     _rewards:
       _experience: 2495
+      _echoExperience: 0
       _currency: 1505
       _items:
       - Item: {fileID: 11400000, guid: 01c5e03129c75e28947344e0dd0422dc, type: 2}
@@ -1279,6 +1374,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8cbc9598634c52bd99d4d96f9dd492f0, type: 2}
     _rewards:
       _experience: 2520
+      _echoExperience: 0
       _currency: 1520
       _items: []
     _healPartyOnStart: 0
@@ -1292,6 +1388,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e75831d38be85acaa0c776ca348e0a1c, type: 2}
     _rewards:
       _experience: 2545
+      _echoExperience: 0
       _currency: 1535
       _items: []
     _healPartyOnStart: 0
@@ -1306,6 +1403,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d5d97ad1301e5640aae6843e0f67a4c5, type: 2}
     _rewards:
       _experience: 2570
+      _echoExperience: 0
       _currency: 1550
       _items: []
     _healPartyOnStart: 0
@@ -1320,6 +1418,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dfdaa2da458b50c893ccc1346fd3d45e, type: 2}
     _rewards:
       _experience: 2595
+      _echoExperience: 0
       _currency: 1565
       _items: []
     _healPartyOnStart: 0
@@ -1333,6 +1432,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 2182870429275327811b41c21bb5dd0f, type: 2}
     _rewards:
       _experience: 2620
+      _echoExperience: 0
       _currency: 1580
       _items:
       - Item: {fileID: 11400000, guid: 6e8ff656acfb5929865f926155ae4854, type: 2}
@@ -1343,6 +1443,7 @@ MonoBehaviour:
     _playerHealthRestoreRatio: 0.5
   _completionRewards:
     _experience: 12000
+    _echoExperience: 0
     _currency: 6000
     _items:
     - Item: {fileID: 11400000, guid: 6e24cb48750e558abd4496a9c5ca236e, type: 2}

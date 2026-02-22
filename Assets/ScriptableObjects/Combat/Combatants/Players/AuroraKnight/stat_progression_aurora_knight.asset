@@ -15,11 +15,22 @@ MonoBehaviour:
   _statGrowth:
   - _stat: 0
     _formula:
-      _formulaType: 1
-      _constant: 10
-      _linear: 0
+      _formulaType: 2
+      _constant: 0
+      _linear: 10
       _quadratic: 0
       _exponentialMultiplier: 0.0001
+      _exponentialRate: 0
+      _includeLevelOneStep: 0
+    _combinationMode: 0
+    _minimumValue: 0
+  - _stat: 3
+    _formula:
+      _formulaType: 2
+      _constant: 2
+      _linear: 0
+      _quadratic: 0
+      _exponentialMultiplier: 0
       _exponentialRate: 0
       _includeLevelOneStep: 0
     _combinationMode: 0
