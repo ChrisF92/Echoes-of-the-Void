@@ -48,7 +48,7 @@ namespace EchoesOfTheVoid.UI.Combat {
 
     private Combatant _currentTurnCombatant;
     private CombatActionType _currentAction = CombatActionType.Attack;
-    private Combatant _selectedTarget;
+    private readonly List<Combatant> _selectedTargets = new();
     private bool _isSelectingTarget;
     private readonly List<Combatant> _currentValidTargets = new();
 
@@ -111,6 +111,7 @@ namespace EchoesOfTheVoid.UI.Combat {
         _actionController.SkillSelected += HandleSkillSelected;
         _actionController.ModalsClosed += HandleModalsClosed;
         _actionController.AutoAllRequested += HandleAutoAllRequested;
+        _actionController.ConfirmTargetsRequested += HandleConfirmTargetsRequested;
       }
     }
 
@@ -537,21 +538,28 @@ namespace EchoesOfTheVoid.UI.Combat {
 
       _currentAction = actionType;
       _isSelectingTarget = true;
-      _selectedTarget = null;
+      _selectedTargets.Clear();
 
       RefreshTargetHighlights();
+      UpdateConfirmTargetsButtonState();
 
       if (_currentValidTargets.Count == 0) {
         AddCombatMessage("No valid targets available.", MessageType.System);
         EndTargetSelection();
+        return;
+      }
+
+      if (IsMultiTargetSkillSelectionActive()) {
+        AddCombatMessage("Select one or more targets, then confirm.", MessageType.System);
       }
     }
 
     private void EndTargetSelection() {
       _isSelectingTarget = false;
-      _selectedTarget = null;
+      _selectedTargets.Clear();
       _currentValidTargets.Clear();
       _gridController?.ClearTargetHighlights();
+      _actionController?.SetConfirmTargetsButtonState(false, false);
     }
 
     private void RefreshTargetHighlights() {
@@ -569,7 +577,45 @@ namespace EchoesOfTheVoid.UI.Combat {
         _gridController?.EnemyTeam);
 
       _currentValidTargets.AddRange(targets);
-      _gridController?.HighlightTargets(_currentValidTargets, _selectedTarget);
+      _gridController?.HighlightTargets(_currentValidTargets, _selectedTargets);
+      UpdateConfirmTargetsButtonState();
+    }
+
+    private bool IsMultiTargetSkillSelectionActive() {
+      return _isSelectingTarget &&
+             _currentAction == CombatActionType.Skill &&
+             _pendingSkill != null &&
+             _pendingSkill.TargetType == TargetType.Multiple;
+    }
+
+    private void UpdateConfirmTargetsButtonState() {
+      if (_actionController == null) {
+        return;
+      }
+
+      if (!IsMultiTargetSkillSelectionActive()) {
+        _actionController.SetConfirmTargetsButtonState(false, false);
+        return;
+      }
+
+      int selectedCount = _selectedTargets.Count;
+      string label = selectedCount > 0 ? $"Confirm Targets ({selectedCount})" : "Confirm Targets";
+      _actionController.SetConfirmTargetsButtonState(true, selectedCount > 0, label);
+    }
+
+    private void ToggleSelectedTarget(Combatant combatant) {
+      if (combatant == null) {
+        return;
+      }
+
+      if (_selectedTargets.Contains(combatant)) {
+        _ = _selectedTargets.Remove(combatant);
+      } else {
+        _selectedTargets.Add(combatant);
+      }
+
+      _gridController?.HighlightTargets(_currentValidTargets, _selectedTargets);
+      UpdateConfirmTargetsButtonState();
     }
 
     private void HandleCombatantSlotClicked(Combatant combatant) {
@@ -587,8 +633,13 @@ namespace EchoesOfTheVoid.UI.Combat {
         return;
       }
 
-      _selectedTarget = combatant;
-      _gridController?.SelectTarget(combatant);
+      if (IsMultiTargetSkillSelectionActive()) {
+        ToggleSelectedTarget(combatant);
+        return;
+      }
+
+      _selectedTargets.Clear();
+      _selectedTargets.Add(combatant);
 
       object actionData = _currentAction switch {
         CombatActionType.Item => _pendingItem,
@@ -596,11 +647,46 @@ namespace EchoesOfTheVoid.UI.Combat {
         _ => null
       };
 
-      ExecuteAction(_currentAction, _currentTurnCombatant, combatant, actionData);
+      ExecuteAction(_currentAction, _currentTurnCombatant, combatant, actionData, _selectedTargets);
       EndTargetSelection();
     }
 
-    private void ExecuteAction(CombatActionType actionType, Combatant caster, Combatant target, object actionData = null) {
+    private void HandleConfirmTargetsRequested() {
+      if (!IsMultiTargetSkillSelectionActive()) {
+        return;
+      }
+
+      if (_selectedTargets.Count == 0) {
+        AddCombatMessage("Select at least one target before confirming.", MessageType.System);
+        return;
+      }
+
+      SkillSO skill = _pendingSkill;
+      if (skill == null || _currentTurnCombatant == null) {
+        return;
+      }
+
+      List<Combatant> snapshot = _selectedTargets
+        .Where(static c => c != null && c.IsAlive)
+        .Distinct()
+        .ToList();
+
+      if (snapshot.Count == 0) {
+        AddCombatMessage("Selected targets are no longer available.", MessageType.System);
+        RefreshTargetHighlights();
+        return;
+      }
+
+      ExecuteAction(CombatActionType.Skill, _currentTurnCombatant, snapshot[0], skill, snapshot);
+      EndTargetSelection();
+    }
+
+    private void ExecuteAction(
+      CombatActionType actionType,
+      Combatant caster,
+      Combatant target,
+      object actionData = null,
+      IReadOnlyList<Combatant> explicitTargets = null) {
       if (caster == null) {
         AddCombatMessage("Action requires an acting combatant.", MessageType.System);
         return;
@@ -610,6 +696,13 @@ namespace EchoesOfTheVoid.UI.Combat {
         ActionType = actionType,
         Target = target
       };
+
+      if (explicitTargets != null && explicitTargets.Count > 0) {
+        combatAction.SetTargets(explicitTargets);
+        if (combatAction.Target == null) {
+          combatAction.Target = explicitTargets[0];
+        }
+      }
 
       switch (actionType) {
         case CombatActionType.Attack:
@@ -719,7 +812,7 @@ namespace EchoesOfTheVoid.UI.Combat {
         case CombatActionType.Skill:
           if (!string.IsNullOrEmpty(action.SkillId)) {
             SkillComponent skillComponent = caster.GetComponent<SkillComponent>();
-            SkillResult result = skillComponent?.UseSkill(action.SkillId, action.Target);
+            SkillResult result = skillComponent?.UseSkill(action.SkillId, action.Targets);
             if (result != null) {
               AddCombatMessage(result.Message, ResolveMessageType(result.Effects));
             }

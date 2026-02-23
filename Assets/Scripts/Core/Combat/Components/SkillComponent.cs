@@ -39,13 +39,17 @@ namespace EchoesOfTheVoid.Core.Combat.Components {
              _owner.GetStat(StatType.Mana) >= skill.Data.ManaCost;
     }
 
-    public SkillResult UseSkill(string skillId, ICombatant target = null) {
+    public bool TryGetSkill(string skillId, out CombatSkill combatSkill) {
+      return _skills.TryGetValue(skillId, out combatSkill);
+    }
+
+    public SkillResult UseSkill(string skillId, IReadOnlyList<ICombatant> targets = null) {
       if (!CanUseSkill(skillId)) {
         return SkillResult.Failed("Cannot use skill");
       }
 
       CombatSkill skill = _skills[skillId];
-      SkillResult result = skill.Execute(_owner, target);
+      SkillResult result = skill.Execute(_owner, targets ?? Array.Empty<ICombatant>());
 
       if (result.IsSuccess) {
         int rawCooldown = skill.Data.CooldownTurns;

@@ -78,7 +78,8 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
         _turnOrderManager,
         DamageCalculator,
         StatusEffectManager,
-        timingProvider
+        timingProvider,
+        _targetResolver
       );
 
       _aiDecisionSystem = new AIDecisionSystem(

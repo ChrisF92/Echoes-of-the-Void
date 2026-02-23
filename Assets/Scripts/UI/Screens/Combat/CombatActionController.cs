@@ -26,6 +26,7 @@ namespace EchoesOfTheVoid.UI.Combat {
     private Button _itemButton;
     private Button _skillButton;
     private Button _autoAllButton;
+    private Button _confirmTargetsButton;
     private Button _itemCloseButton;
     private Button _skillCloseButton;
 
@@ -59,6 +60,7 @@ namespace EchoesOfTheVoid.UI.Combat {
     public event Action<SkillSO> SkillSelected;
     public event Action ModalsClosed;
     public event Action AutoAllRequested;
+    public event Action ConfirmTargetsRequested;
 
     public void Initialize() {
       _attackButton = _root.Q<Button>("attack-btn");
@@ -66,6 +68,7 @@ namespace EchoesOfTheVoid.UI.Combat {
       _itemButton = _root.Q<Button>("item-btn");
       _skillButton = _root.Q<Button>("skill-btn");
       _autoAllButton = _root.Q<Button>("auto-all-btn");
+      _confirmTargetsButton = _root.Q<Button>("confirm-targets-btn");
       _itemCloseButton = _root.Q<Button>("item-close-btn");
       _skillCloseButton = _root.Q<Button>("skill-close-btn");
 
@@ -83,11 +86,13 @@ namespace EchoesOfTheVoid.UI.Combat {
       _itemButton?.RegisterCallback<ClickEvent>(_ => ActionRequested?.Invoke(CombatActionType.Item));
       _skillButton?.RegisterCallback<ClickEvent>(_ => ActionRequested?.Invoke(CombatActionType.Skill));
       _autoAllButton?.RegisterCallback<ClickEvent>(_ => AutoAllRequested?.Invoke());
+      _confirmTargetsButton?.RegisterCallback<ClickEvent>(_ => ConfirmTargetsRequested?.Invoke());
 
       _itemCloseButton?.RegisterCallback<ClickEvent>(_ => HideModals());
       _skillCloseButton?.RegisterCallback<ClickEvent>(_ => HideModals());
 
       HideModals(false);
+      SetConfirmTargetsButtonState(false, false);
     }
 
     public void RefreshActionAvailability(Combatant activeCombatant) {
@@ -133,6 +138,19 @@ namespace EchoesOfTheVoid.UI.Combat {
         : allAutoEnabled
           ? "Click to disable gambits for all player combatants."
           : "Click to enable gambits for all player combatants.";
+    }
+
+    public void SetConfirmTargetsButtonState(bool isVisible, bool isEnabled, string labelText = null) {
+      if (_confirmTargetsButton == null) {
+        return;
+      }
+
+      _confirmTargetsButton.style.display = isVisible ? DisplayStyle.Flex : DisplayStyle.None;
+      _confirmTargetsButton.SetEnabled(isEnabled);
+
+      if (!string.IsNullOrWhiteSpace(labelText)) {
+        _confirmTargetsButton.text = labelText;
+      }
     }
 
     public void ShowItemModal(IEnumerable<ItemData> items, string emptyMessage = null) {

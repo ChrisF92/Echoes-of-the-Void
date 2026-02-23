@@ -22,56 +22,68 @@ namespace EchoesOfTheVoid.Core.Combat.Wrappers {
       return user.IsAlive && user.GetStat(StatType.Mana) >= Data.ManaCost;
     }
 
-    public SkillResult Execute(ICombatant user, ICombatant target) {
+    public SkillResult Execute(ICombatant user, IReadOnlyList<ICombatant> targets) {
+      if (user == null) {
+        return SkillResult.Failed("Skill user is invalid");
+      }
+
+      List<ICombatant> resolvedTargets = NormalizeTargets(targets);
       var effects = new List<CombatEffect>();
       DamageCalculator damageCalculator = CombatSystem.Instance != null ? CombatSystem.Instance.DamageCalculator : null;
       StatusEffectManager statusEffectManager = CombatSystem.Instance != null ? CombatSystem.Instance.StatusEffectManager : null;
 
       foreach (SkillEffectData effectData in Data.Effects) {
-        ICombatant actualTarget = effectData.TargetSelf ? user : target;
-        if (actualTarget == null) {
-          continue;
-        }
+        IReadOnlyList<ICombatant> effectTargets = GetEffectTargets(effectData, user, resolvedTargets);
+        foreach (ICombatant actualTarget in effectTargets) {
+          if (actualTarget == null) {
+            continue;
+          }
 
-        switch (effectData.EffectType) {
-          case EffectType.Damage:
-          case EffectType.Heal: {
-              int effectValue;
-              if (damageCalculator != null) {
-                effectValue = damageCalculator.CalculateSkillDamage(
-                  effectData.BaseValue,
-                  effectData.StatScaling,
-                  effectData.ScalingStat,
-                  user,
-                  effectData.DamageCurve
-                );
-              } else {
-                effectValue = CalculateEffectValueFallback(effectData, user);
+          switch (effectData.EffectType) {
+            case EffectType.Damage:
+            case EffectType.Heal: {
+                int effectValue;
+                if (damageCalculator != null) {
+                  effectValue = damageCalculator.CalculateSkillDamage(
+                    effectData.BaseValue,
+                    effectData.StatScaling,
+                    effectData.ScalingStat,
+                    user,
+                    effectData.DamageCurve
+                  );
+                } else {
+                  effectValue = CalculateEffectValueFallback(effectData, user);
+                }
+
+                effects.Add(new CombatEffect {
+                  Type = effectData.EffectType,
+                  Value = effectValue,
+                  Target = actualTarget
+                });
+                break;
+              }
+
+            case EffectType.ApplyStatus:
+              if (effectData.StatusEffect == null) {
+                continue;
               }
 
               effects.Add(new CombatEffect {
-                Type = effectData.EffectType,
-                Value = effectValue,
-                Target = actualTarget
+                Type = EffectType.ApplyStatus,
+                Target = actualTarget,
+                StatusEffect = effectData.StatusEffect
               });
               break;
-            }
 
-          case EffectType.ApplyStatus:
-            if (effectData.StatusEffect == null) {
-              continue;
-            }
-
-            effects.Add(new CombatEffect {
-              Type = EffectType.ApplyStatus,
-              Target = actualTarget,
-              StatusEffect = effectData.StatusEffect
-            });
-            break;
-
-          default:
-            break;
+            default:
+              break;
+          }
         }
+      }
+
+      if (effects.Count == 0) {
+        string skillName = string.IsNullOrWhiteSpace(Data.DisplayName) ? "Skill" : Data.DisplayName;
+        return SkillResult.Failed($"{skillName} had no valid targets");
       }
 
       foreach (CombatEffect effect in effects) {
@@ -85,6 +97,36 @@ namespace EchoesOfTheVoid.Core.Combat.Wrappers {
       );
 
       return SkillResult.Success(message, effects);
+    }
+
+    private static List<ICombatant> NormalizeTargets(IReadOnlyList<ICombatant> targets) {
+      var normalized = new List<ICombatant>();
+      if (targets == null) {
+        return normalized;
+      }
+
+      foreach (ICombatant target in targets) {
+        if (target == null || normalized.Contains(target)) {
+          continue;
+        }
+
+        normalized.Add(target);
+      }
+
+      return normalized;
+    }
+
+    private static IReadOnlyList<ICombatant> GetEffectTargets(
+      SkillEffectData effectData,
+      ICombatant user,
+      IReadOnlyList<ICombatant> targets) {
+      if (effectData.TargetSelf) {
+        return user != null
+          ? new List<ICombatant> { user }
+          : Array.Empty<ICombatant>();
+      }
+
+      return targets;
     }
 
     private int CalculateEffectValueFallback(SkillEffectData effectData, ICombatant user) {

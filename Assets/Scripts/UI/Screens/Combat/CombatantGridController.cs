@@ -129,9 +129,14 @@ namespace EchoesOfTheVoid.UI.Combat {
         : new Vector2Int(-1, -1);
     }
 
-    public void HighlightTargets(IReadOnlyCollection<Combatant> validTargets, Combatant selectedTarget) {
+    public void HighlightTargets(
+      IReadOnlyCollection<Combatant> validTargets,
+      IReadOnlyCollection<Combatant> selectedTargets) {
       HashSet<Combatant> validSet = validTargets != null
-        ? new HashSet<Combatant>(validTargets.Where(c => c != null && c.IsAlive))
+        ? new HashSet<Combatant>(validTargets.Where(static c => c != null && c.IsAlive))
+        : new HashSet<Combatant>();
+      HashSet<Combatant> selectedSet = selectedTargets != null
+        ? new HashSet<Combatant>(selectedTargets.Where(static c => c != null))
         : new HashSet<Combatant>();
 
       foreach (SlotVisualCache cache in _slotCache.Values) {
@@ -147,19 +152,17 @@ namespace EchoesOfTheVoid.UI.Combat {
           continue;
         }
 
-        if (validSet.Count == 0) {
-          continue;
+        if (validSet.Count > 0) {
+          if (validSet.Contains(cache.Combatant)) {
+            cache.Root.AddToClassList("valid-target");
+          } else {
+            cache.Root.AddToClassList("invalid-target");
+          }
         }
 
-        if (validSet.Contains(cache.Combatant)) {
-          cache.Root.AddToClassList("valid-target");
-        } else {
-          cache.Root.AddToClassList("invalid-target");
+        if (selectedSet.Contains(cache.Combatant)) {
+          cache.Root.AddToClassList("selected-target");
         }
-      }
-
-      if (selectedTarget != null) {
-        SelectTarget(selectedTarget);
       }
     }
 

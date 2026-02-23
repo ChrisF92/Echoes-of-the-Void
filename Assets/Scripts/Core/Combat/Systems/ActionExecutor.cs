@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using EchoesOfTheVoid.Core.Combat;
 using EchoesOfTheVoid.Core.Combat.Actions;
 using EchoesOfTheVoid.Core.Combat.Components;
 using EchoesOfTheVoid.Core.Combat.Entities;
 using EchoesOfTheVoid.Core.Combat.Effects;
 using EchoesOfTheVoid.Core.Combat.Extensions;
 using EchoesOfTheVoid.Core.Combat.Results;
+using EchoesOfTheVoid.Core.Combat.ScriptableObjects;
 using EchoesOfTheVoid.Core.Combat.Turn;
+using EchoesOfTheVoid.Core.Combat.Wrappers;
 using UnityEngine;
 
 namespace EchoesOfTheVoid.Core.Combat.Systems {
@@ -20,6 +23,7 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
     private readonly DamageCalculator _damageCalculator;
     private readonly StatusEffectManager _statusEffectManager;
     private readonly ActionTimingProvider _timingProvider;
+    private readonly TargetResolver _targetResolver;
 
     private readonly Queue<PendingAction> _actionQueue = new();
     private Coroutine _actionQueueRoutine;
@@ -33,12 +37,14 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
       TurnOrderManager turnManager,
       DamageCalculator damageCalc,
       StatusEffectManager statusManager,
-      ActionTimingProvider timing) {
+      ActionTimingProvider timing,
+      TargetResolver targetResolver) {
       _coroutineHost = host;
       _turnOrderManager = turnManager;
       _damageCalculator = damageCalc;
       _statusEffectManager = statusManager;
       _timingProvider = timing;
+      _targetResolver = targetResolver;
     }
 
     public bool QueueAction(ICombatant actor, CombatAction action) {
@@ -104,7 +110,38 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
         return false;
       }
 
-      return action.Target == null || ValidateTarget(action.Target);
+      if (!skillComponent.TryGetSkill(action.SkillId, out CombatSkill combatSkill)) {
+        Debug.LogWarning($"Skill {action.SkillId} not learned");
+        return false;
+      }
+
+      SkillSO skillData = combatSkill.Data;
+      List<ICombatant> requestedTargets = SnapshotRequestedTargets(action);
+      bool requiresExplicitTarget = skillData.TargetType == TargetType.Single;
+
+      if (requiresExplicitTarget && requestedTargets.Count == 0) {
+        Debug.LogWarning($"Skill {action.SkillId} requires a valid target");
+        return false;
+      }
+
+      foreach (ICombatant requested in requestedTargets) {
+        if (!ValidateTarget(requested)) {
+          Debug.LogWarning($"Skill target {requested?.Name ?? "<null>"} is no longer valid");
+          return false;
+        }
+      }
+
+      if (_targetResolver == null) {
+        return true;
+      }
+
+      List<ICombatant> resolvedTargets = _targetResolver.ResolveSkillTargets(actor, skillData, requestedTargets);
+      if (resolvedTargets.Count == 0 && skillData.TargetType != TargetType.Self) {
+        Debug.LogWarning($"Skill {action.SkillId} has no valid recipients");
+        return false;
+      }
+
+      return true;
     }
 
     private bool ValidateItemAction(ICombatant actor, CombatAction action) {
@@ -146,7 +183,8 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
       CombatActionTiming timing = _timingProvider.GetTiming(action.ActionType);
 
       // Validate target again before execution
-      if (action.Target != null &&
+      if (action.ActionType != CombatActionType.Skill &&
+          action.Target != null &&
           !ValidateTarget(action.Target) &&
           action.ActionType != CombatActionType.Defend) {
         OnActionExecuted?.Invoke(actor, ActionResult.Failed("Target no longer valid"));
@@ -230,9 +268,22 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
 
     private ActionResult ProcessSkillAction(ICombatant actor, CombatAction action) {
       SkillComponent skillComponent = actor.GetComponent<SkillComponent>();
-      return skillComponent == null
-        ? ActionResult.Failed("Actor has no skills")
-        : skillComponent.UseSkill(action.SkillId, action.Target).ToActionResult();
+      if (skillComponent == null) {
+        return ActionResult.Failed("Actor has no skills");
+      }
+
+      if (!skillComponent.TryGetSkill(action.SkillId, out CombatSkill combatSkill)) {
+        return ActionResult.Failed($"Skill {action.SkillId} not known");
+      }
+
+      List<ICombatant> requestedTargets = SnapshotRequestedTargets(action);
+      List<ICombatant> resolvedTargets = _targetResolver != null
+        ? _targetResolver.ResolveSkillTargets(actor, combatSkill.Data, requestedTargets)
+        : new List<ICombatant>(requestedTargets);
+      action.SetTargets(resolvedTargets);
+
+      SkillResult result = skillComponent.UseSkill(action.SkillId, action.Targets);
+      return result.ToActionResult();
     }
 
     private ActionResult ProcessItemAction(ICombatant actor, CombatAction action) {
@@ -240,6 +291,27 @@ namespace EchoesOfTheVoid.Core.Combat.Systems {
       return inventoryComponent == null
         ? ActionResult.Failed("Actor has no inventory")
         : inventoryComponent.UseItem(action.ItemData, action.Target).ToActionResult();
+    }
+
+    private static List<ICombatant> SnapshotRequestedTargets(CombatAction action) {
+      var snapshot = new List<ICombatant>();
+      if (action == null) {
+        return snapshot;
+      }
+
+      if (action.Targets != null) {
+        foreach (ICombatant target in action.Targets) {
+          if (target != null && !snapshot.Contains(target)) {
+            snapshot.Add(target);
+          }
+        }
+      }
+
+      if (snapshot.Count == 0 && action.Target != null) {
+        snapshot.Add(action.Target);
+      }
+
+      return snapshot;
     }
 
     private readonly struct PendingAction {

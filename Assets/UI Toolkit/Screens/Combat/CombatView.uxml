@@ -186,6 +186,7 @@
             <ui:Button name="defend-btn" class="action-button defend-button" text="Defend" />
             <ui:Button name="item-btn" class="action-button item-button" text="Item" />
             <ui:Button name="skill-btn" class="action-button skill-button" text="Skill" />
+            <ui:Button name="confirm-targets-btn" class="action-button confirm-targets-button" text="Confirm Targets" />
         </ui:VisualElement>
 
         <ui:VisualElement name="item-modal" class="modal-overlay is-hidden">
